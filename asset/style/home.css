@@ -1,0 +1,132 @@
+.profile-picture-wrapper {
+    border: 5px solid var(--tertiary-color);
+    border-radius: 50%;
+    padding: 5px;
+    background-color: var(--background-color);
+    transition: transform 0.3s;
+}
+
+.profile-picture-wrapper:hover {
+    transform: scale(1.1);
+}
+
+.profile-picture {
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.about-me-content,
+#subscribe form,
+#subscribe p {
+    font-size: 1.2em;
+    line-height: 1.6em;
+}
+
+.about-me-content,
+#dictionaries {
+    width: calc(100% - 3em);
+}
+
+#subscribe>div {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+}
+
+#subscribe>div>div {
+    width: 50%;
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+}
+
+#dictionaries li {
+    font-size: 1.2em;
+}
+
+#dictionaries {
+    margin: auto;
+}
+
+#missing-mobi,
+#this-is-monolingual {
+    display: none;
+}
+
+#missing-mobi {
+    font-size: smaller;
+}
+
+#missing-mobi::before {
+    content: "⚠️ ";
+}
+
+.paypal-buttons>div {
+    padding: 1em;
+    width: 50%;
+    margin: auto;
+}
+
+.or {
+    opacity: .8;
+    font-variant: small-caps;
+}
+
+.social-icon {
+    margin-top: 1.5em
+}
+
+.social-icon img {
+    vertical-align: middle;
+    margin-top: -3px;
+}
+
+.social-icon a {
+    border: none;
+    background: none;
+    filter: invert(50%);
+    transition: filter .2s;
+}
+
+.social-icon a:hover {
+    filter: invert(0%);
+    transition: filter .4s;
+}
+
+.social-icon a:not(:first-child) {
+    margin-left: .5em;
+}
+
+@media (max-width: 800px) {
+    #subscribe>div {
+        flex-direction: column;
+    }
+
+    #subscribe>div>div {
+        width: 100%;
+    }
+
+    .paypal-buttons>div {
+        padding: 0;
+        margin-top: 1.5em;
+        margin-bottom: 1em;
+        width: 80%;
+        text-align: center;
+    }
+}

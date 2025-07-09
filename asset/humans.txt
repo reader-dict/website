@@ -1,0 +1,20 @@
+
+       ▌       ▌▘  ▗
+▛▘█▌▀▌▛▌█▌▛▘  ▛▌▌▛▘▜▘
+▌ ▙▖█▌▙▌▙▖▌ ▗ ▙▌▌▙▖▐▖
+
+
+/* TEAM */
+    Creator & developer: Mickaël Schoentgen
+    Contact: contact [@] tiger-222 [dot] fr
+    From: France
+
+    Product & design: Gabriela Valenzuela 
+    Contact: work [@] gabbb [dot] net
+    From: France
+
+/* SITE */
+    Last update: 2025-07-xx 
+    Standards: Python, HTML5, CSS3.
+    Components: bottle, Tailwind.
+    Software: VSCode, nano, micro, Firefox.

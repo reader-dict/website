@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /*.bz2$
+Disallow: /*.zip$
+Sitemap: https://www.reader-dict.com/sitemap.xml
