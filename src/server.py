@@ -9,7 +9,7 @@ import bottle_file_cache
 import secure
 import ulid
 
-from src import __version__, cache, constants, metrics, paypal, utils
+from src import __version__, cache, constants, handlers, metrics, utils
 
 log = logging.getLogger(__name__)
 app = bottle.default_app()
@@ -38,7 +38,7 @@ secure_headers = secure.Secure(
 
 
 YEAR = datetime.now(tz=UTC).year
-SUPPORTED_LOCALES = ["ca", "da", "de", "el", "en", "eo", "es", "fr", "it", "no", "pt", "ro", "ru", "sv"]
+SUPPORTED_LOCALES = ["ca", "da", "de", "el", "en", "eo", "es", "fr", "it", "no", "pt", "ro", "ru", "sv", "zh"]
 LOCALES = rf"({'|'.join(SUPPORTED_LOCALES)})"
 
 
@@ -50,13 +50,14 @@ def render(tpl: str, **kwargs: Any) -> str:  # noqa: ANN401
     """Call the renderer with several common variables."""
     variables = {
         "constants": constants,
+        "client_id": str(ulid.ULID()),
         "debug": bottle.DEBUG,
-        "description": utils.tr("header-slogan"),
         "page": tpl,
         "request": bottle.request,
         "sentry_environment": constants.SENTRY_ENV_DEV if bottle.DEBUG else constants.SENTRY_ENV_PROD,
         "sentry_release": __version__,
-        "tr": utils.tr,
+        "title": constants.HEADER_SLOGAN,
+        "language": utils.language,
         "url": bottle.request.url,
         "url_pure": bottle.request.url.split("?", 1)[0],
         "version": uuid.uuid4() if bottle.DEBUG else __version__,
@@ -76,40 +77,56 @@ def add_security_headers() -> None:
 @app.error(404)
 @app.error(410)
 def custom_error(error: bottle.HTTPError) -> str:
-    return render("error", error=error.status_code, title="🤦")
+    match error.status_code:
+        case 400:
+            msg = "This link is malformed."
+        case 403:
+            msg = "This link does not grant access to that dictionary."
+        case 410:
+            msg = "The link to the file you requested has either expired, or never existed."
+        case _:  # 404, and others
+            msg = "The page you are looking for does not exist."
+    return render("error", title="Error", msg=msg)
 
 
 @app.get(constants.ROUTE_API_DICT)
 @bottle_file_cache.cache()
 def api_dictionary_get() -> str:
     bottle.response.content_type = "application/json"
-    return json.dumps(utils.load_dictionaries(), check_circular=False, separators=(",", ":"))
+    return json.dumps(
+        utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL),
+        check_circular=False,
+        separators=(",", ":"),
+    )
 
 
-@app.post(constants.ROUTE_API_ORDER)
-def api_order() -> str:
-    event = bottle.request.json
-    kind = "purchase" if "payer" in event else "subscription"
-    log.info("PayPal %s received from IP %r: %r", kind, client_ip(), event)
-    order_id = event.get("subscriptionID") or event["id"]
-
+@app.get(constants.ROUTE_API_PRE_ORDER)
+def api_pre_order() -> str:
     bottle.response.content_type = "application/json"
-    return paypal.register_order(kind, order_id)
+    client_reference_id = bottle.request.params.get("client_reference_id", "")
+    log.info("[/pre-order] Client reference ID %r from IP %r", client_reference_id, client_ip())
+    return '{"status": "ok"}'
 
 
-@app.post(constants.ROUTE_API_WEBHOOK_PAYPAL)
-def api_webhook_paypal() -> bottle.HTTPResponse:
+@app.post(constants.ROUTE_API_WEBHOOK)
+def api_webhook(source: str) -> str:
     headers = dict(bottle.request.headers)
     payload = bottle.request.body.read()
-    log.info("PayPal webhook received, headers = %s, payload = %r", headers, payload)
+    log.info("[%s] webhook received, headers = %s, payload = %r", source, headers, payload)
 
-    if paypal.is_valid_webhook_event(headers, payload):
-        resp = paypal.handle_webhook(json.loads(payload))
-        log.info("PayPal webhook order handled: %s", resp)
-    else:
-        log.error("PayPal webhook signature failed")
+    if source not in handlers.SUPPORTED_HANDLERS:  # pragma: nocover
+        log.error("Unknown webhook source: %r", source)
+        raise bottle.HTTPError(status=404) from None
 
-    return bottle.response
+    bottle.response.content_type = "application/json"
+    handler = handlers.get(source)
+    if handler.is_valid_webhook_event(headers, payload):
+        resp = handler.handle_webhook(json.loads(payload))
+        log.info("[%s] Webhook order handled: %s", source, resp)
+        return resp
+
+    log.error("[%s] Webhook signature failed", source)
+    return '{"error": "webhook signature failed"}'
 
 
 @app.get("/asset/<kind>/<file>")
@@ -142,7 +159,7 @@ def download_bilingual(uid: str) -> bottle.HTTPResponse:
         log.warning("File cache expired, or inexistant: %s", uid)
         raise bottle.HTTPError(status=410) from None
 
-    folder = constants.PURCHASE_FILES / order_id if order_type == "purchase" else constants.FILES / lang_src / lang_dst
+    folder = constants.FILES / lang_src / lang_dst
 
     if not (folder / file_name).is_file():
         log.critical("A file is missing in the %s-%s dictionary: %s", lang_src, lang_dst, file_name)
@@ -161,7 +178,7 @@ def download_bilingual(uid: str) -> bottle.HTTPResponse:
 @bottle_file_cache.cache()
 def downloads_monolingual(lang: str) -> str:
     try:
-        dictionary = utils.load_dictionaries()[lang][lang]
+        dictionary = utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_DOWNLOAD)[lang][lang]
     except KeyError:
         log.error(  # noqa: TRY400
             "[/download monolingual] The dictionary %s-%s does not exist, or is disabled", lang, lang
@@ -169,25 +186,14 @@ def downloads_monolingual(lang: str) -> str:
         raise bottle.HTTPError(status=404) from None
 
     links = utils.craft_downloads_url(dictionary)
-    description = utils.tr("download-page-title-monolingual", utils.tr(lang))
-    description_full = utils.tr("download-page-description-monolingual", utils.tr(lang))
+    last_updated = utils.get_last_modification_time(dictionary)
     return render(
         "download",
         dictionary=dictionary,
-        description=description,
-        description_full=description_full,
-        kind="monolingual",
+        last_updated=last_updated,
         links=links,
-        name=utils.tr("hello"),
-        title=description,
+        title=f"{utils.language(lang)} monolingual dictionary",
     )
-
-
-@app.get(f"/<locale:re:{LOCALES}>/download/<lang_src>/<lang_dst>/<subscription_id>")
-def downloads_bilingual_old(locale: str, lang_src: str, lang_dst: str, subscription_id: str) -> str:  # noqa: ARG001
-    """Old URL, shared to customers before 2025-05-16."""
-    bottle.request.params["order"] = subscription_id
-    return downloads_bilingual(lang_src, lang_dst)
 
 
 @app.get("/download/<lang_src>/<lang_dst>")
@@ -205,7 +211,7 @@ def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
         log.error("[/download order ID=%r] No order with that ID", order_id)
         raise bottle.HTTPError(status=404) from None
 
-    if not (dictionary := utils.get_dictionary_metadata(order, lang_src, lang_dst)):
+    if not (dictionary := utils.get_dictionary_metadata(lang_src, lang_dst)):
         log.error(
             "[/download order ID=%r] The dictionary %s-%s does not exist, or is disabled",
             order.id,
@@ -236,56 +242,80 @@ def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
         raise bottle.HTTPError(status=403) from None
 
     links = utils.craft_downloads_url(dictionary, order_type=order.type, order_id=order.id)
-    kind = "universal" if lang_src == "all" else "bilingual"
-    localized_dst = utils.tr(lang_dst)
-    localized_src = utils.tr(lang_src)
-    description = utils.tr(f"download-page-title-{kind}", localized_src, localized_dst)
-    description_full = utils.tr(f"download-page-description-{kind}", localized_src, localized_dst)
+    localized_dst = utils.language(lang_dst)
+    localized_src = utils.language(lang_src)
+    title = (
+        f"{localized_src} {localized_dst} dictionary"
+        if lang_src == "all"
+        else f"{localized_src} - {localized_dst} bilingual dictionary"
+    )
+    last_updated = utils.get_last_modification_time(dictionary)
     return render(
         "download",
-        description=description,
-        description_full=description_full,
         dictionary=dictionary,
-        kind="bilingual",
+        last_updated=last_updated,
         links=links,
-        name=bottle.html_escape(order.user),
-        order=order,
-        title=description,
+        title=title,
     )
 
 
+@app.get("/enjoy")
+@bottle_file_cache.cache()
+def enjoy() -> str:
+    return render("enjoy")
+
+
 @app.get("/hall-of-fame")
+@bottle_file_cache.cache()
 def hall_of_fame() -> str:
-    return render("hall-of-fame", title="🏆")
+    return render("hall-of-fame", title="Hall of Fame")
 
 
 @app.get("/")
 @bottle_file_cache.cache()
 def home() -> str:
-    return render("home", dictionaries=utils.load_dictionaries(), title="📚")
+    return render(
+        "home",
+        dictionaries=utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL),
+        reviews=utils.create_dictionary_links(utils.random_reviews(2)),
+    )
+
+
+@app.get("/list")
+@bottle_file_cache.cache()
+def list_all() -> str:
+    return render(
+        "list",
+        dictionaries=utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL),
+    )
 
 
 @app.get("/ads.txt")
+@bottle_file_cache.cache()
 def ads() -> bottle.HTTPResponse:
     return bottle.static_file("ads.txt", root=constants.ASSET)
 
 
 @app.get("/humans.txt")
+@bottle_file_cache.cache()
 def humans() -> bottle.HTTPResponse:
     return bottle.static_file("humans.txt", root=constants.ASSET)
 
 
 @app.get("/robots.txt")
+@bottle_file_cache.cache()
 def robots() -> bottle.HTTPResponse:
     return bottle.static_file("robots.txt", root=constants.ASSET)
 
 
 @app.get("/.well-known/security.txt")
+@bottle_file_cache.cache()
 def security() -> bottle.HTTPResponse:
     return bottle.static_file("security.txt", root=constants.ASSET)
 
 
 @app.get("/sitemap.xml")
+@bottle_file_cache.cache()
 def sitemap() -> bottle.HTTPResponse:
     return bottle.static_file("sitemap.xml", root=constants.ASSET)
 
@@ -302,7 +332,7 @@ def main() -> None:  # pragma: nocover
 
 
 #
-# Old URL (before 2025-07-xx)
+# Old URL (before 2025-09-06)
 #
 
 
@@ -322,8 +352,9 @@ def downloads_monolingual_localized(locale: str, lang: str) -> None:  # noqa: AR
 
 
 @app.get(f"/<locale:re:{LOCALES}>/download/<lang_src>/<lang_dst>")
-def downloads_bilingual_localized(_: str, lang_src: str, lang_dst: str) -> None:  # pragma: nocover
-    bottle.redirect(f"/download/{lang_src}/{lang_dst}")  # pragma: nocover
+def downloads_bilingual_localized(locale: str, lang_src: str, lang_dst: str) -> None:  # noqa: ARG001  # pragma: nocover
+    params = "&".join(f"{k}={v}" for k, v in bottle.request.params.items())
+    bottle.redirect(f"/download/{lang_src}/{lang_dst}?{params}")  # pragma: nocover
 
 
 @app.get(f"/<locale:re:{LOCALES}>/faq")
@@ -335,3 +366,16 @@ def faq_localized(locale: str) -> None:  # noqa: ARG001  # pragma: nocover
 @app.get(f"/<locale:re:{LOCALES}>/")
 def home_localized(locale: str) -> None:  # noqa: ARG001  # pragma: nocover
     bottle.redirect("/")
+
+
+#
+# Old URL (before 2025-05-16)
+#
+
+
+@app.get(f"/<locale:re:{LOCALES}>/download/<lang_src>/<lang_dst>/<order_id>")
+def downloads_bilingual_old(locale: str, lang_src: str, lang_dst: str, order_id: str) -> None:  # noqa: ARG001
+    """Old URL, shared to customers before 2025-05-16."""
+    bottle.request.params["order"] = order_id
+    params = "&".join(f"{k}={v}" for k, v in bottle.request.params.items())
+    bottle.redirect(f"/download/{lang_src}/{lang_dst}?{params}")  # pragma: nocover

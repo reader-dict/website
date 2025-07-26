@@ -1,7 +1,6 @@
 import json
 from collections.abc import Generator
 from copy import deepcopy
-from unittest.mock import patch
 
 import bottle
 import bottle_file_cache
@@ -9,9 +8,18 @@ import pytest
 import responses
 from webtest import TestApp
 
-from src import constants, paypal, server, utils
+from src import constants, server, utils
 
-from .payloads import PAYPAL_CERT_URL, PURCHASE_ID, SUBSCRIPTION_DATA, SUBSCRIPTION_ID
+from .payloads import (
+    ORDER_P,
+    ORDER_S,
+    PAYPAL_WEBHOOK_HEADERS,
+    PAYPAL_WEBHOOK_PAYLOAD,
+    PURCHASE_ID,
+    STRIPE_WEBHOOK_HEADERS,
+    STRIPE_WEBHOOK_PAYLOAD,
+    SUBSCRIPTION_ID,
+)
 
 CHECKPOINT_BAD = "0" * 64
 
@@ -32,7 +40,7 @@ def test_client_ip() -> None:
 def test_api_dictionary_get(app: TestApp) -> None:
     for should_be_cached in [False, True]:
         response = app.get(constants.ROUTE_API_DICT)
-        assert json.loads(response.body) == utils.load_dictionaries()
+        assert json.loads(response.body) == utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL)
         if should_be_cached:
             assert bottle_file_cache.CONFIG.header_name in response.headers
         else:
@@ -40,124 +48,56 @@ def test_api_dictionary_get(app: TestApp) -> None:
 
 
 @responses.activate()
-def test_api_order_purchase(app: TestApp, mock_responses: Generator) -> None:
-    event = {"id": PURCHASE_ID, "payer": {}}
-    response = app.post_json(constants.ROUTE_API_ORDER, event)
-    assert '"status": "ok"' in response
+def test_api_webhook_paypal(app: TestApp, mock_responses: Generator, caplog: pytest.LogCaptureFixture) -> None:
+    app.post(constants.ROUTE_API_WEBHOOK_PAYPAL, PAYPAL_WEBHOOK_PAYLOAD, headers=PAYPAL_WEBHOOK_HEADERS, status=200)
+    assert (
+        "Webhook order handled"
+        in [record.getMessage().split("\n", 1)[0] for record in caplog.records if record.levelname == "INFO"][-1]
+    )
 
-
-@responses.activate()
-def test_api_order_subscription(app: TestApp, mock_responses: Generator) -> None:
-    event = {
-        "orderID": "order-id",
-        "subscriptionID": SUBSCRIPTION_ID,
-        "facilitatorAccessToken": "some-token",
-        "paymentSource": "paypal",
-    }
-    response = app.post_json(constants.ROUTE_API_ORDER, event)
-    assert '"status": "ok"' in response
-
-
-@responses.activate()
-def test_api_webhook_paypal(app: TestApp, mock_responses: Generator) -> None:
-    headers = {
-        "Paypal-Transmission-Time": "2025-04-05T20:32:44Z",
-        "Paypal-Cert-Url": PAYPAL_CERT_URL,
-        "Paypal-Transmission-Sig": "Dss1lP9Y8D+ZXQ5VIbW/91wykhEpH06KUSEOmIGceJlSd33AE1nBT/UiNxz/i4/6EP31a7Sx44CjLOQtkJ+LYWK5aA4YkVu/e+CZ/nMLB1FW6lJXEflt0DGRusNaBDpq7WrfCHNiScquRMh3E4eUODfTSowvsiPf2UWkfbk0e/ELMky8YaFTS6gIhUdaRh1U8lUbv+IXi7v5pSGQOTtmrHR28fvPc+D8fSsl0tBfakpRPUNskNmRwJYYngQ0NzAO7cNAzCf3Es5yEAiJW9FgjawHmOkeoWSjWIXH7SKO7q1tqCRCE/+iu3jtK3q+wmq6iVq1luglzndgqNKTw+DwaQ==",  # noqa: E501
-        "Paypal-Transmission-Id": "212a639d-125d-11f0-8798-c5d6de2737a0",
-    }
-    payload = json.dumps(
-        {
-            "id": "WH-1F78928319310462G-18R51787X87914712",
-            "event_version": "1.0",
-            "create_time": "2025-04-05T20:32:40.508Z",
-            "resource_type": "sale",
-            "event_type": "PAYMENT.SALE.PENDING",
-            "summary": "Payment pending for € 10.0 EUR",
-            "resource": {
-                "id": "10H81276XF6353701",
-                "state": "completed",
-                "amount": {"total": "10.00", "currency": "EUR", "details": {"subtotal": "10.00"}},
-                "payment_mode": "INSTANT_TRANSFER",
-                "protection_eligibility": "ELIGIBLE",
-                "protection_eligibility_type": "ITEM_NOT_RECEIVED_ELIGIBLE,UNAUTHORIZED_PAYMENT_ELIGIBLE",
-                "payment_hold_status": "HELD",
-                "payment_hold_reasons": ["PAYMENT_HOLD"],
-                "transaction_fee": {"value": "0.64", "currency": "EUR"},
-                "invoice_number": "",
-                "billing_agreement_id": "I-YSW93404E5CF",
-                "create_time": "2025-04-05T20:32:35Z",
-                "update_time": "2025-04-05T20:32:35Z",
-                "links": [
-                    {
-                        "href": "https://api.paypal.com/v1/payments/sale/10H81276XF6353701",
-                        "rel": "self",
-                        "method": "GET",
-                    },
-                    {
-                        "href": "https://api.paypal.com/v1/payments/sale/10H81276XF6353701/refund",
-                        "rel": "refund",
-                        "method": "POST",
-                    },
-                ],
-                "soft_descriptor": "PAYPAL *READERDICT",
-            },
-            "links": [
-                {
-                    "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1F78928319310462G-18R51787X87914712",
-                    "rel": "self",
-                    "method": "GET",
-                },
-                {
-                    "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1F78928319310462G-18R51787X87914712/resend",
-                    "rel": "resend",
-                    "method": "POST",
-                },
-            ],
-        },
-        separators=(",", ":"),
-        ensure_ascii=False,
-    ).encode()
-
-    with patch.object(constants, "PAYPAL_WEBHOOK_ID", "40L71081MK3756722"):
-        app.post(constants.ROUTE_API_WEBHOOK_PAYPAL, payload, headers=headers, status=500, expect_errors=True)
-
-
-@responses.activate()
-def test_api_webhook_paypal_verification_error(
-    caplog: pytest.LogCaptureFixture, app: TestApp, mock_responses: Generator
-) -> None:
-    headers = {
-        "Paypal-Transmission-Time": "2025-04-05T20:32:44Z",
-        "Paypal-Cert-Url": PAYPAL_CERT_URL,
-        "Paypal-Transmission-Sig": "Dss1lP9Y8D+ZXQ5VIbW/91wykhEpH06KUSEOmIGceJlSd33AE1nBT/UiNxz/i4/6EP31a7Sx44CjLOQtkJ+LYWK5aA4YkVu/e+CZ/nMLB1FW6lJXEflt0DGRusNaBDpq7WrfCHNiScquRMh3E4eUODfTSowvsiPf2UWkfbk0e/ELMky8YaFTS6gIhUdaRh1U8lUbv+IXi7v5pSGQOTtmrHR28fvPc+D8fSsl0tBfakpRPUNskNmRwJYYngQ0NzAO7cNAzCf3Es5yEAiJW9FgjawHmOkeoWSjWIXH7SKO7q1tqCRCE/+iu3jtK3q+wmq6iVq1luglzndgqNKTw+DwaQ==",  # noqa: E501
-        "Paypal-Transmission-Id": "212a639d-125d-11f0-8798-c5d6de2737a0",
-    }
-    payload = json.dumps(
-        {
-            "id": "WH-1F78928319310462G-18R51787X87914712",
-            "event_version": "1.0",
-            "create_time": "2025-04-05T20:32:40.508Z",
-            "resource_type": "sale",
-            "event_type": "PAYMENT.SALE.PENDING",
-            "summary": "Payment pending for € 10.0 EUR",
-        },
-        separators=(",", ":"),
-        ensure_ascii=False,
-    ).encode()
-
-    response = app.post(constants.ROUTE_API_WEBHOOK_PAYPAL, payload, headers=headers)
-    assert response.status_code == 200
-
+    caplog.clear()
+    app.post(
+        constants.ROUTE_API_WEBHOOK_PAYPAL,
+        PAYPAL_WEBHOOK_PAYLOAD + b"more data",
+        headers=PAYPAL_WEBHOOK_HEADERS,
+        status=200,
+    )
     assert [record.getMessage().split("\n", 1)[0] for record in caplog.records if record.levelname == "ERROR"] == [
-        "PayPal webhook signature failed",
+        "[paypal] Webhook signature failed",
     ]
+
+
+@responses.activate()
+def test_api_webhook_stripe(app: TestApp, mock_responses: Generator, caplog: pytest.LogCaptureFixture) -> None:
+    app.post(constants.ROUTE_API_WEBHOOK_STRIPE, STRIPE_WEBHOOK_PAYLOAD, headers=STRIPE_WEBHOOK_HEADERS, status=200)
+    assert (
+        "Webhook order handled"
+        in [record.getMessage().split("\n", 1)[0] for record in caplog.records if record.levelname == "INFO"][-1]
+    )
+
+    caplog.clear()
+    app.post(
+        constants.ROUTE_API_WEBHOOK_STRIPE,
+        STRIPE_WEBHOOK_PAYLOAD + b"more data",
+        headers=STRIPE_WEBHOOK_HEADERS,
+        status=200,
+    )
+    assert [record.getMessage().split("\n", 1)[0] for record in caplog.records if record.levelname == "ERROR"] == [
+        "[stripe] Webhook signature failed",
+    ]
+
+
+def test_api_pre_order(app: TestApp, caplog: pytest.LogCaptureFixture) -> None:
+    app.get(constants.ROUTE_API_PRE_ORDER, params={"client_reference_id": "cri-a-b"}, status=200)
+
+    msg = "[/pre-order] Client reference ID 'cri-a-b' from IP 'unknown'"
+    assert [record.getMessage() for record in caplog.records if record.levelname == "INFO"][-1] == msg
 
 
 @pytest.mark.parametrize(
     ("kind", "file"),
     [
-        ("font", "Lora-Regular.woff2"),
+        ("font", "InterVariable.woff2"),
         ("img", "favicon.svg"),
         ("style", "home.css"),
         ("script", "home.js"),
@@ -187,11 +127,12 @@ def test_asset_not_found(kind: str, file: str, app: TestApp) -> None:
         "403 Forbidden",
         "404 Not Found",
         "410 Gone",
+        "999 Unknown",
     ],
 )
 def test_custom_error(status: str) -> None:
     error = bottle.HTTPError(status)
-    assert "I am sorry" in server.custom_error(error)
+    assert "Whoopsy" in server.custom_error(error)
 
 
 @responses.activate()
@@ -225,7 +166,7 @@ def test_downloads_bilingual_invalid_checkpoint(app: TestApp, caplog: pytest.Log
 def test_downloads_bilingual_unknown_dictionary(
     app: TestApp, caplog: pytest.LogCaptureFixture, mock_responses: Generator
 ) -> None:
-    assert '"status": "ok"' in paypal.register_order("subscription", SUBSCRIPTION_ID)
+    utils.store_order(ORDER_S)
     app.get(
         "/download/zz/fr",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
@@ -250,7 +191,10 @@ def test_downloads_bilingual_no_order_found(app: TestApp, caplog: pytest.LogCapt
 def test_downloads_bilingual_checkpoints_mismatch(
     app: TestApp, caplog: pytest.LogCaptureFixture, mock_responses: Generator
 ) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
     app.get("/download/eo/fr", params={"checkpoint": CHECKPOINT_BAD, "order": SUBSCRIPTION_ID}, status=403)
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
@@ -260,13 +204,11 @@ def test_downloads_bilingual_checkpoints_mismatch(
 
 @responses.activate()
 def test_downloads_bilingual_subscription_status_not_ok(app: TestApp, caplog: pytest.LogCaptureFixture) -> None:
-    data = deepcopy(SUBSCRIPTION_DATA)
-    data["status"] = "CANCELLED"
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
+    order.status = "cancelled"
+    utils.store_order(order)
 
-    responses.post(constants.PAYPAL_URL_TOKEN, json={"access_token": "token"})
-    responses.get(constants.PAYPAL_URL_SUBSCRIPTIONS.format(SUBSCRIPTION_ID), json=data)
-
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
     app.get(
         "/download/eo/fr",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
@@ -284,7 +226,8 @@ def test_downloads_bilingual_dictionaries_inexistant(
     caplog: pytest.LogCaptureFixture,
     mock_responses: Generator,
 ) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
+    utils.store_order(ORDER_S)
+
     app.get(
         "/download/all/fr",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
@@ -302,7 +245,10 @@ def test_downloads_bilingual_dictionaries_mismatch(
     caplog: pytest.LogCaptureFixture,
     mock_responses: Generator,
 ) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
     app.get(
         "/download/eo/eo",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
@@ -316,9 +262,10 @@ def test_downloads_bilingual_dictionaries_mismatch(
 
 @responses.activate()
 def test_downloads_bilingual_purchase_dictionary(app: TestApp, mock_responses: Generator) -> None:
-    paypal.register_order("purchase", PURCHASE_ID)
+    utils.store_order(ORDER_P)
+
     response = app.get("/download/eo/fr", params={"checkpoint": checkpoint_good(PURCHASE_ID), "order": PURCHASE_ID})
-    assert "here are your files" in response
+    assert "Your dictionary is ready" in response
 
 
 @responses.activate()
@@ -327,15 +274,13 @@ def test_downloads_bilingual_purchase_dictionary_override(
     caplog: pytest.LogCaptureFixture,
     mock_responses: Generator,
 ) -> None:
-    paypal.register_order("purchase", PURCHASE_ID)
-
-    order = utils.get_order(PURCHASE_ID)
-    assert order
+    order = deepcopy(ORDER_P)
+    order.dictionary = "eo-fr"
     order.dictionary_override = "eo-eo"
     utils.store_order(order)
 
     response = app.get("/download/eo/eo", params={"checkpoint": checkpoint_good(PURCHASE_ID), "order": PURCHASE_ID})
-    assert "here are your files" in response
+    assert "Your dictionary is ready" in response
     assert (
         next(
             record.getMessage()
@@ -348,12 +293,15 @@ def test_downloads_bilingual_purchase_dictionary_override(
 
 @responses.activate()
 def test_downloads_bilingual_subscription(app: TestApp, mock_responses: Generator) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
     response = app.get(
         "/download/eo/fr",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
     )
-    assert "here are your files" in response
+    assert "Your dictionary is ready" in response
 
 
 @responses.activate()
@@ -362,10 +310,8 @@ def test_downloads_bilingual_subscription_dictionary_override(
     caplog: pytest.LogCaptureFixture,
     mock_responses: Generator,
 ) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
-
-    order = utils.get_order(SUBSCRIPTION_ID)
-    assert order
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
     order.dictionary_override = "eo-eo"
     utils.store_order(order)
 
@@ -374,7 +320,7 @@ def test_downloads_bilingual_subscription_dictionary_override(
             "/download/eo/eo",
             params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
         )
-        assert "here are your files" in response
+        assert "Your dictionary is ready" in response
         if should_be_cached:
             assert bottle_file_cache.CONFIG.header_name in response.headers
         else:
@@ -391,13 +337,6 @@ def test_downloads_bilingual_subscription_dictionary_override(
 
 
 @responses.activate()
-def test_downloads_bilingual_old(app: TestApp, mock_responses: Generator) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
-    response = app.get(f"/en/download/eo/fr/{SUBSCRIPTION_ID}", params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID)})
-    assert "here are your files" in response
-
-
-@responses.activate()
 def test_downloads_monolingual_unknown_dictionary(app: TestApp, caplog: pytest.LogCaptureFixture) -> None:
     app.get("/download/zz", status=404)
     assert (
@@ -409,7 +348,7 @@ def test_downloads_monolingual_unknown_dictionary(app: TestApp, caplog: pytest.L
 def test_downloads_monolingual(app: TestApp) -> None:
     for should_be_cached in [False, True]:
         response = app.get("/download/eo")
-        assert "here are your files" in response
+        assert "Your dictionary is ready" in response
         if should_be_cached:
             assert bottle_file_cache.CONFIG.header_name in response.headers
         else:
@@ -418,7 +357,10 @@ def test_downloads_monolingual(app: TestApp) -> None:
 
 @responses.activate()
 def test_file_download_bilingual_purchase(app: TestApp, mock_responses: Generator) -> None:
-    paypal.register_order("purchase", PURCHASE_ID)
+    order = deepcopy(ORDER_P)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
     links = utils.craft_downloads_url(
         utils.load_dictionaries()["eo"]["fr"],
         order_type="purchase",
@@ -431,7 +373,10 @@ def test_file_download_bilingual_purchase(app: TestApp, mock_responses: Generato
 
 @responses.activate()
 def test_file_download_bilingual_subscription(app: TestApp, mock_responses: Generator) -> None:
-    paypal.register_order("subscription", SUBSCRIPTION_ID)
+    order = deepcopy(ORDER_S)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
     links = utils.craft_downloads_url(
         utils.load_dictionaries()["eo"]["fr"],
         order_type="subscription",
@@ -478,6 +423,16 @@ def test_home(app: TestApp) -> None:
             assert bottle_file_cache.CONFIG.header_name not in response.headers
 
 
+def test_list_all(app: TestApp) -> None:
+    response = app.get("/list")
+    assert "The dictionaries list" in response
+
+
+def test_enjoy(app: TestApp) -> None:
+    response = app.get("/enjoy")
+    assert "You are awesome!" in response
+
+
 def test_ads(app: TestApp) -> None:
     response = app.get("/ads.txt")
     content = response.body
@@ -508,4 +463,76 @@ def test_security(app: TestApp) -> None:
 def test_sitemap(app: TestApp) -> None:
     response = app.get("/sitemap.xml")
     urls_count = response.body.count(b"<url>")
-    assert urls_count == 15
+    assert urls_count == len(server.SUPPORTED_LOCALES) + 2
+
+
+#
+# Obsolete, to remove when relevant orders will be ended.
+#
+
+#
+# Old URL (before 2025-09-06)
+#
+
+
+@responses.activate()
+def test_download_monolingual_localized(app: TestApp) -> None:
+    response = app.get("/en/file/eo/dicthtml-eo-eo.zip", status=302)
+    assert response.headers["Location"].endswith("/file/eo/dicthtml-eo-eo.zip")
+
+
+@responses.activate()
+def test_download_bilingual_localized(app: TestApp) -> None:
+    order = deepcopy(ORDER_P)
+    order.dictionary = "eo-fr"
+    utils.store_order(order)
+
+    links = utils.craft_downloads_url(
+        utils.load_dictionaries()["eo"]["fr"],
+        order_type="purchase",
+        order_id=PURCHASE_ID,
+    )
+    response = app.get(f"/en/file/{links['kobo'][3]}", status=302)
+    assert response.headers["Location"].endswith(f"/file/{links['kobo'][3]}")
+
+
+@responses.activate()
+def test_downloads_monolingual_localized(app: TestApp) -> None:
+    response = app.get("/en/download/eo", status=302)
+    assert response.headers["Location"].endswith("/download/eo")
+
+
+@responses.activate()
+def test_downloads_bilingual_localized(app: TestApp) -> None:
+    utils.store_order(ORDER_P)
+    checkpoint = checkpoint_good(PURCHASE_ID)
+
+    response = app.get("/en/download/eo/fr", params={"checkpoint": checkpoint, "order": PURCHASE_ID}, status=302)
+    assert response.headers["Location"].endswith(f"/download/eo/fr?checkpoint={checkpoint}&order={PURCHASE_ID}")
+
+
+@responses.activate()
+def test_faq_localized(app: TestApp) -> None:
+    response = app.get("/en/faq", status=302)
+    assert response.headers["Location"].endswith("/")
+
+
+@responses.activate()
+def test_home_localized(app: TestApp) -> None:
+    response = app.get("/en/", status=302)
+    assert response.headers["Location"].endswith("/")
+
+
+#
+# Old URL (before 2025-05-16)
+#
+
+
+@responses.activate()
+def test_downloads_bilingual_old(app: TestApp, mock_responses: Generator) -> None:
+    """Old URL (before 2025-05-16)."""
+    utils.store_order(ORDER_P)
+    checkpoint = checkpoint_good(PURCHASE_ID)
+
+    response = app.get(f"/en/download/eo/fr/{PURCHASE_ID}", params={"checkpoint": checkpoint}, status=302)
+    assert response.headers["Location"].endswith(f"download/eo/fr?checkpoint={checkpoint}&order={PURCHASE_ID}")

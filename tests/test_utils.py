@@ -1,4 +1,3 @@
-import email
 import imaplib
 import json
 import smtplib
@@ -11,64 +10,6 @@ from src import constants, utils
 from src.models import Order
 
 from .payloads import PLAN_ID
-
-
-@pytest.mark.parametrize(
-    ("words", "price"),
-    [
-        (0, 0.0),
-        (1, 0.99),
-        (499, 0.99),
-        (500, 1.49),
-        (999, 1.49),
-        (1_000, 2.49),
-        (9_999, 2.49),
-        (10_000, 3.49),
-        (99_999, 3.49),
-        (100_000, 4.49),
-        (999_999, 4.49),
-        (1_000_000, 5.49),
-        (1_999_999, 5.49),
-        (2_000_000, 6.49),
-        (2_999_999, 6.49),
-        (3_000_000, 7.49),
-        (3_999_999, 7.49),
-        (4_000_000, 8.49),
-        (4_999_999, 8.49),
-        (5_000_000, 9.49),
-    ],
-)
-def test_best_price(words: int, price: float) -> None:
-    assert utils.best_price({"words": words}) == price
-
-
-@pytest.mark.parametrize(
-    ("words", "price"),
-    [
-        (0, 0.0),
-        (1, 1.99),
-        (499, 1.99),
-        (500, 3.49),
-        (999, 3.49),
-        (1_000, 5.49),
-        (9_999, 5.49),
-        (10_000, 7.49),
-        (99_999, 7.49),
-        (100_000, 9.49),
-        (999_999, 9.49),
-        (1_000_000, 11.49),
-        (1_999_999, 11.49),
-        (2_000_000, 13.49),
-        (2_999_999, 13.49),
-        (3_000_000, 15.49),
-        (3_999_999, 15.49),
-        (4_000_000, 17.49),
-        (4_999_999, 17.49),
-        (5_000_000, 19.49),
-    ],
-)
-def test_best_price_for_purchase(words: int, price: float) -> None:
-    assert utils.best_price_for_purchase({"words": words}) == price
 
 
 def test_craft_tmp_downloads_url() -> None:
@@ -110,23 +51,8 @@ def test_get_dictionary_from_key_unknown() -> None:
     assert not utils.get_dictionary_from_key("plan_id", "unknown")
 
 
-def test_get_dictionary_metadata_purchase() -> None:
-    file = constants.PURCHASE_FILES / "order-id" / "metadata.json"
-    file.parent.mkdir(parents=True)
-    file.write_text(json.dumps({"dictionary": "eo-fr"}))
-    assert utils.get_dictionary_metadata(Order("order-id", dictionary="eo-fr"), "eo", "fr")
-
-
-def test_get_dictionary_metadata_purchase_inexistant() -> None:
-    assert not utils.get_dictionary_metadata(Order("order-id", dictionary="eo-fr"), "eo", "fr")
-
-
-def test_get_dictionary_metadata_subscription() -> None:
-    assert utils.get_dictionary_metadata(Order("order-id", plan_id="plan-id"), "eo", "fr")
-
-
-def test_get_dictionary_metadata_subscription_inexistant() -> None:
-    assert not utils.get_dictionary_metadata(Order("order-id", plan_id="plan-id"), "all", "fr")
+def test_get_dictionary_metadata() -> None:
+    assert utils.get_dictionary_metadata("eo", "fr")
 
 
 @pytest.mark.parametrize(
@@ -202,7 +128,7 @@ def test_load_dictionaries() -> None:
 
     assert len(data) == 1
     for details in data["fr"].values():
-        assert sorted(details.keys()) == constants.DICTIONARY_KEYS
+        assert sorted(details.keys()) == sorted(constants.DICTIONARY_KEYS_ALL)
 
 
 def test_load_orders() -> None:
@@ -210,14 +136,6 @@ def test_load_orders() -> None:
     assert not utils.load_orders()
     utils.store_order(order)
     assert utils.load_orders() == {"some-id": order}
-
-
-def test_persist_data_already_done(caplog: pytest.LogCaptureFixture) -> None:
-    order = Order("order-id", dictionary="eo-fr")
-    assert utils.persist_data(order)
-    caplog.clear()
-    assert not utils.persist_data(order)
-    assert [record.getMessage() for record in caplog.records] == ["Files already persisted"]
 
 
 def test_send_email_no_address(caplog: pytest.LogCaptureFixture) -> None:
@@ -247,9 +165,6 @@ def test_send_email_no_smtp_password(caplog: pytest.LogCaptureFixture) -> None:
         mocked_s.assert_not_called()
         mocked_i.assert_not_called()
 
-    # Check the email sent
-    assert (constants.EMAILS / f"{order.id}.msg").is_file()
-
     assert [record.getMessage() for record in caplog.records] == [
         "[email order ID='some-id'] No SMTP password defined! Email saved but not sent.",
     ]
@@ -274,9 +189,6 @@ def test_send_email_smtp_error(caplog: pytest.LogCaptureFixture) -> None:
         assert not utils.send_email(order)
         mocked_s.assert_called_once()
         mocked_i.assert_called_once()
-
-    # Check the email sent
-    assert (constants.EMAILS / f"{order.id}.msg").is_file()
 
     assert [record.getMessage().split("\n", 1)[0] for record in caplog.records] == [
         "[email order ID='some-id'] Could not send the email to Alice at alice@example.org!",
@@ -304,9 +216,6 @@ def test_send_email_imap_error(caplog: pytest.LogCaptureFixture) -> None:
         mocked_s.assert_called_once()
         mocked_i.assert_called_once()
 
-    # Check the email sent
-    assert (constants.EMAILS / f"{order.id}.msg").is_file()
-
     assert [record.getMessage().split("\n", 1)[0] for record in caplog.records] == [
         "[email order ID='some-id'] Email sent to Alice at alice@example.org",
         "[email order ID='some-id'] Could not keep a copy of the email sent to Alice at alice@example.org!",
@@ -332,12 +241,6 @@ def test_send_email(caplog: pytest.LogCaptureFixture) -> None:
         assert utils.send_email(order)
         mocked_s.assert_called_once()
         mocked_i.assert_called_once()
-
-    # Check the email sent
-    msg = email.message_from_bytes((constants.EMAILS / f"{order.id}.msg").read_bytes())
-    assert msg.is_multipart()
-    content = str(msg).replace("=\n", "").replace("=3D", "=")
-    assert f"https://www.{constants.WWW}/download/eo/fr?order={order.id}&checkpoint=" in content
 
     assert [record.getMessage() for record in caplog.records] == [
         "[email order ID='some-id'] Email sent to Alice at alice@example.org",
@@ -368,10 +271,9 @@ def test_store_order_updated() -> None:
     assert first_order.user == "Alice"
 
 
-def test_tr() -> None:
-    assert utils.tr("header-slogan")
+def test_language() -> None:
+    assert utils.language("all") == "Universal"
 
 
-def test_tr_args() -> None:
-    with patch.dict("src.translations.translations", {"hello": "Hello, {0}!"}):
-        assert utils.tr("hello", "Alice") == "Hello, Alice!"
+def test_language_missing() -> None:
+    assert utils.language("unknown") == "unknown"

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -12,24 +13,19 @@ from . import payloads
 def isolate(tmp_path: Path) -> None:
     constants.ROOT = tmp_path
     constants.DATA = constants.ROOT / constants.DATA.name
+    constants.DICTIONARIES = constants.DATA / constants.DICTIONARIES.name
+    constants.REVIEWS = constants.DATA / constants.REVIEWS.name
     constants.FILES = constants.ROOT / constants.FILES.name
     constants.FILES_CACHE = constants.ROOT / constants.FILES_CACHE.name
     constants.CERTS = constants.FILES / constants.CERTS.name
-    constants.EMAILS = constants.DATA / constants.EMAILS.name
     constants.LOGS = constants.ROOT / constants.LOGS.name
     constants.METRICS = constants.DATA / constants.METRICS.name
     constants.ORDERS = constants.DATA / constants.ORDERS.name
-    constants.PURCHASE_FILES = constants.FILES / constants.PURCHASE_FILES.name
-    constants.DICTIONARIES = constants.DATA / constants.DICTIONARIES.name
 
     constants.DATA.mkdir()
     constants.FILES.mkdir()
     constants.CERTS.mkdir()
     constants.FILES_CACHE.mkdir()
-    constants.EMAILS.mkdir()
-
-    constants.SMTP_PASSWORD = ""
-    constants.PEPPER = "Red Hot Chili Peppers"
 
     utils.save_dictionaries(
         {
@@ -59,8 +55,32 @@ def isolate(tmp_path: Path) -> None:
     for lang_dst in ("eo", "fr"):
         folder = constants.FILES / "eo" / lang_dst
         folder.mkdir(parents=True)
+        (folder / f"dict-eo-{lang_dst}.zip").write_bytes(b"AwEsOmE DiCt!")
         (folder / f"dicthtml-eo-{lang_dst}.zip").write_bytes(b"AwEsOmE DiCt!")
         (folder / f"dicthtml-eo-{lang_dst}.zip.sha256").write_bytes(b"ok")
+
+    constants.REVIEWS.write_text(
+        json.dumps(
+            [
+                {
+                    "date": "2025-09-06",
+                    "stars": 5,
+                    "review": "Review text",
+                    "reader": "Alice B.",
+                    "device": "Kobo user",
+                    "dictionaries": ["EO-FR"],
+                },
+                {
+                    "date": "2025-09-07",
+                    "stars": 4.9,
+                    "review": "Review text 2",
+                    "reader": "Bob C.",
+                    "device": "Kindle user",
+                    "dictionaries": ["EO-EO"],
+                },
+            ]
+        )
+    )
 
 
 @pytest.fixture
@@ -68,6 +88,9 @@ def mock_responses() -> None:
     responses.post(constants.GITHUB_API_TRACKER, json=payloads.GITHUB_ISSUE)
     responses.post(constants.PAYPAL_URL_TOKEN, json={"access_token": "token"})
     responses.get(payloads.PAYPAL_CERT_URL, body=payloads.PAYPAL_CERT)
-    responses.post(constants.PAYPAL_URL_PLAN, json={"id": "new-plan-id"})
     responses.get(constants.PAYPAL_URL_PURCHASES.format(payloads.PURCHASE_ID), json=payloads.PURCHASE_DATA)
     responses.get(constants.PAYPAL_URL_SUBSCRIPTIONS.format(payloads.SUBSCRIPTION_ID), json=payloads.SUBSCRIPTION_DATA)
+    responses.get(
+        constants.STRIPE_URL_CHECKOUT_SESSION.format(payloads.STRIPE_CHECKOUT_SESSION_ID),
+        json=payloads.STRIPE_CHECKOUT_SESSION_DATA,
+    )

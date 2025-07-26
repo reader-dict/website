@@ -1,5 +1,5 @@
 Contact: mailto:security@reader-dict.com
 Expires: 2030-12-31T23:59:59.999Z
 Acknowledgments: https://www.reader-dict.com/hall-of-fame
-Preferred-Languages: fr,en
+Preferred-Languages: en,fr
 Canonical: https://www.reader-dict.com/.well-known/security.txt

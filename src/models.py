@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 Dictionary = dict[str, bool | float | int | str]
 Dictionaries = dict[str, dict[str, Dictionary]]
 Link = tuple[str, str, str, str, str]
+Reviews = list[dict[str, str]]
 
 
 def make_ulid() -> str:
@@ -38,10 +39,6 @@ class Order:
     @cached_property
     def checkpoint(self) -> str:
         """Generate a *checkpoint* token to validate acces to dictionary downloads."""
-        if not constants.PEPPER:
-            msg = "The pepper constant is undefined."
-            raise RuntimeError(msg)
-
         hash_name = "sha256"
         password = constants.PEPPER.join([self.dictionary, self.source, self.id])
         salt = self.ulid.encode() * 42
