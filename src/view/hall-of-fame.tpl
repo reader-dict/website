@@ -1,7 +1,10 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-    <h2 class="section-title center">Hall of Fame</h2>
+    <div class="center typo-4">Hall of Fame</div>
+
+	<div class="space-2"></div>
+
     <p>We would like to thank the following researchers:</p>
     <ul>
         <li>(YYYY-MM-DD) Full Name - Security flaw</li>
