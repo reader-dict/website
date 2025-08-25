@@ -143,7 +143,8 @@ def handle_webhook(event: dict) -> str:  # noqa: PLR0912,C901
             ret = register_order(kind, order_id)
 
         case constants.PAYPAL_EVENT_PURCHASE_REFUNDED:
-            if order := utils.get_order_from_invoice(event["resource"]["invoice_id"]):
+            invoice_id = event["resource"]["invoice_id"]
+            if order := utils.get_order_from_invoice(invoice_id) or utils.get_order(invoice_id):
                 if order.status != "refunded":
                     order.status = "refunded"
                     order.status_update_time = datetime.now(tz=UTC).isoformat()
