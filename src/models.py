@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 Dictionary = dict[str, bool | float | int | str]
 Dictionaries = dict[str, dict[str, Dictionary]]
 Link = tuple[str, str, str, str, str]
+Reviews = list[dict[str, str]]
 
 
 def make_ulid() -> str:
@@ -38,7 +39,7 @@ class Order:
     @cached_property
     def checkpoint(self) -> str:
         """Generate a *checkpoint* token to validate acces to dictionary downloads."""
-        if not constants.PEPPER:
+        if not constants.PEPPER:  # pragma: nocover
             msg = "The pepper constant is undefined."
             raise RuntimeError(msg)
 

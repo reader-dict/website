@@ -1,9 +1,10 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-    <section>
-        <h2 class="section-title">{{ tr("error-title") }}</h2>
-        <p style="font-size: 1.2em">{{ tr("error-%s" % error) }}</p>
-        <p>{{ tr("error-back-home") }}</p>
-    </section>
+    <div class="center typo-4">Whoopsy!</div>
+
+	<div class="space-2"></div>
+
+    <p style="typo-6">{{ msg }}</p>
+    <p style="typo-4">But you can go back to <a href="/">home</a>, and see if you find your bliss <i class="ph ph-flower-lotus"></i></p>
 {% endblock %}

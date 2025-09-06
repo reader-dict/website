@@ -7,14 +7,20 @@
 /* TEAM */
     Creator & developer: Mickaël Schoentgen
     Contact: contact [@] tiger-222 [dot] fr
-    From: France
+    From: Cavarc, France
 
     Product & design: gab 
     Contact: work [@] gabbb [dot] net
-    From: Stockholm
+    From: Stockholm, Suède
+
+    Developer: Nicolas Froment
+    Contact: lasconic [@] gmail [dot] com
+    From: Toulouse, France
+
+    Contributors: https://github.com/reader-dict/monolingual/graphs/contributors
 
 /* SITE */
-    Last update: 2025-07-xx 
+    Last update: 2025-09-06
     Standards: Python, HTML5, CSS3.
-    Components: bottle, Tailwind.
-    Software: VSCode, nano, micro, Firefox.
+    Components: bottle web framework, Phosphor icons.
+    Softwares: VSCode, nano, Firefox, InkScape, Figma.

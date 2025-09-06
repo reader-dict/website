@@ -18,7 +18,7 @@ def open_issue(lang_src: str, lang_dst: str, word: str) -> str:
     data = {
         "title": f"[{lang_src.upper()}-{lang_dst.upper()}] {word}",
         "body": f"👀 [{word}](https://{lang_dst}.wiktionary.org/wiki/{word})",
-        "labels": [utils.tr(lang_dst), "feedback", "triage"],
+        "labels": [utils.language(lang_dst), "feedback", "triage"],
     }
     with SESSION.post(constants.GITHUB_API_TRACKER, headers=headers, json=data) as req:
         req.raise_for_status()
