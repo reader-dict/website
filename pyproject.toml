@@ -67,6 +67,7 @@ fixable = ["ALL"]
 ]
 "tests/*" = [
   "ARG001",   # Unused function argument (because of pytest fixtures)
+  "E501",     # Line too long
   "FBT001",   # Boolean-typed positional argument in function definition
   "S101",     # Use of `assert` detected
 ]

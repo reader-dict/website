@@ -200,11 +200,12 @@ def downloads_monolingual(lang: str) -> str:
 @bottle_file_cache.cache(params=["order", "checkpoint", "subscription"])
 def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
     params = bottle.request.params
+    ip_addr = client_ip()
 
     if not (order_id := params.get("order", "") or params.get("subscription", "")) or not utils.is_checkpoint(
         checkpoint := params.get("checkpoint", "")
     ):
-        log.error("[/download bilingual] Missing mandatory details")
+        log.error("[/download bilingual] Missing mandatory details (from %s)", ip_addr)
         raise bottle.HTTPError(status=400) from None
 
     if not (order := utils.get_order(order_id)):
@@ -213,10 +214,11 @@ def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
 
     if not (dictionary := utils.get_dictionary_metadata(lang_src, lang_dst)):
         log.error(
-            "[/download order ID=%r] The dictionary %s-%s does not exist, or is disabled",
+            "[/download order ID=%r] The dictionary %s-%s does not exist, or is disabled (from %s)",
             order.id,
             lang_src,
             lang_dst,
+            ip_addr,
         )
         raise bottle.HTTPError(status=404) from None
 
@@ -224,21 +226,22 @@ def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
     dict_requested = dictionary["name"]
     if dict_available != dict_requested:
         log.error(
-            "[/download order ID=%r] Dictionary mismatch: requested=%r, available=%r",
+            "[/download order ID=%r] Dictionary mismatch: requested=%r, available=%r (from %s)",
             order.id,
             dict_requested,
             dict_available,
+            ip_addr,
         )
         raise bottle.HTTPError(status=403) from None
 
     verified_checkpoint = order.checkpoint
     if verified_checkpoint != checkpoint:
-        log.error("[/download order ID=%r] Checkpoint %r is invalid", order.id, checkpoint)
+        log.error("[/download order ID=%r] Checkpoint %r is invalid (from %s)", order.id, checkpoint, ip_addr)
         raise bottle.HTTPError(status=403) from None
 
-    log.info("[/download] Order %s", order.as_dict())
+    log.info("[/download from IP=%r] Order %s", ip_addr, order.as_dict())
     if not order.status_ok:
-        log.info("[/download order ID=%r] Status does not allow to continue", order.id)
+        log.info("[/download order ID=%r] Status does not allow to continue (from %s)", order.id, ip_addr)
         raise bottle.HTTPError(status=403) from None
 
     links = utils.craft_downloads_url(dictionary, order_type=order.type, order_id=order.id)

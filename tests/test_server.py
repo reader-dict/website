@@ -140,7 +140,7 @@ def test_downloads_bilingual_no_order_id(app: TestApp, caplog: pytest.LogCapture
     app.get("/download/eo/fr", status=400)
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == "[/download bilingual] Missing mandatory details"
+        == "[/download bilingual] Missing mandatory details (from unknown)"
     )
 
 
@@ -149,7 +149,7 @@ def test_downloads_bilingual_no_checkpoint(app: TestApp, caplog: pytest.LogCaptu
     app.get("/download/eo/fr", params={"order": "uid"}, status=400)
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == "[/download bilingual] Missing mandatory details"
+        == "[/download bilingual] Missing mandatory details (from unknown)"
     )
 
 
@@ -158,7 +158,7 @@ def test_downloads_bilingual_invalid_checkpoint(app: TestApp, caplog: pytest.Log
     app.get("/download/eo/fr", params={"checkpoint": "bad", "order": "uid"}, status=400)
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == "[/download bilingual] Missing mandatory details"
+        == "[/download bilingual] Missing mandatory details (from unknown)"
     )
 
 
@@ -174,7 +174,7 @@ def test_downloads_bilingual_unknown_dictionary(
     )
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == f"[/download order ID='{SUBSCRIPTION_ID}'] The dictionary zz-fr does not exist, or is disabled"
+        == f"[/download order ID='{SUBSCRIPTION_ID}'] The dictionary zz-fr does not exist, or is disabled (from unknown)"
     )
 
 
@@ -198,7 +198,7 @@ def test_downloads_bilingual_checkpoints_mismatch(
     app.get("/download/eo/fr", params={"checkpoint": CHECKPOINT_BAD, "order": SUBSCRIPTION_ID}, status=403)
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == f"[/download order ID='{SUBSCRIPTION_ID}'] Checkpoint '{CHECKPOINT_BAD}' is invalid"
+        == f"[/download order ID='{SUBSCRIPTION_ID}'] Checkpoint '{CHECKPOINT_BAD}' is invalid (from unknown)"
     )
 
 
@@ -235,7 +235,7 @@ def test_downloads_bilingual_dictionaries_inexistant(
     )
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == f"[/download order ID='{SUBSCRIPTION_ID}'] The dictionary all-fr does not exist, or is disabled"
+        == f"[/download order ID='{SUBSCRIPTION_ID}'] The dictionary all-fr does not exist, or is disabled (from unknown)"
     )
 
 
@@ -256,7 +256,7 @@ def test_downloads_bilingual_dictionaries_mismatch(
     )
     assert (
         next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
-        == f"[/download order ID='{SUBSCRIPTION_ID}'] Dictionary mismatch: requested='eo-eo', available='eo-fr'"
+        == f"[/download order ID='{SUBSCRIPTION_ID}'] Dictionary mismatch: requested='eo-eo', available='eo-fr' (from unknown)"
     )
 
 
