@@ -1,49 +1,23 @@
+const tabs_icons = document.querySelectorAll(".tab .icon");
+const tabs_content = document.querySelectorAll(".tab-content > div");
+const buy = document.getElementById("buy");
 const select_lang_src = document.getElementById("lang-src");
 const select_lang_dst = document.getElementById("lang-dst");
-const selected_lang_src = document.querySelectorAll("#selected-lang-src");
-const selected_lang_dst = document.querySelectorAll("#selected-lang-dst");
-const price = document.getElementById("price");
-const price_purchase = document.getElementById("price-purchase");
-const last_updated = document.getElementById("last-updated");
-const words_count = document.getElementById("words-count");
-const total_words_count = document.getElementById("total-words-count");
-const total_dicts_count = document.getElementById("total-dict-count");
-const total_langs_count = document.getElementById("total-lang-count");
-const paypal_button_subscription = document.getElementById(
-	"paypal-button-subscription",
-);
-const paypal_button_purchase = document.getElementById(
-	"paypal-button-purchase",
-);
+const select_lang_mono = document.getElementById("lang-mono");
 const missing_mobi = document.getElementById("missing-mobi");
-const monolingual = document.getElementById("this-is-monolingual");
+const missing_pocket = document.getElementById("missing-pocket");
+const buy_link = document.getElementById("buy-link");
+
+const locale = "en";
+const language_formatter = new Intl.DisplayNames([locale], {
+	type: "language",
+});
 
 // Updated in fetchMetrics() on document fully loaded
 metrics = {};
 
-function get(object, path, default_value) {
-	// Source: https://edvins.io/get-deeply-nested-object-in-javascript
-	if (!Object.keys(object).length) {
-		return default_value;
-	}
-
-	const pathArray = Array.isArray(path) ? path : path.split(".");
-	let result = object;
-
-	for (let i = 0; i < pathArray.length; i++) {
-		const value = pathArray[i];
-		if (typeof result === "object" && result !== null && value in result) {
-			result = result[value];
-		} else {
-			return default_value;
-		}
-	}
-	return result;
-}
-
 function adaptLangDstOptions() {
 	const lang_src = currentLangSrc();
-	const intl_locale = new Intl.Locale("en");
 
 	// Clean-up the current list
 	for (row of [...select_lang_dst.children]) {
@@ -51,14 +25,13 @@ function adaptLangDstOptions() {
 	}
 
 	for (const lang_dst in metrics[lang_src]) {
-		const lang_name = new Intl.DisplayNames([intl_locale.language], {
-			type: "language",
-		}).of(lang_dst);
-		const option = document.createElement("option");
+		if (lang_dst !== lang_src) {
+			const option = document.createElement("option");
 
-		option.value = lang_dst;
-		option.innerHTML = `[${lang_dst.toUpperCase()}] ${toTitle(lang_name)}`;
-		select_lang_dst.appendChild(option);
+			option.value = lang_dst;
+			option.innerHTML = `${lang_dst.toUpperCase()} - ${toTitle(language_formatter.of(lang_dst))}`;
+			select_lang_dst.appendChild(option);
+		}
 	}
 
 	select_lang_dst.options[0].selected = true;
@@ -72,26 +45,6 @@ function currentLangDst() {
 	return select_lang_dst.options[select_lang_dst.selectedIndex].value;
 }
 
-function eventPayPalApproved(kind, event) {
-	const options = {
-		method: "POST",
-		body: JSON.stringify(event),
-		headers: { "Content-Type": "application/json" },
-	};
-
-	fetch("/api/v1/order", options)
-		.then((response) => {
-			return response.json();
-		})
-		.then((data) => {
-			if (data.status === "ok") {
-				document.location = `/${data.url}`;
-			} else {
-				console.error(data);
-			}
-		});
-}
-
 function fetchMetrics() {
 	fetch("/api/v1/dictionaries")
 		.then((response) => {
@@ -99,65 +52,83 @@ function fetchMetrics() {
 		})
 		.then((data) => {
 			metrics = data;
-			updateGlobals();
 			adaptLangDstOptions();
-			pickLangsFromAnchor();
-			updateDetails();
+			scrollToLocViaAnchor();
+			checkForMissingFormats();
 		});
 }
 
-function getLastUpdated(current_lang_src, current_lang_dst) {
-	return get(
-		metrics,
-		`${current_lang_src}.${current_lang_dst}.updated`,
-		"0000-00-00",
-	);
+function fireBuyLink() {
+	const buy_url = buy_link.dataset.url;
+	const client_id = buy_link.dataset.cid;
+	const client_reference_id = `${client_id}-${currentLangSrc()}-${currentLangDst()}`;
+
+	fetch(`/api/v1/pre-order?client_reference_id=${client_reference_id}`)
+		.then((response) => {
+			return response.json();
+		})
+		.then((data) => {
+			console.debug(data);
+			window.location = `${buy_url}?client_reference_id=${client_reference_id}`;
+		});
 }
 
-function getPlanId(current_lang_src, current_lang_dst) {
-	return get(metrics, `${current_lang_src}.${current_lang_dst}.plan_id`, "");
+function getSupportedFormats(current_lang_src, current_lang_dst) {
+	return metrics[current_lang_src][current_lang_dst].formats;
 }
 
-function getPrice(current_lang_src, current_lang_dst) {
-	return Number.parseFloat(
-		get(metrics, `${current_lang_src}.${current_lang_dst}.price`, 0.0),
-	);
-}
-
-function getPricePurchase(current_lang_src, current_lang_dst) {
-	return Number.parseFloat(
-		get(metrics, `${current_lang_src}.${current_lang_dst}.price_purchase`, 0.0),
-	);
-}
-
-function getProgress(current_lang_src, current_lang_dst) {
-	return get(metrics, `${current_lang_src}.${current_lang_dst}.progress`, "");
-}
-
-function getWordsCount(current_lang_src, current_lang_dst) {
-	return get(metrics, `${current_lang_src}.${current_lang_dst}.words`, 0);
-}
-
-function pickLangsFromAnchor() {
+function scrollToLocViaAnchor() {
 	const [_, anchor] = new URL(document.location).href.split("#", 2);
 
 	if (anchor) {
-		const [lang_src, lang_dst] = anchor.split("-");
+		let target;
 
-		for (row of [...select_lang_src.children]) {
-			if (row.value === lang_src) {
-				row.selected = true;
-				break;
+		if (anchor.startsWith("faq-")) {
+			const faq_item = document.getElementById(anchor);
+
+			if (typeof faq_item !== "undefined") {
+				faq_item.open = true;
+				target = faq_item;
+			}
+		} else {
+			let found_lang_src = false;
+			let found_lang_dst = false;
+			const [lang_src, lang_dst] = anchor.split("-");
+
+			if (lang_src === lang_dst) {
+				for (row of [...select_lang_mono.children]) {
+					if (row.value === lang_src) {
+						row.selected = true;
+						found_lang_src = true;
+						found_lang_dst = true;
+						break;
+					}
+				}
+			} else {
+				for (row of [...select_lang_src.children]) {
+					if (row.value === lang_src) {
+						row.selected = true;
+						found_lang_src = true;
+						break;
+					}
+				}
+				for (row of [...select_lang_dst.children]) {
+					if (row.value === lang_dst) {
+						row.selected = true;
+						found_lang_dst = true;
+						break;
+					}
+				}
+			}
+
+			if (found_lang_src && found_lang_dst) {
+				target = buy;
 			}
 		}
-		for (row of [...select_lang_dst.children]) {
-			if (row.value === lang_dst) {
-				row.selected = true;
-				break;
-			}
-		}
 
-		document.location = "#subscribe";
+		if (typeof target !== "undefined") {
+			target.scrollIntoView({ block: "start", behavior: "smooth" });
+		}
 	}
 }
 
@@ -172,182 +143,68 @@ function toTitle(str) {
 			continue;
 		}
 		newStr += upper
-			? str[i].toLocaleUpperCase("en")
-			: str[i].toLocaleLowerCase("en");
+			? str[i].toLocaleUpperCase(locale)
+			: str[i].toLocaleLowerCase(locale);
 		upper = false;
 	}
 	return newStr;
 }
 
-function updateDetails() {
-	const current_lang_src = currentLangSrc();
-	const current_lang_dst = currentLangDst();
-	const formatter = new Intl.NumberFormat("en", {
-		style: "currency",
-		currency: "EUR",
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
-	});
+function checkForMissingFormats() {
+	const formats = getSupportedFormats(currentLangSrc(), currentLangDst());
 
-	[...selected_lang_src].map((el) => {
-		el.innerHTML =
-			current_lang_src === "all"
-				? `${current_lang_src}-to`
-				: current_lang_src.toUpperCase();
-	});
-	[...selected_lang_dst].map((el) => {
-		el.innerHTML = current_lang_dst.toUpperCase();
-	});
-	words_count.innerHTML = getWordsCount(
-		current_lang_src,
-		current_lang_dst,
-	).toLocaleString("en");
-	last_updated.innerHTML = getLastUpdated(current_lang_src, current_lang_dst);
-	price.innerHTML = formatter.format(
-		getPrice(current_lang_src, current_lang_dst),
-	);
-	price_purchase.innerHTML = formatter.format(
-		getPricePurchase(current_lang_src, current_lang_dst),
-	);
-
-	if (current_lang_src === current_lang_dst) {
-		const link = monolingual.querySelector("a");
-		link.href = `/download/${current_lang_src}`;
-		monolingual.style.display = "block";
-	} else {
-		monolingual.style.display = "none";
-	}
-
-	missing_mobi.style.display = getProgress(
-		current_lang_src,
-		current_lang_dst,
-	).includes("mobi")
-		? "block"
-		: "none";
-
-	updatePaypalButton(current_lang_src, current_lang_dst);
+	missing_mobi.style.display = formats.includes("mobi") ? "none" : "block";
+	missing_pocket.style.display = formats.includes("pocket") ? "none" : "block";
 }
 
-function updateGlobals() {
-	const langs = new Set();
-	let total_dicts = 0;
-	let total_words = 0;
-
-	for (const lang_src in metrics) {
-		langs.add(lang_src);
-		for (const lang_dst in metrics[lang_src]) {
-			langs.add(lang_dst);
-			total_dicts += 1;
-			total_words += metrics[lang_src][lang_dst].words;
+function openTab(idx) {
+	tabs_icons.forEach((item, idx_item) => {
+		if (idx === idx_item) {
+			item.classList.add("active");
+		} else {
+			item.classList.remove("active");
 		}
-	}
-	langs.delete("all");
-
-	total_langs_count.innerHTML = langs.size.toLocaleString("en");
-	total_dicts_count.innerHTML = total_dicts.toLocaleString("en");
-	total_words_count.innerHTML = total_words.toLocaleString("en");
+	});
+	tabs_content.forEach((item, idx_item) => {
+		item.style.display = idx === idx_item ? "block" : "none";
+	});
+	return false;
 }
 
-function updatePaypalButton(current_lang_src, current_lang_dst) {
-	// Remove old buttons
-	for (row of [...paypal_button_subscription.children]) {
-		paypal_button_subscription.removeChild(row);
-	}
-	for (row of [...paypal_button_purchase.children]) {
-		paypal_button_purchase.removeChild(row);
-	}
+function openDownloadPage() {
+	const lang = select_lang_mono.options[select_lang_mono.selectedIndex].value;
 
-	paypal_subscription
-		.Buttons({
-			style: {
-				shape: "pill",
-				color: "gold",
-				layout: "vertical",
-				label: "subscribe",
-			},
-			createSubscription: (data, actions) =>
-				actions.subscription.create({
-					plan_id: getPlanId(current_lang_src, current_lang_dst),
-				}),
-			onApprove: (data, actions) => {
-				eventPayPalApproved("subscription", data);
-			},
-			// onCancel: (data, actions) => {
-			// 	eventPayPalCanceled(current_lang_src, current_lang_dst);
-			// },
-		})
-		.render(paypal_button_subscription);
+	window.location = `/download/${lang}`;
+}
 
-	paypal_purchase
-		.Buttons({
-			style: {
-				shape: "pill",
-				color: "gold",
-				layout: "vertical",
-				label: "buynow",
-			},
-			createOrder: (data, actions) => {
-				const price = getPricePurchase(current_lang_src, current_lang_dst);
-				const kind =
-					current_lang_src === current_lang_dst
-						? "monolingual"
-						: current_lang_src === "all"
-							? "universal"
-							: "bilingual";
-				const options = {
-					payment_source: {
-						paypal: {
-							experience_context: {
-								brand_name: "reader.dict",
-								payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
-								shipping_preference: "NO_SHIPPING",
-								user_action: "PAY_NOW",
-							},
-						},
-					},
-					purchase_units: [
-						{
-							amount: {
-								breakdown: {
-									item_total: { currency_code: "EUR", value: price },
-								},
-								currency_code: "EUR",
-								value: price,
-							},
-							items: [
-								{
-									category: "DIGITAL_GOODS",
-									name: `reader.dict ${current_lang_src.toUpperCase()}-${current_lang_dst.toUpperCase()} (${kind})`,
-									quantity: 1,
-									sku: `${current_lang_src}-${current_lang_dst}`,
-									unit_amount: { currency_code: "EUR", value: price },
-								},
-							],
-						},
-					],
-				};
-
-				return actions.order.create(options);
-			},
-			onApprove: (data, actions) =>
-				actions.order.capture().then((orderData) => {
-					eventPayPalApproved("purchase", orderData);
-				}),
-			// onCancel: (data) => {
-			// 	eventPayPalCanceled(current_lang_src, current_lang_dst);
-			// },
-		})
-		.render(paypal_button_purchase);
+function setupTabs() {
+	tabs_icons.forEach((item, idx_item) => {
+		item.addEventListener("click", (event) => {
+			openTab(idx_item);
+		});
+	});
+	openTab(0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+	setupTabs();
 	fetchMetrics();
 
 	select_lang_src.addEventListener("change", (event) => {
 		adaptLangDstOptions();
-		updateDetails();
+		checkForMissingFormats();
 	});
 	select_lang_dst.addEventListener("change", (event) => {
-		updateDetails();
+		checkForMissingFormats();
+	});
+	select_lang_mono.addEventListener("change", (event) => {
+		openDownloadPage();
+	});
+	buy_link.addEventListener("click", (event) => {
+		fireBuyLink();
+		event.preventDefault();
+	});
+	window.addEventListener("hashchange", (event) => {
+		scrollToLocViaAnchor();
 	});
 });

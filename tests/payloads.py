@@ -1,4 +1,6 @@
-from src import constants
+import json
+
+from src import constants, models
 
 GITHUB_ISSUE = {
     "url": "https://api.github.com/repos/reader-dict/report-a-word/issues/1",
@@ -264,3 +266,161 @@ SUBSCRIPTION_DATA = {
     "update_time": "2025-04-05T20:34:42Z",
     "plan_overridden": False,
 }
+
+STRIPE_CHECKOUT_SESSION_ID = "cs_zzz"
+STRIPE_PURCHASE_ID = "pi_nnn"
+STRIPE_CHECKOUT_SESSION_DATA = {
+    "id": STRIPE_CHECKOUT_SESSION_ID,
+    "client_reference_id": "01K4D2WZR8G1TG36RNF3020124-eo-fr",
+    "created": 1757080888,
+    "customer": None,
+    "customer_details": {
+        "email": "alice@example.org",
+        "name": "Alice Baz",
+    },
+    "customer_email": None,
+    "mode": "payment",
+    "payment_intent": STRIPE_PURCHASE_ID,
+    "payment_status": "paid",
+    "status": "complete",
+}
+STRIPE_REFUND_DATA = {
+    "id": STRIPE_CHECKOUT_SESSION_ID,
+    "captured": True,
+    "created": 1757080903,
+    "paid": True,
+    "payment_intent": STRIPE_PURCHASE_ID,
+    "refunded": True,
+}
+
+ORDER_P = models.Order(
+    PURCHASE_ID,
+    dictionary="eo-fr",
+    email="alice@example.org",
+    invoice_id="capture-id",
+    status="completed",
+    status_update_time=STATUS_UPDATE_TIME,
+    ulid="01JVRQ7C9RTEHHFPY30RDQYZPR",
+    user="Alice",
+)
+ORDER_S = models.Order(
+    SUBSCRIPTION_ID,
+    email="alice@example.org",
+    plan_id=PLAN_ID,
+    status="active",
+    status_update_time=STATUS_UPDATE_TIME,
+    ulid="01JVRQ7C9RTEHHFPY30RDQYZPR",
+    user="Alice",
+)
+
+PAYPAL_WEBHOOK_ID = "40L71081MK3756722"
+PAYPAL_WEBHOOK_HEADERS = {
+    "Paypal-Transmission-Time": "2025-04-05T20:32:44Z",
+    "Paypal-Cert-Url": PAYPAL_CERT_URL,
+    "Paypal-Transmission-Sig": "Dss1lP9Y8D+ZXQ5VIbW/91wykhEpH06KUSEOmIGceJlSd33AE1nBT/UiNxz/i4/6EP31a7Sx44CjLOQtkJ+LYWK5aA4YkVu/e+CZ/nMLB1FW6lJXEflt0DGRusNaBDpq7WrfCHNiScquRMh3E4eUODfTSowvsiPf2UWkfbk0e/ELMky8YaFTS6gIhUdaRh1U8lUbv+IXi7v5pSGQOTtmrHR28fvPc+D8fSsl0tBfakpRPUNskNmRwJYYngQ0NzAO7cNAzCf3Es5yEAiJW9FgjawHmOkeoWSjWIXH7SKO7q1tqCRCE/+iu3jtK3q+wmq6iVq1luglzndgqNKTw+DwaQ==",  # noqa: E501
+    "Paypal-Transmission-Id": "212a639d-125d-11f0-8798-c5d6de2737a0",
+}
+PAYPAL_WEBHOOK_PAYLOAD = json.dumps(
+    {
+        "id": "WH-1F78928319310462G-18R51787X87914712",
+        "event_version": "1.0",
+        "create_time": "2025-04-05T20:32:40.508Z",
+        "resource_type": "sale",
+        "event_type": "PAYMENT.SALE.PENDING",
+        "summary": "Payment pending for € 10.0 EUR",
+        "resource": {
+            "id": "10H81276XF6353701",
+            "state": "completed",
+            "amount": {"total": "10.00", "currency": "EUR", "details": {"subtotal": "10.00"}},
+            "payment_mode": "INSTANT_TRANSFER",
+            "protection_eligibility": "ELIGIBLE",
+            "protection_eligibility_type": "ITEM_NOT_RECEIVED_ELIGIBLE,UNAUTHORIZED_PAYMENT_ELIGIBLE",
+            "payment_hold_status": "HELD",
+            "payment_hold_reasons": ["PAYMENT_HOLD"],
+            "transaction_fee": {"value": "0.64", "currency": "EUR"},
+            "invoice_number": "",
+            "billing_agreement_id": "I-YSW93404E5CF",
+            "create_time": "2025-04-05T20:32:35Z",
+            "update_time": "2025-04-05T20:32:35Z",
+            "links": [
+                {
+                    "href": "https://api.paypal.com/v1/payments/sale/10H81276XF6353701",
+                    "rel": "self",
+                    "method": "GET",
+                },
+                {
+                    "href": "https://api.paypal.com/v1/payments/sale/10H81276XF6353701/refund",
+                    "rel": "refund",
+                    "method": "POST",
+                },
+            ],
+            "soft_descriptor": "PAYPAL *READERDICT",
+        },
+        "links": [
+            {
+                "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1F78928319310462G-18R51787X87914712",
+                "rel": "self",
+                "method": "GET",
+            },
+            {
+                "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1F78928319310462G-18R51787X87914712/resend",
+                "rel": "resend",
+                "method": "POST",
+            },
+        ],
+    },
+    separators=(",", ":"),
+    ensure_ascii=False,
+).encode()
+
+STRIPE_WEBHOOK_HEADERS = {
+    "Stripe-Signature": (
+        "t=1757077813,"
+        "v1=694c3add1ff8bcb080fc22aeda24d69d67fc9b08152e6d7b59aee98e9d7127fc,"
+        "v0=5b153d30ed3e0d0b718d21d8057fc8ac3e89fa058c616aecb5be378c09666fc2"
+    ),
+}
+STRIPE_WEBHOOK_PAYLOAD = json.dumps(
+    {
+        "id": "evt_3S3zLiDg4CrdeZve3jkGWhc6",
+        "object": "event",
+        "api_version": "2025-08-27.basil",
+        "created": 1757077813,
+        "data": {
+            "object": {
+                "id": "re_3S3zLiDg4CrdeZve3j41Xt9K",
+                "object": "refund",
+                "amount": 1449,
+                "balance_transaction": "txn_3S3zLiDg4CrdeZve3wRejIFU",
+                "charge": "ch_3S3zLiDg4CrdeZve3ciCk8Cu",
+                "created": 1757077811,
+                "currency": "eur",
+                "destination_details": {
+                    "card": {
+                        "reference": "7693739506885588",
+                        "reference_status": "available",
+                        "reference_type": "acquirer_reference_number",
+                        "type": "refund",
+                    },
+                    "type": "card",
+                },
+                "metadata": {},
+                "payment_intent": "pi_3S3zLiDg4CrdeZve38cUeM4j",
+                "reason": "requested_by_customer",
+                "receipt_number": None,
+                "source_transfer_reversal": None,
+                "status": "succeeded",
+                "transfer_reversal": None,
+            },
+            "previous_attributes": {
+                "destination_details": {"card": {"reference_status": "pending", "reference": None}}
+            },
+        },
+        "livemode": False,
+        "pending_webhooks": 1,
+        "request": {"id": None, "idempotency_key": None},
+        "type": "charge.refund.updated",
+    },
+    indent=2,
+    ensure_ascii=False,
+).encode()
