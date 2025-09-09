@@ -84,8 +84,8 @@
 
 	<div class="tab">
 		<div class="icons">
-			<!--<a class="unstyled icon active"><i class="ph ph-arrows-merge"></i></a>
-			<a class="unstyled icon"><i class="ph ph-arrows-in-cardinal"></i></a>-->
+			<a class="unstyled icon active"><i class="ph ph-arrows-merge"></i></a>
+			<a class="unstyled icon"><i class="ph ph-arrows-in-cardinal"></i></a>
 			<a class="unstyled icon"><i class="ph ph-books"></i></a>
 			<a class="unstyled icon"><i class="ph ph-text-superscript"></i></a>
 			<a class="unstyled icon"><i class="ph ph-table"></i></a>
@@ -93,16 +93,16 @@
 	</div>
 	<div class="space-2"></div>
 	<div class="tab-content">
-		<!--<div class="active">
+		<div class="active">
 			<div class="typo-5">Singular forms from plurals</div>
 			<div class="typo-6 color-flint">When selecting a plural word, its singular form is displayed.</div>
-			<div class="example"><img width="486" height="376" loading="lazy" src="/asset/img/preview-plural.svg?v={{ version }}" alt="Loading preview …" title="Example of a plural word selected: its singular form is displayed." /></div>
+			<div class="example"><img width="486" height="428" loading="lazy" src="/asset/img/preview-singular.svg?v={{ version }}" alt="Loading preview …" title="Example of a plural word selected: its singular form is displayed." /></div>
 		</div>
 		<div>
 			<div class="typo-5">Infinitive forms from conjugated verbs</div>
 			<div class="typo-6 color-flint">When selecting a conjugated verb, the infinitive form is shown.</div>
-			<div class="example"><img width="486" height="376" loading="lazy" src="/asset/img/preview-verb.svg?v={{ version }}" alt="Loading preview …" title="Example of a conjugated word selected: its infinitive form is displayed." /></div>
-		</div>-->
+			<div class="example"><img width="486" height="392" loading="lazy" src="/asset/img/preview-infinitive.svg?v={{ version }}" alt="Loading preview …" title="Example of a conjugated word selected: its infinitive form is displayed." /></div>
+		</div>
 		<div>
 			<div class="typo-5">Multiple grammatical forms shown together</div>
 			<div class="typo-6 color-flint">When a word is both a plural form and a verb form, all relevant versions are displayed.</div>
