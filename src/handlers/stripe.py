@@ -63,7 +63,7 @@ class Handler(base.Handler):
         return json.dumps({"status": "info", "message": "event not interesting"})
 
     def _fetch_order_impl(self, kind: str, order_id: str) -> Order:  # noqa: ARG002
-        """Note: `order_id` is actually the checkout sesion ID."""
+        """Note: `order_id` is actually the checkout session ID."""
         url = constants.STRIPE_URL_CHECKOUT_SESSION.format(order_id)
         with SESSION.get(url, timeout=30) as req:
             req.raise_for_status()
