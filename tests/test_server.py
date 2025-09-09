@@ -471,7 +471,7 @@ def test_sitemap(app: TestApp) -> None:
 #
 
 #
-# Old URL (before 2025-09-06)
+# Old URL (before 2025-09-09)
 #
 
 

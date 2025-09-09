@@ -332,7 +332,7 @@ def main() -> None:  # pragma: nocover
 
 
 #
-# Old URL (before 2025-09-06)
+# Old URL (before 2025-09-09)
 #
 
 

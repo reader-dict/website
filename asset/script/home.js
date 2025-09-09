@@ -177,8 +177,17 @@ function openDownloadPage() {
 	window.location = `/download/${lang}`;
 }
 
+function setupTabs() {
+	tabs_icons.forEach((item, idx_item) => {
+		item.addEventListener("click", (event) => {
+			openTab(idx_item);
+		});
+	});
+	openTab(0);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-	openTab(2);
+	setupTabs();
 	fetchMetrics();
 
 	select_lang_src.addEventListener("change", (event) => {

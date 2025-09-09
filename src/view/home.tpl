@@ -84,11 +84,11 @@
 
 	<div class="tab">
 		<div class="icons">
-			<a class="unstyled icon active" onclick="return openTab(0)"><i class="ph ph-arrows-merge"></i></a>
-			<a class="unstyled icon" onclick="return openTab(1)"><i class="ph ph-arrows-in-cardinal"></i></a>
-			<a class="unstyled icon" onclick="return openTab(2)"><i class="ph ph-books"></i></a>
-			<a class="unstyled icon" onclick="return openTab(3)"><i class="ph ph-text-superscript"></i></a>
-			<a class="unstyled icon" onclick="return openTab(4)"><i class="ph ph-table"></i></a>
+			<!--<a class="unstyled icon active"><i class="ph ph-arrows-merge"></i></a>
+			<a class="unstyled icon"><i class="ph ph-arrows-in-cardinal"></i></a>-->
+			<a class="unstyled icon"><i class="ph ph-books"></i></a>
+			<a class="unstyled icon"><i class="ph ph-text-superscript"></i></a>
+			<a class="unstyled icon"><i class="ph ph-table"></i></a>
 		</div>
 	</div>
 	<div class="space-2"></div>
