@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width">
 
 	<meta property="og:description" content="{{ constants.HEADER_DESC }}">
-	<meta property="og:image" content="/asset/img/favicon.svg">
+	<meta property="og:image" content="/asset/img/favicon.svg?v={{ version }}">
 	<meta property="og:locale" content="en_EN">
 	<meta property="og:site_name" content="{{ constants.PROJECT }}">
 	<meta property="og:title" content="{{ constants.PROJECT }} — {{ constants.HEADER_DESC }}">
@@ -19,13 +19,13 @@
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="{{ constants.PROJECT }} — {{ constants.HEADER_DESC }}">
 	<meta name="twitter:description" content="{{ constants.HEADER_DESC }}">
-	<meta name="twitter:image" content="/asset/img/favicon.svg">
+	<meta name="twitter:image" content="/asset/img/favicon.svg?v={{ version }}">
 	<meta property="twitter:domain" content="{{ constants.WWW }}">
 	<meta property="twitter:url" content="{{ url_pure }}">
 
 	<link rel="author" href="/humans.txt" />
 	<link rel="canonical" href="{{ url_pure }}">
-	<link rel="icon" href="/asset/img/favicon.svg">
+	<link rel="icon" href="/asset/img/favicon.svg?v={{ version }}">
 	<link rel="publisher" href="https://www.{{ constants.WWW }}" />
 	<link rel="stylesheet" href="/asset/style/common.css?v={{ version }}" />
 	{%- block styles -%}{%- endblock -%}
