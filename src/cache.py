@@ -47,7 +47,7 @@ def get(key: str) -> list[str]:
 
 def get_notimer(key: str) -> str:
     try:
-        return (constants.FILES_CACHE / cache_key(key)).read_text()
+        return (constants.FILES_CACHE / cache_key(key)).read_text(encoding=constants.ENCODING)
     except FileNotFoundError:
         raise CacheMissError from None
 

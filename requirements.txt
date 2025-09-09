@@ -6,3 +6,4 @@ python-ulid==3.1.0
 requests==2.32.5
 secure==1.0.1
 sentry-sdk==2.35.1
+typing-extensions==4.15.0

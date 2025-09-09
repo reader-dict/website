@@ -32,7 +32,7 @@ def plus_one(dictionary: str, file_format: str, etym: str) -> None:
 
 def read() -> Metrics:
     try:
-        content = constants.METRICS.read_text()
+        content = constants.METRICS.read_text(encoding=constants.ENCODING)
     except FileNotFoundError:
         return {}
 

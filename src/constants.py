@@ -143,3 +143,6 @@ Mickaël.
 {3}
 """
 EMAIL_SUBJECT = "📚 Your {0} dictionary"
+
+# Needed for the VPS that uses ASCII by default (to revisit when moving to Python 3.13)
+ENCODING = "utf-8"

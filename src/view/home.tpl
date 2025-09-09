@@ -93,27 +93,27 @@
 	</div>
 	<div class="space-2"></div>
 	<div class="tab-content">
-		<div id="tab0" class="active">
+		<!--<div class="active">
 			<div class="typo-5">Singular forms from plurals</div>
 			<div class="typo-6 color-flint">When selecting a plural word, its singular form is displayed.</div>
 			<div class="example"><img width="486" height="376" loading="lazy" src="/asset/img/preview-plural.svg?v={{ version }}" alt="Loading preview …" title="Example of a plural word selected: its singular form is displayed." /></div>
 		</div>
-		<div id="tab1">
+		<div>
 			<div class="typo-5">Infinitive forms from conjugated verbs</div>
 			<div class="typo-6 color-flint">When selecting a conjugated verb, the infinitive form is shown.</div>
 			<div class="example"><img width="486" height="376" loading="lazy" src="/asset/img/preview-verb.svg?v={{ version }}" alt="Loading preview …" title="Example of a conjugated word selected: its infinitive form is displayed." /></div>
-		</div>
-		<div id="tab2">
+		</div>-->
+		<div>
 			<div class="typo-5">Multiple grammatical forms shown together</div>
 			<div class="typo-6 color-flint">When a word is both a plural form and a verb form, all relevant versions are displayed.</div>
 			<div class="example"><img width="486" height="376" loading="lazy" src="/asset/img/preview-multiple.svg?v={{ version }}" alt="Loading preview …" title="Example of a selected word that has multiple targets: all forms are shown." /></div>
 		</div>
-		<div id="tab3">
+		<div>
 			<div class="typo-5">Optimized rendering for scientific content</div>
 			<div class="typo-6 color-flint">Mathematical, and chemical, formulas are beautifully rendered.</div>
 			<div class="example"><img width="486" height="319" loading="lazy" src="/asset/img/preview-formula.svg?v={{ version }}" alt="Loading preview …" title="Example of a mathematical formula beautifully rendered." /></div>
 		</div>
-		<div id="tab4">
+		<div>
 			<div class="typo-5">Tables support</div>
 			<div class="typo-6 color-flint">When a word entry includes any table, they are displayed correctly.</div>
 			<div class="example"><img width="486" height="359" loading="lazy" src="/asset/img/preview-table.svg?v={{ version }}" alt="Loading preview …" title="Example of a mathematical formula beautifully rendered." /></div>

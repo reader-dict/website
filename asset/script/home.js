@@ -183,6 +183,9 @@ function setupTabs() {
 			openTab(idx_item);
 		});
 	});
+	tabs_content.forEach((item, idx_item) => {
+		item.id = `tab${idx_item}`;
+	});
 	openTab(0);
 }
 

@@ -67,7 +67,7 @@ def get_format_from_file_name(lang: str, name: str) -> str:
 
 
 def get_dictionaries() -> Dictionaries:
-    return json.loads(constants.DICTIONARIES.read_text())
+    return json.loads(constants.DICTIONARIES.read_text(encoding=constants.ENCODING))
 
 
 def get_dictionary_from_key(key: str, value: str) -> Dictionary:
@@ -147,7 +147,10 @@ def save_dictionaries(dictionaries: Dictionaries) -> None:
 def load_orders() -> dict[str, Order]:
     """Load purchases, and subscriptions."""
     try:
-        return {uid: Order(**obj) for uid, obj in json.loads(constants.ORDERS.read_text()).items()}
+        return {
+            uid: Order(**obj)
+            for uid, obj in json.loads(constants.ORDERS.read_text(encoding=constants.ENCODING)).items()
+        }
     except (FileNotFoundError, ValueError):
         return {}
 
@@ -180,7 +183,7 @@ def locker(kind: str) -> Callable:
 
 def random_reviews(count: int) -> Reviews:
     """Load `count` random reviews."""
-    all_reviews = json.loads(constants.REVIEWS.read_text())
+    all_reviews = json.loads(constants.REVIEWS.read_text(encoding=constants.ENCODING))
     return sample(all_reviews, count)
 
 
