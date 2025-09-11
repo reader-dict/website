@@ -21,15 +21,14 @@ METRICS = DATA / "metrics.json"
 ORDERS = DATA / "orders.json"
 VIEW = HERE / "view"
 
-DICTIONARY_KEYS_MINIMAL = ["formats"]
-DICTIONARY_KEYS_DOWNLOAD = [*DICTIONARY_KEYS_MINIMAL, "name", "words"]
+DICTIONARY_KEYS_MINIMAL = ["formats", "updated", "words"]
+DICTIONARY_KEYS_DOWNLOAD = [*DICTIONARY_KEYS_MINIMAL, "name"]
 DICTIONARY_KEYS_ALL = [
     *DICTIONARY_KEYS_DOWNLOAD,
     "plan_id",
     "price",
     "price_purchase",
     "progress",
-    "updated",
 ]
 
 # The order is important, and will be reflected on the website.

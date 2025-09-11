@@ -201,6 +201,14 @@
 				<div class="icon"><i class="ph ph-check"></i></div>
 				<div class="info typo-6">High priority support response time</div>
 			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-book-open-text"></i></div>
+				<div class="info typo-6">Words count: <span id="words-count"></span></div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-download-simple"></i></div>
+				<div class="info typo-6">Wiktionary snapshot: <span id="wiktionary-snapshot"></span></div>
+			</div>
 		</div>
 		<a class="button" id="buy-link" data-cid="{{ client_id }}" data-url="{{ constants.BUY_URL }}">Buy now</a>
 	</div>

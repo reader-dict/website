@@ -4,6 +4,8 @@ const buy = document.getElementById("buy");
 const select_lang_src = document.getElementById("lang-src");
 const select_lang_dst = document.getElementById("lang-dst");
 const select_lang_mono = document.getElementById("lang-mono");
+const words_count = document.getElementById("words-count");
+const wiktionary_snapshot = document.getElementById("wiktionary-snapshot");
 const missing_mobi = document.getElementById("missing-mobi");
 const missing_pocket = document.getElementById("missing-pocket");
 const buy_link = document.getElementById("buy-link");
@@ -54,7 +56,7 @@ function fetchMetrics() {
 			metrics = data;
 			adaptLangDstOptions();
 			scrollToLocViaAnchor();
-			checkForMissingFormats();
+			adjustDictionaryInformation();
 		});
 }
 
@@ -71,10 +73,6 @@ function fireBuyLink() {
 			console.debug(data);
 			window.location = `${buy_url}?client_reference_id=${client_reference_id}`;
 		});
-}
-
-function getSupportedFormats(current_lang_src, current_lang_dst) {
-	return metrics[current_lang_src][current_lang_dst].formats;
 }
 
 function scrollToLocViaAnchor() {
@@ -150,9 +148,12 @@ function toTitle(str) {
 	return newStr;
 }
 
-function checkForMissingFormats() {
-	const formats = getSupportedFormats(currentLangSrc(), currentLangDst());
+function adjustDictionaryInformation() {
+	const { formats, updated, words } =
+		metrics[currentLangSrc()][currentLangDst()];
 
+	words_count.innerHTML = words.toLocaleString(locale);
+	wiktionary_snapshot.innerHTML = updated;
 	missing_mobi.style.display = formats.includes("mobi") ? "none" : "block";
 	missing_pocket.style.display = formats.includes("pocket") ? "none" : "block";
 }
@@ -195,10 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	select_lang_src.addEventListener("change", (event) => {
 		adaptLangDstOptions();
-		checkForMissingFormats();
+		adjustDictionaryInformation();
 	});
 	select_lang_dst.addEventListener("change", (event) => {
-		checkForMissingFormats();
+		adjustDictionaryInformation();
 	});
 	select_lang_mono.addEventListener("change", (event) => {
 		openDownloadPage();

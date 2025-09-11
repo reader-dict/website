@@ -437,8 +437,6 @@
 
 .purchase-card .benefits .item .info {
     justify-content: center;
-    display: flex;
-    flex-direction: column;
     color: light-dark(var(--stone-400), var(--flint));
     line-height: 24px;
 }
