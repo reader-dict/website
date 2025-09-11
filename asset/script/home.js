@@ -126,7 +126,6 @@ function scrollToLocViaAnchor() {
 			if (lang_src === lang_dst) {
 				for (row of [...select_lang_mono.children]) {
 					if (row.value === lang_src) {
-						row.selected = true;
 						found_lang_src = true;
 						found_lang_dst = true;
 						break;
