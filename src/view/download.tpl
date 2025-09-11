@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="center typo-4">Your dictionary is ready</div>
+    {% set lang_src, lang_dst = dictionary["name"].split("-", 1) %}
+    {% set name = language(lang_src) if lang_src == lang_dst else "%s - %s" % (language(lang_src), language(lang_dst)) %}
+
+    <div class="center typo-4">{{ name }} dictionary</div>
 
 	<div class="space-2"></div>
 
-    {% set lang_src, lang_dst = dictionary["name"].split("-", 1) %}
-    {% set name = language(lang_src) if lang_src == lang_dst else "%s - %s" % (language(lang_src), language(lang_dst)) %}
     <p class="typo-6">{{ "Updated on <span class='color-flint'>{0}</span>, the <b>{1}</b> dictionary contains {2:,}&nbsp;words.".format(last_updated, name, dictionary["words"]) }}</p>
 
     <div class="space-1"></div>

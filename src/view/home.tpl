@@ -15,7 +15,7 @@
 
 	<div class="space-3"></div>
 
-	<div class="showcase">
+	<div id="showcase">
 		<div class="large color-1">
 			<div class="top-bar color-2">
 				<div class="buttons">

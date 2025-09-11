@@ -10,30 +10,30 @@
     --shift-factor: 1.75;
 }
 
-.showcase {
+#showcase {
     max-width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
 }
 
-.showcase .screen {
+#showcase .screen {
     background-color: light-dark(white, black);
 }
 
-.showcase .color-1 {
+#showcase .color-1 {
     background-color: light-dark(var(--stone-200), var(--stone-800));
     border: 3px light-dark(var(--stone-300), var(--stone-400)) solid;
 }
 
-.showcase .color-2 {
+#showcase .color-2 {
     background-color: light-dark(var(--stone-200), var(--stone-800));
 }
 
-.showcase .color-3 {
+#showcase .color-3 {
     background-color: var(--flint);
 }
 
-.showcase .large {
+#showcase .large {
     width: var(--width-l);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
@@ -42,35 +42,35 @@
     overflow: hidden;
 }
 
-.showcase .top-bar {
+#showcase .top-bar {
     display: flex;
     padding: 6px;
     flex-direction: column;
     gap: 7px;
 }
 
-.showcase .large .top-bar .buttons {
+#showcase .large .top-bar .buttons {
     display: inline-flex;
     gap: 3px;
 }
 
-.showcase .button {
+#showcase .button {
     width: 6px;
     height: 6px;
     border-radius: 9999px;
 }
 
-.showcase .large .screen {
+#showcase .large .screen {
     align-self: stretch;
     height: var(--height-l);
 }
 
-.showcase .large .screen img {
+#showcase .large .screen img {
     max-width: calc(100% - 100px);
     margin-left: 50px;
 }
 
-.showcase .medium {
+#showcase .medium {
     box-sizing: border-box;
     position: relative;
     width: var(--width-m);
@@ -83,17 +83,17 @@
     overflow: hidden;
 }
 
-.showcase .medium .screen {
+#showcase .medium .screen {
     height: var(--height-m);
     padding-top: 28px;
 }
 
-.showcase .medium .screen img {
+#showcase .medium .screen img {
     max-width: calc(100% - 82px);
     margin-left: 41px;
 }
 
-.showcase .medium .bottom-bar {
+#showcase .medium .bottom-bar {
     width: 90%;
     height: 30px;
     margin-left: 5%;
@@ -101,7 +101,7 @@
     border-radius: 7px;
 }
 
-.showcase .small {
+#showcase .small {
     box-sizing: border-box;
     position: relative;
     width: var(--width-s);
@@ -114,25 +114,25 @@
     gap: 7px;
 }
 
-.showcase .small .top-bar {
+#showcase .small .top-bar {
     align-items: center;
     justify-content: center;
     height: 13px;
     padding: 0;
 }
 
-.showcase .small .screen {
+#showcase .small .screen {
     width: var(--width-s);
     height: calc(var(--height-s) - 45px);
     padding-top: 12px;
 }
 
-.showcase .small .screen img {
+#showcase .small .screen img {
     max-width: calc(100% - 10px);
     margin-left: 5px;
 }
 
-.showcase .small .bottom-bar {
+#showcase .small .bottom-bar {
     width: 70%;
     height: 7px;
     margin-left: 15%;

@@ -4,10 +4,12 @@ from src import constants, utils
 
 
 def generate_sitemap() -> None:
-    dictionaries = utils.load_dictionaries()
-    langs = sorted({key for key in dictionaries if key in dictionaries[key]})
+    dictionaries = utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL)
+    monolingual = sorted({key for key in dictionaries if key in dictionaries[key]})
     last_mod = f"</loc><lastmod>{datetime.now(tz=UTC).isoformat()[:10]}</lastmod></url>"
-    links: list[str] = [*[f"download/{lang}" for lang in langs], "hall-of-fame", "list"]
+    links: list[str] = [*[f"download/{lang}" for lang in monolingual], "hall-of-fame", "list"]
+    for lang_src, langs_dst in dictionaries.items():
+        links.extend(f"get/{lang_src}/{lang_dst}" for lang_dst, details in langs_dst.items() if lang_src != lang_dst)
 
     content = "\n".join(
         [

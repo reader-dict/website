@@ -253,13 +253,28 @@ def downloads_bilingual(lang_src: str, lang_dst: str) -> str:
         else f"{localized_src} - {localized_dst} bilingual dictionary"
     )
     last_updated = utils.get_last_modification_time(dictionary)
-    return render(
-        "download",
-        dictionary=dictionary,
-        last_updated=last_updated,
-        links=links,
-        title=title,
+    return render("download", dictionary=dictionary, last_updated=last_updated, links=links, title=title)
+
+
+@app.get("/get/<lang_src>/<lang_dst>")
+@bottle_file_cache.cache()
+def landing_page_bilingual(lang_src: str, lang_dst: str) -> str:
+    try:
+        dictionary = utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_DOWNLOAD)[lang_src][lang_dst]
+    except KeyError:
+        log.error(  # noqa: TRY400
+            "[/get bilingual] The dictionary %s-%s does not exist, or is disabled", lang_src, lang_dst
+        )
+        raise bottle.HTTPError(status=404) from None
+
+    localized_dst = utils.language(lang_dst)
+    localized_src = utils.language(lang_src)
+    title = (
+        f"{localized_src} {localized_dst} dictionary"
+        if lang_src == "all"
+        else f"{localized_src} - {localized_dst} bilingual dictionary"
     )
+    return render("landing", dictionary=dictionary, last_updated=dictionary["updated"], title=title)
 
 
 @app.get("/enjoy")

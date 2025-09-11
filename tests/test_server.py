@@ -265,7 +265,7 @@ def test_downloads_bilingual_purchase_dictionary(app: TestApp, mock_responses: G
     utils.store_order(ORDER_P)
 
     response = app.get("/download/eo/fr", params={"checkpoint": checkpoint_good(PURCHASE_ID), "order": PURCHASE_ID})
-    assert "Your dictionary is ready" in response
+    assert "Esperanto - French dictionary" in response
 
 
 @responses.activate()
@@ -280,7 +280,7 @@ def test_downloads_bilingual_purchase_dictionary_override(
     utils.store_order(order)
 
     response = app.get("/download/eo/eo", params={"checkpoint": checkpoint_good(PURCHASE_ID), "order": PURCHASE_ID})
-    assert "Your dictionary is ready" in response
+    assert "Esperanto dictionary" in response
     assert (
         next(
             record.getMessage()
@@ -301,7 +301,7 @@ def test_downloads_bilingual_subscription(app: TestApp, mock_responses: Generato
         "/download/eo/fr",
         params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
     )
-    assert "Your dictionary is ready" in response
+    assert "Esperanto - French dictionary" in response
 
 
 @responses.activate()
@@ -320,7 +320,7 @@ def test_downloads_bilingual_subscription_dictionary_override(
             "/download/eo/eo",
             params={"checkpoint": checkpoint_good(SUBSCRIPTION_ID), "order": SUBSCRIPTION_ID},
         )
-        assert "Your dictionary is ready" in response
+        assert "Esperanto dictionary" in response
         if should_be_cached:
             assert bottle_file_cache.CONFIG.header_name in response.headers
         else:
@@ -348,7 +348,25 @@ def test_downloads_monolingual_unknown_dictionary(app: TestApp, caplog: pytest.L
 def test_downloads_monolingual(app: TestApp) -> None:
     for should_be_cached in [False, True]:
         response = app.get("/download/eo")
-        assert "Your dictionary is ready" in response
+        assert "Esperanto dictionary" in response
+        if should_be_cached:
+            assert bottle_file_cache.CONFIG.header_name in response.headers
+        else:
+            assert bottle_file_cache.CONFIG.header_name not in response.headers
+
+
+def test_landing_page_bilingual_unknown_dictionary(app: TestApp, caplog: pytest.LogCaptureFixture) -> None:
+    app.get("/get/eo/zz", status=404)
+    assert (
+        next(record.getMessage() for record in caplog.records if record.levelname == "ERROR")
+        == "[/get bilingual] The dictionary eo-zz does not exist, or is disabled"
+    )
+
+
+def test_landing_page_bilingual(app: TestApp) -> None:
+    for should_be_cached in [False, True]:
+        response = app.get("/get/eo/fr")
+        assert "Esperanto - French dictionary" in response
         if should_be_cached:
             assert bottle_file_cache.CONFIG.header_name in response.headers
         else:
@@ -463,7 +481,7 @@ def test_security(app: TestApp) -> None:
 def test_sitemap(app: TestApp) -> None:
     response = app.get("/sitemap.xml")
     urls_count = response.body.count(b"<url>")
-    assert urls_count == len(server.SUPPORTED_LOCALES) + 2
+    assert urls_count > len(server.SUPPORTED_LOCALES) + 2
 
 
 #
