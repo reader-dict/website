@@ -39,12 +39,22 @@ function adaptLangDstOptions() {
 	select_lang_dst.options[0].selected = true;
 }
 
-function currentLangSrc() {
-	return select_lang_src.options[select_lang_src.selectedIndex].value;
+function adjustDictionaryInformation() {
+	const { formats, updated, words } =
+		metrics[currentLangSrc()][currentLangDst()];
+
+	words_count.innerHTML = words.toLocaleString(locale);
+	wiktionary_snapshot.innerHTML = updated;
+	missing_mobi.style.display = formats.includes("mobi") ? "none" : "block";
+	missing_pocket.style.display = formats.includes("pocket") ? "none" : "block";
 }
 
 function currentLangDst() {
 	return select_lang_dst.options[select_lang_dst.selectedIndex].value;
+}
+
+function currentLangSrc() {
+	return select_lang_src.options[select_lang_src.selectedIndex].value;
 }
 
 function fetchMetrics() {
@@ -73,6 +83,26 @@ function fireBuyLink() {
 			console.debug(data);
 			window.location = `${buy_url}?client_reference_id=${client_reference_id}`;
 		});
+}
+
+function openTab(idx) {
+	tabs_icons.forEach((item, idx_item) => {
+		if (idx === idx_item) {
+			item.classList.add("active");
+		} else {
+			item.classList.remove("active");
+		}
+	});
+	tabs_content.forEach((item, idx_item) => {
+		item.style.display = idx === idx_item ? "block" : "none";
+	});
+	return false;
+}
+
+function openDownloadPage() {
+	const lang = select_lang_mono.options[select_lang_mono.selectedIndex].value;
+
+	window.location = `/download/${lang}`;
 }
 
 function scrollToLocViaAnchor() {
@@ -130,6 +160,18 @@ function scrollToLocViaAnchor() {
 	}
 }
 
+function setupTabs() {
+	tabs_icons.forEach((item, idx_item) => {
+		item.addEventListener("click", (event) => {
+			openTab(idx_item);
+		});
+	});
+	tabs_content.forEach((item, idx_item) => {
+		item.id = `tab${idx_item}`;
+	});
+	openTab(0);
+}
+
 function toTitle(str) {
 	// Source: https://stackoverflow.com/a/64910248/1117028
 	let upper = true;
@@ -146,48 +188,6 @@ function toTitle(str) {
 		upper = false;
 	}
 	return newStr;
-}
-
-function adjustDictionaryInformation() {
-	const { formats, updated, words } =
-		metrics[currentLangSrc()][currentLangDst()];
-
-	words_count.innerHTML = words.toLocaleString(locale);
-	wiktionary_snapshot.innerHTML = updated;
-	missing_mobi.style.display = formats.includes("mobi") ? "none" : "block";
-	missing_pocket.style.display = formats.includes("pocket") ? "none" : "block";
-}
-
-function openTab(idx) {
-	tabs_icons.forEach((item, idx_item) => {
-		if (idx === idx_item) {
-			item.classList.add("active");
-		} else {
-			item.classList.remove("active");
-		}
-	});
-	tabs_content.forEach((item, idx_item) => {
-		item.style.display = idx === idx_item ? "block" : "none";
-	});
-	return false;
-}
-
-function openDownloadPage() {
-	const lang = select_lang_mono.options[select_lang_mono.selectedIndex].value;
-
-	window.location = `/download/${lang}`;
-}
-
-function setupTabs() {
-	tabs_icons.forEach((item, idx_item) => {
-		item.addEventListener("click", (event) => {
-			openTab(idx_item);
-		});
-	});
-	tabs_content.forEach((item, idx_item) => {
-		item.id = `tab${idx_item}`;
-	});
-	openTab(0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
