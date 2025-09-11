@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width">
 
 	<meta property="og:description" content="{{ constants.HEADER_DESC }}">
-	<meta property="og:image" content="/asset/img/favicon.svg?v={{ version }}">
+	<meta property="og:image" content="/asset/img/share-header.svg?v={{ version }}">
 	<meta property="og:locale" content="en_EN">
 	<meta property="og:site_name" content="{{ constants.PROJECT }}">
 	<meta property="og:title" content="{{ constants.PROJECT }} — {{ constants.HEADER_DESC }}">
@@ -19,7 +19,7 @@
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="{{ constants.PROJECT }} — {{ constants.HEADER_DESC }}">
 	<meta name="twitter:description" content="{{ constants.HEADER_DESC }}">
-	<meta name="twitter:image" content="/asset/img/favicon.svg?v={{ version }}">
+	<meta name="twitter:image" content="/asset/img/share-header.svg?v={{ version }}">
 	<meta property="twitter:domain" content="{{ constants.WWW }}">
 	<meta property="twitter:url" content="{{ url_pure }}">
 
