@@ -91,12 +91,12 @@ def test_handle_webhook_purchase_completed(mock_responses: Generator) -> None:
 
     event = {"data": {"object": STRIPE_CHECKOUT_SESSION_DATA}, "type": constants.STRIPE_EVENT_PURCHASE_COMPLETED}
     handler = handlers.get("stripe")
-    assert '"status": "ok"' in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["status"] == "ok"
 
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: ORDER}
 
     # Idempotency
-    assert "purchase ID already exists" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "purchase ID already exists"
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: ORDER}
 
 
@@ -106,7 +106,7 @@ def test_handle_webhook_purchase_refunded() -> None:
 
     event = {"data": {"object": STRIPE_REFUND_DATA}, "type": constants.STRIPE_EVENT_PURCHASE_REFUNDED}
     handler = handlers.get("stripe")
-    assert '"status": "ok"' in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["status"] == "ok"
 
     updated = deepcopy(ORDER)
     updated.status = "refunded"
@@ -114,14 +114,14 @@ def test_handle_webhook_purchase_refunded() -> None:
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: updated}
 
     # Idempotency
-    assert "purchase unchanged" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "purchase unchanged"
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: updated}
 
 
 def test_handle_webhook_purchase_refunded_no_such_order() -> None:
     event = {"data": {"object": STRIPE_REFUND_DATA}, "type": constants.STRIPE_EVENT_PURCHASE_REFUNDED}
     handler = handlers.get("stripe")
-    assert "no such purchase" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "no such purchase"
 
 
 @responses.activate()
@@ -130,8 +130,7 @@ def test_register_order_ids_mismatch(mock_responses: Generator) -> None:
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: ORDER}
 
     handler = handlers.get("stripe")
-    ret = handler.register_order("falsified-id", STRIPE_CHECKOUT_SESSION_ID)
-    assert "order ID mismatch" in ret
+    assert handler.register_order("falsified-id", STRIPE_CHECKOUT_SESSION_ID)["message"] == "order ID mismatch"
 
     utils.store_order(ORDER)
     assert utils.load_orders() == {STRIPE_PURCHASE_ID: ORDER}
@@ -141,4 +140,4 @@ def test_register_order_ids_mismatch(mock_responses: Generator) -> None:
 def test_handle_webhook_uninteresting() -> None:
     event = {"data": {"object": STRIPE_REFUND_DATA}, "type": "foo"}
     handler = handlers.get("stripe")
-    assert "event not interesting" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "event not interesting"

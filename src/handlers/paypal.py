@@ -1,5 +1,4 @@
 import base64
-import json
 import logging
 import zlib
 from collections.abc import Callable
@@ -116,46 +115,46 @@ class Handler(base.Handler):
             return False
         return True
 
-    def handle_webhook(self, event: dict) -> str:  # noqa: PLR0911
+    def handle_webhook(self, event: dict) -> dict[str, str]:  # noqa: PLR0911
         match event["event_type"]:
             case constants.PAYPAL_EVENT_PURCHASE_REFUNDED:
                 invoice_id = event["resource"]["invoice_id"]
                 if not (order := utils.get_order_from_invoice(invoice_id) or utils.get_order(invoice_id)):
-                    return json.dumps({"status": "error", "message": "no such purchase"})
+                    return {"status": "error", "message": "no such purchase"}
 
                 if order.status == "refunded":
-                    return json.dumps({"status": "info", "message": "purchase unchanged"})
+                    return {"status": "info", "message": "purchase unchanged"}
 
                 order.status = "refunded"
                 order.status_update_time = datetime.now(tz=UTC).isoformat()
                 utils.store_order(order)
-                return json.dumps({"status": "ok", "message": "purchase status updated"})
+                return {"status": "ok", "message": "purchase status updated"}
 
             case constants.PAYPAL_EVENT_SUBSCRIPTION_CANCELLED:
                 if not (order := utils.get_order(event["resource"]["id"])):
-                    return json.dumps({"status": "error", "message": "no such subscription"})
+                    return {"status": "error", "message": "no such subscription"}
 
                 if order.status == (status := event["resource"]["status"].lower()):
-                    return json.dumps({"status": "info", "message": "subscription unchanged"})
+                    return {"status": "info", "message": "subscription unchanged"}
 
                 order.status = status
                 order.status_update_time = event["resource"]["status_update_time"]
                 utils.store_order(order)
-                return json.dumps({"status": "ok", "message": "subscription status updated"})
+                return {"status": "ok", "message": "subscription status updated"}
 
             case constants.PAYPAL_EVENT_SUBSCRIPTION_SUSPENDED:
                 if not (order := utils.get_order(event["resource"]["id"])):
-                    return json.dumps({"status": "error", "message": "no such subscription"})
+                    return {"status": "error", "message": "no such subscription"}
 
                 if order.status == "suspended":
-                    return json.dumps({"status": "info", "message": "subscription unchanged"})
+                    return {"status": "info", "message": "subscription unchanged"}
 
                 order.status = "suspended"
                 order.status_update_time = event["resource"]["update_time"]
                 utils.store_order(order)
-                return json.dumps({"status": "ok", "message": "subscription status updated"})
+                return {"status": "ok", "message": "subscription status updated"}
 
-        return json.dumps({"status": "info", "message": "event not interesting"})
+        return {"status": "info", "message": "event not interesting"}
 
     @access_token_refresher
     def _fetch_order_impl(self, kind: str, order_id: str) -> Order:

@@ -122,8 +122,8 @@ def api_webhook(source: str) -> str:
     handler = handlers.get(source)
     if handler.is_valid_webhook_event(headers, payload):
         resp = handler.handle_webhook(json.loads(payload))
-        log.info("[%s] Webhook order handled: %s", source, resp)
-        return resp
+        log.info("[%s] Webhook order handled, status: %s", source, resp["status"])
+        return json.dumps(resp)
 
     log.error("[%s] Webhook signature failed", source)
     return '{"error": "webhook signature failed"}'

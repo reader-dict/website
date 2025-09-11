@@ -1,5 +1,4 @@
 import hmac
-import json
 import logging
 from contextlib import suppress
 from datetime import UTC, datetime
@@ -39,7 +38,7 @@ class Handler(base.Handler):
         expected_sig = hmac.new(constants.STRIPE_WEBHOOK_SEC_KEY.encode(), signed_payload.encode(), sha256).hexdigest()
         return any(hmac.compare_digest(expected_sig, sig) for sig in signatures)
 
-    def handle_webhook(self, event: dict) -> str:
+    def handle_webhook(self, event: dict) -> dict[str, str]:
         data = event["data"]["object"]
         order_id = data["payment_intent"]
 
@@ -50,17 +49,17 @@ class Handler(base.Handler):
 
             case constants.STRIPE_EVENT_PURCHASE_REFUNDED:
                 if not (order := utils.get_order(order_id)):
-                    return json.dumps({"status": "error", "message": "no such purchase"})
+                    return {"status": "error", "message": "no such purchase"}
 
                 if not (data["refunded"] and data["captured"] and data["paid"] and order.status != "refunded"):
-                    return json.dumps({"status": "info", "message": "purchase unchanged"})
+                    return {"status": "info", "message": "purchase unchanged"}
 
                 order.status = "refunded"
                 order.status_update_time = datetime.fromtimestamp(data["created"], UTC).isoformat()
                 utils.store_order(order)
-                return json.dumps({"status": "ok", "message": "purchase status updated"})
+                return {"status": "ok", "message": "purchase status updated"}
 
-        return json.dumps({"status": "info", "message": "event not interesting"})
+        return {"status": "info", "message": "event not interesting"}
 
     def _fetch_order_impl(self, kind: str, order_id: str) -> Order:  # noqa: ARG002
         """Note: `order_id` is actually the checkout session ID."""

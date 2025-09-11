@@ -93,19 +93,19 @@ def test_handle_webhook_purchase_refunded(mock_responses: Generator) -> None:
     updated.status = "refunded"
     updated.status_update_time = STATUS_UPDATE_TIME
     handler = handlers.get("paypal")
-    assert '"status": "ok"' in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["status"] == "ok"
 
     assert utils.load_orders() == {PURCHASE_ID: updated}
 
     # Idempotency
-    assert "purchase unchanged" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "purchase unchanged"
     assert utils.load_orders() == {PURCHASE_ID: updated}
 
 
 def test_handle_webhook_purchase_refunded_no_such_order() -> None:
     event = {"event_type": constants.PAYPAL_EVENT_PURCHASE_REFUNDED, "resource": {"invoice_id": "capture-id"}}
     handler = handlers.get("paypal")
-    assert "no such purchase" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "no such purchase"
 
 
 @responses.activate()
@@ -120,12 +120,12 @@ def test_handle_webhook_subscription_cancelled(mock_responses: Generator) -> Non
     updated.status = "cancelled"
     updated.status_update_time = "cancelled_time"
     handler = handlers.get("paypal")
-    assert '"status": "ok"' in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["status"] == "ok"
 
     assert utils.load_orders() == {SUBSCRIPTION_ID: updated}
 
     # Idempotency
-    assert "subscription unchanged" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "subscription unchanged"
     assert utils.load_orders() == {SUBSCRIPTION_ID: updated}
 
 
@@ -136,7 +136,7 @@ def test_handle_webhook_subscription_cancelled_no_such_order(mock_responses: Gen
         "resource": {"id": SUBSCRIPTION_ID, "status": "CANCELLED", "status_update_time": "cancelled_time"},
     }
     handler = handlers.get("paypal")
-    assert "no such subscription" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "no such subscription"
 
 
 @responses.activate()
@@ -151,12 +151,12 @@ def test_handle_webhook_subscription_suspended(mock_responses: Generator) -> Non
     updated.status = "suspended"
     updated.status_update_time = "suspended_time"
     handler = handlers.get("paypal")
-    assert '"status": "ok"' in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["status"] == "ok"
 
     assert utils.load_orders() == {SUBSCRIPTION_ID: updated}
 
     # Idempotency
-    assert "subscription unchanged" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "subscription unchanged"
     assert utils.load_orders() == {SUBSCRIPTION_ID: updated}
 
 
@@ -167,14 +167,14 @@ def test_handle_webhook_subscription_suspended_no_such_order(mock_responses: Gen
         "resource": {"id": SUBSCRIPTION_ID, "update_time": "suspended_time"},
     }
     handler = handlers.get("paypal")
-    assert "no such subscription" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "no such subscription"
 
 
 @responses.activate()
 def test_handle_webhook_uninteresting() -> None:
     event = {"event_type": "foo"}
     handler = handlers.get("paypal")
-    assert "event not interesting" in handler.handle_webhook(event)
+    assert handler.handle_webhook(event)["message"] == "event not interesting"
 
 
 @pytest.mark.parametrize("status", ["COMPLETED", "REFUNDED"])
