@@ -186,8 +186,8 @@
 	<div class="space-1"></div>
 	<div class="purchase-card">
 		<div class="title typo-4">One-time licence</div>
-		<div class="description typo-6">Bi-monthly updates, improvements, and evolving word coverage.</div>
-		<div class="price typo-4">€{{ constants.PRICE_UNIQUE }}</div>
+		<div class="description typo-6">Pay one time, get <b>lifetime</b> access to the evolving dictionary.</div>
+		<div class="price typo-4"><span class="color-flint">€</span> {{ constants.PRICE_UNIQUE }}</div>
 		<div class="benefits">
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
