@@ -443,7 +443,7 @@
     left: -5%;
     white-space: nowrap;
     display: block;
-    transform: rotate(-15deg);
+    transform: rotate(15deg);
 }
 
 
@@ -497,6 +497,10 @@
 
     .purchase-card {
         box-sizing: border-box;
+    }
+
+    .purchase-card .price-full {
+        font-size: 24px;
     }
 }
 
