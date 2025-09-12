@@ -104,20 +104,6 @@
     content: "\e09c";
 }
 
-/* .typo-lg {
-    font-size: 68px;
-    font-weight: 900;
-    letter-spacing: -4%;
-    line-height: 120%;
-}
-
-.typo-lg {
-    font-size: 68px;
-    font-weight: ;
-    letter-spacing: -4%;
-    line-height: 120%;
-} */
-
 /* Typography defined in the order as found in the branding PDF, page 9. */
 .typo-4 {
     font-size: 44px;
@@ -159,6 +145,7 @@
     --stone-400: #A8A29E;
     --stone-800: #292524;
     --gravel: #F5F5F4;
+    --red-500: oklch(63.7% 0.237 25.331);
 }
 
 .color-flint {
