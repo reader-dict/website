@@ -68,9 +68,6 @@ BUY_URL = os.environ["BUY_URL"]
 
 # GlitchTip for errors reporting
 SENTRY_DSN_BACKEND = os.environ["SENTRY_DSN_BACKEND"]
-SENTRY_DSN_FRONTEND = os.environ["SENTRY_DSN_FRONTEND"]
-SENTRY_ENV_DEV = "development"
-SENTRY_ENV_PROD = "production"
 
 # SMPT stuff
 SMTP_PASSWORD = os.environ["SMTP_PASSWORD"]

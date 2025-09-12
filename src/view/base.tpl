@@ -68,14 +68,6 @@
 	</footer>
 	{%- block scripts -%}{%- endblock -%}
 	{%- if not debug -%}
-		<script src="https://browser.sentry-cdn.com/9.22.0/bundle.min.js" crossorigin="anonymous"></script>
-		<script>
-			Sentry.init({
-				dsn: "{{ constants.SENTRY_DSN_FRONTEND }}",
-				environment: "{{ sentry_environment }}",
-				release: "{{ sentry_release }}",
-			});
-		</script>
 		<script>
 			var _paq = window._paq = window._paq || [];
 			_paq.push(["setDomains", ["*.www.reader-dict.com/metrics"]]);

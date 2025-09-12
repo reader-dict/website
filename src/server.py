@@ -15,19 +15,11 @@ log = logging.getLogger(__name__)
 app = bottle.default_app()
 CSP_NONCE = str(ulid.ULID())
 
-# Inspired from `secure.Preset.STRICT` + tweaks for PayPal integration
+# Inspired from `secure.Preset.STRICT` + tweaks for inline font
 secure_headers = secure.Secure(
     coep=secure.CrossOriginEmbedderPolicy().unsafe_none(),
     coop=secure.CrossOriginOpenerPolicy().same_origin_allow_popups(),
-    # csp=secure.ContentSecurityPolicy()  # noqa: ERA001
-    # .base_uri("'none'")
-    # .default_src("'self'")
-    # .frame_ancestors("'none'")
-    # .frame_src("none' https://www.paypal.com")
-    # .img_src("'self' https://www.paypalobjects.com")
-    # .object_src("'none'")
-    # .script_src("'self' https://www.paypal.com https://browser.sentry-cdn.com")
-    # .style_src("'self'"),
+    csp=secure.ContentSecurityPolicy().style_src("'self'"),
     hsts=secure.StrictTransportSecurity().max_age(63072000).include_subdomains().preload(),
     permissions=secure.PermissionsPolicy().geolocation().microphone().camera(),
     referrer=secure.ReferrerPolicy().strict_origin_when_cross_origin(),
@@ -54,8 +46,6 @@ def render(tpl: str, **kwargs: Any) -> str:  # noqa: ANN401
         "debug": bottle.DEBUG,
         "page": tpl,
         "request": bottle.request,
-        "sentry_environment": constants.SENTRY_ENV_DEV if bottle.DEBUG else constants.SENTRY_ENV_PROD,
-        "sentry_release": __version__,
         "title": constants.HEADER_SLOGAN,
         "language": utils.language,
         "url": bottle.request.url,

@@ -12,6 +12,6 @@ logging.basicConfig(
     level=logging.INFO,
 )
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
-sentry_sdk.init(constants.SENTRY_DSN_BACKEND, environment=constants.SENTRY_ENV_PROD, release=__version__)
+sentry_sdk.init(constants.SENTRY_DSN_BACKEND, environment="production", release=__version__)
 
 application = server.app
