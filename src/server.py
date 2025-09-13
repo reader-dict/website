@@ -6,6 +6,7 @@ from typing import Any
 
 import bottle
 import bottle_file_cache
+import minify_html
 import rcssmin
 import rjsmin
 import secure
@@ -55,7 +56,7 @@ def render(tpl: str, **kwargs: Any) -> str:  # noqa: ANN401
         "version": uuid.uuid4() if bottle.DEBUG else __version__,
         "year": YEAR,
     } | kwargs
-    return bottle.jinja2_template(tpl, template_lookup=[constants.VIEW], **variables)
+    return minify_html.minify(bottle.jinja2_template(tpl, template_lookup=[constants.VIEW], **variables))
 
 
 @app.hook("after_request")

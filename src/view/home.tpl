@@ -188,7 +188,7 @@
 	<div class="purchase-card">
 		<div class="title typo-4">One-time licence</div>
 		<div class="description typo-6">Pay one time, get <b>lifetime</b> access to the evolving dictionary.</div>
-		<div class="price-full typo-4"><span>Will be: <strike>€&thinsp;{{ constants.PRICE_UNIQUE_FINAL }}</strike></span> <small>(25% off)</small></div>
+		<div class="price-full typo-4"><span>Will be: <del>€&thinsp;{{ constants.PRICE_UNIQUE_FINAL }}</del></span> <small>(25% off)</small></div>
 		<div class="price typo-4"><sup>€</sup>&thinsp;{{ constants.PRICE_UNIQUE }}</div>
 		<div class="benefits">
 			<div class="item">

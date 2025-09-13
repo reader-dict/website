@@ -401,7 +401,7 @@
 
 .purchase-card .title {
     color: light-dark(var(--gravel), var(--graphite));
-    font-size: 16px;
+    font-size: 20px;
     line-height: 20px;
 }
 
@@ -427,12 +427,13 @@
     color: var(--red-500);
 }
 
-.purchase-card .price-full strike {
+.purchase-card .price-full del {
     text-decoration: none;
     position: relative;
+    margin-right: 10px;
 }
 
-.purchase-card .price-full strike::before {
+.purchase-card .price-full del::before {
     top: 50%;
     background: var(--red-500);
     content: '';
@@ -573,6 +574,7 @@
 
 .reviews .dictionary i {
     font-weight: bolder;
+    margin-right: 5px;
 }
 
 .reviews .dictionary a {

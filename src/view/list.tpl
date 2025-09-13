@@ -17,7 +17,7 @@
 	<div id="bilingual" class="typo-5">Bilingual</div>
 	<ol>
 		{%- for lang_src in dictionaries if lang_src != "all" -%}
-			<div id="{{ lang_src }}" class="typo-6 color-flint">{{ lang_src|upper }} - {{ language(lang_src) }}</div>
+			<div id="{{ lang_src }}" class="typo-6 color-flint"><a href="#{{ lang_src }}">{{ lang_src|upper }}</a> - {{ language(lang_src) }}</div>
 			{%- for lang_dst in dictionaries[lang_src] if lang_src != lang_dst -%}
 				<li><a href="/#{{ lang_src }}-{{ lang_dst }}" class="unstyled">{{ "Bilingual <b>%s - %s</b> dictionary" % (language(lang_src), language(lang_dst)) }}</a></li>
 			{%- endfor -%}
