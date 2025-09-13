@@ -11,6 +11,10 @@ dd div:not(:last-child) {
     margin-bottom: .3em;
 }
 
+div i+a {
+    padding-left: 5px;
+}
+
 .subscription-countdown {
     font-size: 1.1em;
     padding: 1em;
