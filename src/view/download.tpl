@@ -1,7 +1,8 @@
 {% extends "base.tpl" %}
 
 {% block styles %}
-    <link rel="stylesheet" href="/asset/style/download.css?v={{ version }}" />
+	<link rel="preload" href="/asset/style/download.css?v={{ version }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<noscript><link rel="stylesheet" href="/asset/style/download.css?v={{ version }}" /></noscript>
 {% endblock %}
 
 {% block content %}

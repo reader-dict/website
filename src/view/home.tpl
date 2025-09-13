@@ -1,7 +1,8 @@
 {%- extends "base.tpl" -%}
 
 {%- block styles -%}
-    <link rel="stylesheet" href="/asset/style/home.css?v={{ version }}" />
+	<link rel="preload" href="/asset/style/home.css?v={{ version }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<noscript><link rel="stylesheet" href="/asset/style/home.css?v={{ version }}" /></noscript>
 {%- endblock -%}
 
 {%- block content -%}
@@ -68,8 +69,8 @@
 	<div class="space-2"></div>
 
 	<div class="compat typo-6">
-		<div class="left">Compatible with Kindle, Kobo, KOReader, GoldenDict, and more.</div>
-		<div class="right"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
+		<div class="left color-flint">Compatible with Kindle, Kobo, KOReader, GoldenDict, and more.</div>
+		<div class="right color-flint"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
 	</div>
 
 	<div class="space-5"></div>
@@ -165,7 +166,7 @@
 	<div class="space-1"></div>
 	<div class="langs">
 		<div class="left">
-			<label class="typo-4">Source language</label>
+			<label for="lang-src" class="typo-4">Source language</label>
 			<select id="lang-src" name="lang-src">
 				<option value="all" title="Universal dictionary">All - Universal</option>
                 {%- for lang_src in dictionaries if lang_src != "all" -%}
@@ -175,7 +176,7 @@
 			</select>
 		</div>
 		<div class="right">
-			<label class="typo-4">Destination language</label>
+			<label for="lang-dst" class="typo-4">Destination language</label>
 			<select id="lang-dst" name="lang-dst"></select>
 		</div>
 	</div>
@@ -218,7 +219,7 @@
 
 	<div class="monolingual">
 		<div class="left">
-			<div class="title typo-5">Or get a monolingual version for free</div>
+			<div class="title typo-5"><label for="lang-mono">Or get a monolingual version for free</label></div>
 		</div>
 		<div class="right">
 			<select id="lang-mono" name="lang-mono">
@@ -258,8 +259,8 @@
                 {%- endif -%}
                 <div class="details">
                     <div class="reader typo-5">{{ review["reader"] }}</div>
-                    <div class="device typo-6">{{ review["device"] }}</div>
-                    <div class="dictionary typo-6">{{ review["dictionaries"] | join(", ") }}</div>
+                    <div class="device typo-6 color-flint">{{ review["device"] }}</div>
+                    <div class="dictionary typo-6 color-flint"><i class="ph ph-books"></i> {{ review["dictionaries"] | join(", ") }}</div>
                 </div>
             </div>
         {% endfor %}

@@ -1,9 +1,5 @@
 {% extends "base.tpl" %}
 
-{% block styles %}
-    <link rel="stylesheet" href="/asset/style/download.css?v={{ version }}" />
-{% endblock %}
-
 {% block content %}
     {% set lang_src, lang_dst = dictionary["name"].split("-", 1) %}
     {% set name = language(lang_src) if lang_src == lang_dst else "%s - %s" % (language(lang_src), language(lang_dst)) %}
@@ -26,6 +22,5 @@
     <p class="center"><a class="button" href="/#{{ dictionary['name'] }}">Get your <b>{{ name }}</b> dictionary</a></p>
 
     <div class="space-1"></div>
-
 
 {% endblock %}

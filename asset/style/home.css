@@ -166,7 +166,7 @@
     width: 100%;
     height: 100%;
     padding: 8px 16px;
-    opacity: 0.50;
+    opacity: 0.80;
     border-radius: 9999px;
     outline: 1px var(--stone-300) solid;
     outline-offset: -1px;
@@ -571,13 +571,8 @@
     font-size: 16px;
 }
 
-.reviews .device {
-    color: light-dark(var(--flint), var(--stone-400));
-}
-
-.reviews .dictionary {
-    padding-top: 8px;
-    color: light-dark(var(--stone-400), var(--flint));
+.reviews .dictionary i {
+    font-weight: bolder;
 }
 
 .reviews .dictionary a {
@@ -659,7 +654,6 @@ summary::-webkit-details-marker {
 
 article {
     padding-top: 12px;
-    color: light-dark(var(--flint), var(--stone-400));
 }
 
 @media (max-width: 700px) {

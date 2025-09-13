@@ -6,6 +6,8 @@ from typing import Any
 
 import bottle
 import bottle_file_cache
+import rcssmin
+import rjsmin
 import secure
 import ulid
 
@@ -117,6 +119,38 @@ def api_webhook(source: str) -> str:
 
     log.error("[%s] Webhook signature failed", source)
     return '{"error": "webhook signature failed"}'
+
+
+@app.get(r"/asset/style/<file:re:\w+\.css>")
+# @bottle_file_cache.cache(params=["v"])
+def asset_css(file: str) -> bottle.HTTPResponse:
+    try:
+        content = (constants.ASSET / "style" / file).read_text(encoding=constants.ENCODING)
+    except FileNotFoundError:
+        raise bottle.HTTPError(status=404) from None
+
+    cache_file = constants.FILES_CACHE / f"{file}.min.css"
+    cache_file.write_text(rcssmin.cssmin(content), encoding=constants.ENCODING)
+
+    response = bottle.static_file(cache_file.name, root=constants.FILES_CACHE)
+    response.set_header("Cache-Control", "public, max-age=31536000, immutable")
+    return response
+
+
+@app.get(r"/asset/script/<file:re:\w+\.js>")
+# @bottle_file_cache.cache(params=["v"])
+def asset_js(file: str) -> bottle.HTTPResponse:
+    try:
+        content = (constants.ASSET / "script" / file).read_text(encoding=constants.ENCODING)
+    except FileNotFoundError:
+        raise bottle.HTTPError(status=404) from None
+
+    cache_file = constants.FILES_CACHE / f"{file}.min.js"
+    cache_file.write_text(rjsmin.jsmin(content), encoding=constants.ENCODING)
+
+    response = bottle.static_file(cache_file.name, root=constants.FILES_CACHE)
+    response.set_header("Cache-Control", "public, max-age=31536000, immutable")
+    return response
 
 
 @app.get("/asset/<kind>/<file>")
@@ -299,31 +333,26 @@ def list_all() -> str:
 
 
 @app.get("/ads.txt")
-@bottle_file_cache.cache()
 def ads() -> bottle.HTTPResponse:
     return bottle.static_file("ads.txt", root=constants.ASSET)
 
 
 @app.get("/humans.txt")
-@bottle_file_cache.cache()
 def humans() -> bottle.HTTPResponse:
     return bottle.static_file("humans.txt", root=constants.ASSET)
 
 
 @app.get("/robots.txt")
-@bottle_file_cache.cache()
 def robots() -> bottle.HTTPResponse:
     return bottle.static_file("robots.txt", root=constants.ASSET)
 
 
 @app.get("/.well-known/security.txt")
-@bottle_file_cache.cache()
 def security() -> bottle.HTTPResponse:
     return bottle.static_file("security.txt", root=constants.ASSET)
 
 
 @app.get("/sitemap.xml")
-@bottle_file_cache.cache()
 def sitemap() -> bottle.HTTPResponse:
     return bottle.static_file("sitemap.xml", root=constants.ASSET)
 

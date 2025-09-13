@@ -112,6 +112,8 @@ def test_asset(kind: str, file: str, app: TestApp) -> None:
     ("kind", "file"),
     [
         ("img", "unknown.webp"),
+        ("style", "unknown.css"),
+        ("script", "unknown.js"),
         ("unknown", "/etc/passwd"),
     ],
 )
