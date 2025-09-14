@@ -313,10 +313,6 @@
 			<summary class="typo-5">What's the refund politic?</summary>
 			<article class="typo-6"><sup><a href="#faq-refund" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> A refund is possible on the sole condition that no file was downloaded. Logs are kept on the server side, and will be used to resolve any disputes.</article>
 		</details>
-		<details name="exclusive" id="faq-groups">
-			<summary class="typo-5">What about group and promotions?</summary>
-			<article class="typo-6"><sup><a href="#faq-groups" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Are you an institution, a teacher, or do you simply want to buy several copies? Would you like to offer coupons to your users? Get in touch!</article>
-		</details>
 	</div>
 {%- endblock -%}
 
