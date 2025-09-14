@@ -258,8 +258,12 @@
                 {%- endif -%}
                 <div class="details">
                     <div class="reader typo-5">{{ review["reader"] }}</div>
-                    <div class="device typo-6 color-flint">{{ review["device"] }}</div>
+                    {%- if review["device"] -%}
+					<div class="device typo-6 color-flint">{{ review["device"] }}</div>
+                    {%- endif -%}
+                    {%- if review["dictionaries"] -%}
                     <div class="dictionary typo-6 color-flint"><i class="ph ph-books"></i> {{ review["dictionaries"] | join(", ") }}</div>
+                    {%- endif -%}
                 </div>
             </div>
         {% endfor %}
