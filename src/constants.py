@@ -78,8 +78,7 @@ PEPPER = b64decode(os.environ["PEPPER"]).decode()
 ONE_MONTH = timedelta(days=365.25 / 12)
 EXPIRED = timedelta()
 
-PRICE_UNIQUE = 14.99
-PRICE_UNIQUE_FINAL = 19.99
+PRICE_UNIQUE = 9.99
 
 # Routes
 ROUTE_API_DICT = "/api/v1/dictionaries"

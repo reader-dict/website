@@ -411,46 +411,9 @@
     line-height: 17.50px;
 }
 
-.purchase-card .price-full {
-    color: light-dark(var(--stone-400), var(--flint));
-    margin-bottom: -30px;
-    font-weight: 400;
-    font-size: 28px;
-    letter-spacing: -2%;
-}
-
-.purchase-card .price-full span {
-    opacity: .8;
-}
-
-.purchase-card .price-full small {
-    color: var(--red-500);
-}
-
-.purchase-card .price-full del {
-    text-decoration: none;
-    position: relative;
-    margin-right: 10px;
-}
-
-.purchase-card .price-full del::before {
-    top: 50%;
-    background: var(--red-500);
-    content: '';
-    width: 110%;
-    position: absolute;
-    height: .1em;
-    border-radius: .1em;
-    left: -5%;
-    white-space: nowrap;
-    display: block;
-    transform: rotate(15deg);
-}
-
-
 .purchase-card .price {
-    color: var(--red-500);
-    line-height: 49px;
+    color: light-dark(var(--gravel), var(--graphite));
+    line-height: 50px;
 }
 
 .purchase-card .benefits {

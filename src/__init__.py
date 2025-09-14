@@ -4,10 +4,10 @@ You can always get the latest version at:
     https://github.com/reader-dict/website
 """
 
-__version__ = "52"
+__version__ = "51"
 __author__ = "Mickaël Schoentgen"
 __copyright__ = f"""
-Copyright (c) 2025, {__author__}
+Copyright (c) 2020-2025, {__author__}
 
 Permission to use, copy, modify, and distribute this software and its
 documentation for any purpose and without fee or royalty is hereby
