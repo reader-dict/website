@@ -87,10 +87,11 @@ def test_api_webhook_stripe(app: TestApp, mock_responses: Generator, caplog: pyt
     ]
 
 
-def test_api_pre_order(app: TestApp, caplog: pytest.LogCaptureFixture) -> None:
-    app.get(constants.ROUTE_API_PRE_ORDER, params={"client_reference_id": "cri-a-b"}, status=200)
+@responses.activate()
+def test_api_pre_order(app: TestApp, mock_responses: Generator, caplog: pytest.LogCaptureFixture) -> None:
+    app.get(f"{constants.ROUTE_API_PRE_ORDER}/a/b", status=200)
 
-    msg = "[/pre-order] Client reference ID 'cri-a-b' from IP 'unknown'"
+    msg = "[/pre-order] Client reference ID '01K4D2WZR8G1TG36RNF3020124-eo-fr' from IP 'unknown'"
     assert [record.getMessage() for record in caplog.records if record.levelname == "INFO"][-1] == msg
 
 

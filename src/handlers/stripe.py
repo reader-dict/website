@@ -18,6 +18,28 @@ SESSION.headers.update(constants.HTTP_HEADERS)
 SESSION.headers["Authorization"] = f"Bearer {constants.STRIPE_API_KEY}"
 
 
+def is_valid_client_id(value: str) -> bool:
+    with suppress(Exception):
+        ulid.ULID.from_str(value)
+        return True
+    return False
+
+
+def is_valid_dictionary(value: str) -> bool:
+    return bool(utils.get_dictionary_from_key("name", value))
+
+
+def extract_client_info(data: dict) -> tuple[str, str]:
+    """`client_reference_id` contains `ULID-LANG_SRC-LANG_DST`. Check the data syntax, and legitimity."""
+    if (reference := data.get("client_reference_id") or "").count("-") == 2:
+        client_id, dictionary = reference.split("-", 1)
+        if is_valid_client_id(client_id) and is_valid_dictionary(dictionary):
+            return client_id, dictionary
+
+    msg = f"[stripe, order ID={data['payment_intent']!r}] client_reference_id malformed: {reference!r}"
+    raise ValueError(msg)
+
+
 def purchase_status(data: dict) -> str:
     return (
         "completed"
@@ -28,6 +50,30 @@ def purchase_status(data: dict) -> str:
 
 class Handler(base.Handler):
     source = "stripe"
+
+    def create_checkout_session_url(self, lang_src: str, lang_dst: str) -> dict[str, str]:
+        dictionary = f"{lang_src}-{lang_dst}"
+        client_reference_id = f"{ulid.ULID()}-{dictionary}"
+        data = "&".join(
+            [
+                "mode=payment",
+                f"success_url=https://www.{constants.WWW}/enjoy",
+                f"cancel_url=https://www.{constants.WWW}/#{dictionary}",
+                f"client_reference_id={client_reference_id}",
+                f"line_items[0][price]={constants.STRIPE_PRICE_ID}",
+                "line_items[0][quantity]=1",
+                "custom_fields[0][key]=dictionary",
+                "custom_fields[0][label][type]=custom",
+                f"custom_fields[0][label][custom]={constants.PROJECT}",
+                "custom_fields[0][type]=text",
+                f"custom_fields[0][text][default_value]={dictionary}",
+            ]
+        )
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        with SESSION.post(constants.STRIPE_URL_CHECKOUT_SESSION, headers=headers, data=data, timeout=30) as req:
+            data = req.json()
+            req.raise_for_status()
+            return data
 
     def is_valid_webhook_event(self, headers: dict[str, str], payload: bytes) -> bool:
         header = headers["Stripe-Signature"]
@@ -63,7 +109,7 @@ class Handler(base.Handler):
 
     def _fetch_order_impl(self, kind: str, order_id: str) -> Order:  # noqa: ARG002
         """Note: `order_id` is actually the checkout session ID."""
-        url = constants.STRIPE_URL_CHECKOUT_SESSION.format(order_id)
+        url = f"{constants.STRIPE_URL_CHECKOUT_SESSION}/{order_id}"
         with SESSION.get(url, timeout=30) as req:
             req.raise_for_status()
             data = req.json()
@@ -80,25 +126,3 @@ class Handler(base.Handler):
             ulid=client_id,
             user=data.get("customer_details", {}).get("name", "").split(" ", 1)[0],
         )
-
-
-def is_valid_client_id(value: str) -> bool:
-    with suppress(Exception):
-        ulid.ULID.from_str(value)
-        return True
-    return False
-
-
-def is_valid_dictionary(value: str) -> bool:
-    return bool(utils.get_dictionary_from_key("name", value))
-
-
-def extract_client_info(data: dict) -> tuple[str, str]:
-    """`client_reference_id` contains `ULID-LANG_SRC-LANG_DST`. Check the data syntax, and legitimity."""
-    if (reference := data.get("client_reference_id") or "").count("-") == 2:
-        client_id, dictionary = reference.split("-", 1)
-        if is_valid_client_id(client_id) and is_valid_dictionary(dictionary):
-            return client_id, dictionary
-
-    msg = f"[stripe, order ID={data['payment_intent']!r}] client_reference_id malformed: {reference!r}"
-    raise ValueError(msg)

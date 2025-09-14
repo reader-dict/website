@@ -71,17 +71,12 @@ function fetchMetrics() {
 }
 
 function fireBuyLink() {
-	const buy_url = buy_link.dataset.url;
-	const client_id = buy_link.dataset.cid;
-	const client_reference_id = `${client_id}-${currentLangSrc()}-${currentLangDst()}`;
-
-	fetch(`/api/v1/pre-order?client_reference_id=${client_reference_id}`)
+	fetch(`/api/v1/pre-order/${currentLangSrc()}/${currentLangDst()}`)
 		.then((response) => {
 			return response.json();
 		})
 		.then((data) => {
-			console.debug(data);
-			window.location = `${buy_url}?client_reference_id=${client_reference_id}`;
+			window.location = data.url;
 		});
 }
 

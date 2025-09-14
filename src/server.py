@@ -93,12 +93,13 @@ def api_dictionary_get() -> str:
     )
 
 
-@app.get(constants.ROUTE_API_PRE_ORDER)
-def api_pre_order() -> str:
+@app.get(f"{constants.ROUTE_API_PRE_ORDER}/<lang_src>/<lang_dst>")
+def api_pre_order(lang_src: str, lang_dst: str) -> dict[str, str]:
     bottle.response.content_type = "application/json"
-    client_reference_id = bottle.request.params.get("client_reference_id", "")
-    log.info("[/pre-order] Client reference ID %r from IP %r", client_reference_id, client_ip())
-    return '{"status": "ok"}'
+    stripe = handlers.get("stripe")
+    ret = stripe.create_checkout_session_url(lang_src, lang_dst)  # type: ignore[attr-defined]
+    log.info("[/pre-order] Client reference ID %r from IP %r", ret["client_reference_id"], client_ip())
+    return {"url": ret["url"]}
 
 
 @app.post(constants.ROUTE_API_WEBHOOK)

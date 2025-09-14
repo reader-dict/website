@@ -90,7 +90,11 @@ def mock_responses() -> None:
     responses.get(payloads.PAYPAL_CERT_URL, body=payloads.PAYPAL_CERT)
     responses.get(constants.PAYPAL_URL_PURCHASES.format(payloads.PURCHASE_ID), json=payloads.PURCHASE_DATA)
     responses.get(constants.PAYPAL_URL_SUBSCRIPTIONS.format(payloads.SUBSCRIPTION_ID), json=payloads.SUBSCRIPTION_DATA)
+    responses.post(
+        constants.STRIPE_URL_CHECKOUT_SESSION,
+        json=payloads.STRIPE_CHECKOUT_SESSION_CREATE_DATA,
+    )
     responses.get(
-        constants.STRIPE_URL_CHECKOUT_SESSION.format(payloads.STRIPE_CHECKOUT_SESSION_ID),
+        f"{constants.STRIPE_URL_CHECKOUT_SESSION}/{payloads.STRIPE_CHECKOUT_SESSION_ID}",
         json=payloads.STRIPE_CHECKOUT_SESSION_DATA,
     )

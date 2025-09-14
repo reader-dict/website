@@ -62,9 +62,8 @@ PAYPAL_URL_SUBSCRIPTIONS = "https://api.paypal.com/v1/billing/subscriptions/{0}"
 PAYPAL_URL_TOKEN = "https://api-m.paypal.com/v1/oauth2/token"  # noqa: S105
 PAYPAL_WEBHOOK_ID = os.environ["PAYPAL_WEBHOOK_ID"]
 STRIPE_API_KEY = os.environ["STRIPE_API_KEY"]
-STRIPE_URL_CHECKOUT_SESSION = "https://api.stripe.com/v1/checkout/sessions/{0}"
+STRIPE_URL_CHECKOUT_SESSION = "https://api.stripe.com/v1/checkout/sessions"
 STRIPE_WEBHOOK_SEC_KEY = os.environ["STRIPE_WEBHOOK_SEC_KEY"]
-BUY_URL = os.environ["BUY_URL"]
 
 # GlitchTip for errors reporting
 SENTRY_DSN_BACKEND = os.environ["SENTRY_DSN_BACKEND"]
@@ -78,7 +77,8 @@ PEPPER = b64decode(os.environ["PEPPER"]).decode()
 ONE_MONTH = timedelta(days=365.25 / 12)
 EXPIRED = timedelta()
 
-PRICE_UNIQUE = 9.99
+PRICE_UNIQUE = 9.99  # Sync with STRIPE_PRICE_ID
+STRIPE_PRICE_ID = os.environ["STRIPE_PRICE_ID"]
 
 # Routes
 ROUTE_API_DICT = "/api/v1/dictionaries"

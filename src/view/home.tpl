@@ -211,7 +211,7 @@
 				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
 			</div>
 		</div>
-		<a class="button" id="buy-link" data-cid="{{ client_id }}" data-url="{{ constants.BUY_URL }}">Buy now</a>
+		<a class="button" id="buy-link">Buy now</a>
 	</div>
 
 	<div class="space-1"></div>
