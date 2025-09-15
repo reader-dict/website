@@ -116,18 +116,26 @@ def is_checkpoint(checkpoint: str) -> bool:
     return True
 
 
+def is_dict_enabled(dictionary: Dictionary) -> bool:
+    return (
+        int(dictionary["words"]) >= constants.MINIMUM_REQUIRED_WORDS
+        and bool(dictionary.get("formats", ""))
+        and bool(dictionary.get("uid", ""))
+    )
+
+
 def load_dictionaries(*, keys: list[str] = constants.DICTIONARY_KEYS_ALL) -> Dictionaries:
     """Load public-ready dictionaries."""
     name_wanted = "name" in keys
     return {
         lang_src: {
-            lang_dst: {k: v for k, v in details.items() if k in keys}
+            lang_dst: {k: v for k, v in dictionary.items() if k in keys}
             | ({"name": f"{lang_src}-{lang_dst}"} if name_wanted else {})
-            for lang_dst, details in langs.items()
-            if details.get("plan_id") and details.get("enabled") and details.get("uid")
+            for lang_dst, dictionary in langs.items()
+            if is_dict_enabled(dictionary)
         }
         for lang_src, langs in get_dictionaries().items()
-        if any(details.get("plan_id") and details.get("enabled") and details.get("uid") for details in langs.values())
+        if any(is_dict_enabled(dictionary) for dictionary in langs.values())
     }
 
 

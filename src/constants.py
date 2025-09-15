@@ -142,3 +142,6 @@ EMAIL_SUBJECT = "📚 Your {0} dictionary"
 
 # Needed for the VPS that uses ASCII by default (to revisit when moving to Python 3.13)
 ENCODING = "utf-8"
+
+# Dictionaries with less than this count of words are disabled
+MINIMUM_REQUIRED_WORDS = 100
