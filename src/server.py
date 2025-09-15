@@ -45,13 +45,9 @@ def render(tpl: str, **kwargs: Any) -> str:  # noqa: ANN401
     """Call the renderer with several common variables."""
     variables = {
         "constants": constants,
-        "client_id": str(ulid.ULID()),
         "debug": bottle.DEBUG,
-        "page": tpl,
-        "request": bottle.request,
         "title": constants.HEADER_SLOGAN,
         "language": utils.language,
-        "url": bottle.request.url,
         "url_pure": bottle.request.url.split("?", 1)[0],
         "version": uuid.uuid4() if bottle.DEBUG else __version__,
         "year": YEAR,
