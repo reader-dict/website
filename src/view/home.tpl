@@ -313,6 +313,10 @@
 			<summary class="typo-5">What's the refund politic?</summary>
 			<article class="typo-6"><sup><a href="#faq-refund" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> A refund is possible on the sole condition that no file was downloaded. Logs are kept on the server side, and will be used to resolve any disputes.</article>
 		</details>
+		<details name="exclusive" id="faq-sponsor">
+			<summary class="typo-5">Can you add this new language?</summary>
+			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Why not? <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">Nothing is impossible!</a></article>
+		</details>
 	</div>
 {%- endblock -%}
 

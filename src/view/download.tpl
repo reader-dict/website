@@ -13,6 +13,11 @@
 
 	<div class="space-2"></div>
 
+    {%- if lang_src == lang_dst -%}
+    <p class="typo-6">We know you're enjoying this wonderful dictionary. Show your support with a <a href="https://donate.stripe.com/9B600j2cheU905LdaE2cg01" target="_blank">donation</a>.</p>
+    <div class="space-1"></div>
+    {%- endif -%}
+
     <p class="typo-6">{{ "Updated on <span class='color-flint'>{0}</span>, the <b>{1}</b> dictionary contains {2:,}&nbsp;words.".format(last_updated, name, dictionary["words"]) }}</p>
 
     <div class="space-1"></div>
