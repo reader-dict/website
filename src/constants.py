@@ -78,7 +78,7 @@ PEPPER = b64decode(os.environ["PEPPER"]).decode()
 ONE_MONTH = timedelta(days=365.25 / 12)
 EXPIRED = timedelta()
 
-PRICE_UNIQUE = 9.99  # Sync with STRIPE_PRICE_ID
+PRICE_UNIQUE = 9.49  # Sync with STRIPE_PRICE_ID
 STRIPE_PRICE_ID = os.environ["STRIPE_PRICE_ID"]
 
 # Routes
