@@ -449,6 +449,12 @@ def test_list_all(app: TestApp) -> None:
     assert "The dictionaries list" in response
 
 
+def test_sponsors(app: TestApp) -> None:
+    response = app.get("/sponsors")
+    assert "Diamond" in response
+    assert "Gold" in response
+
+
 def test_enjoy(app: TestApp) -> None:
     response = app.get("/enjoy")
     assert "You are awesome!" in response

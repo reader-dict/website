@@ -330,6 +330,12 @@ def list_all() -> str:
     )
 
 
+@app.get("/sponsors")
+@bottle_file_cache.cache()
+def sponsors() -> str:
+    return render("sponsor", sponsors=utils.load_sponsors())
+
+
 @app.get("/ads.txt")
 def ads() -> bottle.HTTPResponse:
     return bottle.static_file("ads.txt", root=constants.ASSET)

@@ -19,6 +19,7 @@ EMAILS = DATA / "emails"
 LOGS = ROOT / "logs.log"
 METRICS = DATA / "metrics.json"
 ORDERS = DATA / "orders.json"
+SPONSORS = DATA / "sponsors.json"
 VIEW = HERE / "view"
 
 DICTIONARY_KEYS_MINIMAL = ["formats", "updated", "words"]

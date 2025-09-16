@@ -1,0 +1,29 @@
+.names {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    width: 90%;
+}
+
+.names span {
+    display: inline-flex;
+}
+
+h2::before {
+    content: "―――――――――";
+    padding-right: 20px;
+    background: linear-gradient(to left, var(--butter), transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+h2::after {
+    content: "―――――――――";
+    padding-left: 20px;
+    background: linear-gradient(to right, var(--butter), transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}

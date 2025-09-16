@@ -1,13 +1,13 @@
 import imaplib
-import json
 import smtplib
 from unittest.mock import MagicMock, patch
 
 import pytest
 import ulid
+from freezegun import freeze_time
 
 from src import constants, utils
-from src.models import Order
+from src.models import Order, Sponsor
 
 from .payloads import PLAN_ID
 
@@ -87,6 +87,40 @@ def test_get_format_from_file_name_bad(lang: str, name: str) -> None:
         utils.get_format_from_file_name(lang, name)
 
 
+@freeze_time("2025-09-16T07:36:42Z")
+def test_get_sponsors() -> None:
+    assert utils.get_sponsors() == {
+        "Alice": [
+            Sponsor(
+                amount=20,
+                date="2025-03-18T00:00:00.000Z",
+                kind="individual",
+                source="PayPal",
+                message="dico kindle, merci!",
+                public_name="Alicia",
+            )
+        ],
+        "Bob": [
+            Sponsor(
+                amount=300,
+                date="2025-03-23T00:00:00.000Z",
+                kind="individual",
+                source="Patreon",
+                repeat="monthly",
+                url="https://www.example.org",
+            ),
+            Sponsor(
+                amount=10,
+                date="2025-05-01T00:00:00.000Z",
+                kind="individual",
+                source="Patreon",
+                end="2025-09-01T00:00:00.000Z",
+                repeat="monthly",
+            ),
+        ],
+    }
+
+
 def test_is_checkpoint() -> None:
     assert utils.is_checkpoint("1" * 64)
 
@@ -97,38 +131,21 @@ def test_is_checkpoint_false(checkpoint: str) -> None:
 
 
 def test_load_dictionaries() -> None:
-    dictionaries = {
-        "fr": {
-            "fr": {
-                "enabled": True,
-                "formats": "df,dictorg,kobo,mobi,stardict",
-                "plan_id": "plan-id",
-                "price": 9.49,
-                "price_purchase": 19.49,
-                "progress": "done",
-                "uid": "uid",
-                "updated": "2025-04-04",
-                "words": 2053016,
-            },
-            "fro": {
-                "enabled": False,
-                "formats": "df,dictorg,kobo,mobi,stardict",
-                "plan_id": "plan-id",
-                "price": 9.49,
-                "price_purchase": 19.49,
-                "progress": "format:mobi",
-                "uid": "uid",
-                "updated": "2025-04-04",
-                "words": 189856,
-            },
-        }
-    }
-    constants.DICTIONARIES.write_text(json.dumps(dictionaries))
     data = utils.load_dictionaries()
 
     assert len(data) == 1
-    for details in data["fr"].values():
+    for details in data["eo"].values():
         assert sorted(details.keys()) == sorted(constants.DICTIONARY_KEYS_ALL)
+
+
+@freeze_time("2025-09-16T07:36:42Z")
+def test_load_sponsors() -> None:
+    assert utils.load_sponsors() == {
+        "diamond": [("Bob", "https://www.example.org", 1850.0)],
+        "titanium": [],
+        "platinium": [],
+        "gold": [("Alicia", "", 20.0)],
+    }
 
 
 def test_load_orders() -> None:

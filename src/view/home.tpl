@@ -315,7 +315,19 @@
 		</details>
 		<details name="exclusive" id="faq-sponsor">
 			<summary class="typo-5">Can you add this new language?</summary>
-			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Why not? <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">Nothing is impossible!</a></article>
+			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Yes, it is <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">totally possible with your help</a>! You will be credited on the <a href="/sponsors" class="external">sponsors page</a> in the <b>Titanium</b> tiers.</article>
+		</details>
+		<details name="exclusive" id="faq-donation">
+			<summary class="typo-5">Do you accept donations?</summary>
+			<article class="typo-6"><sup><a href="#faq-donation" title="Link to this FAQ entry">
+				<i class="ph ph-anchor-simple"></i></a></sup> Yes, <a href="https://donate.stripe.com/9B600j2cheU905LdaE2cg01" target="_blank" class="external">we do</a>. You will be credited on the <a href="/sponsors" class="external">sponsors page</a> as well. Levels:
+				<ol>
+					<li><b>Gold</b> [€1 - €100]: your name on the sponsors page;</li>
+					<li><b>Platinium</b> [€100 - €300]: as previous, and link to your website;</li>
+					<li><b>Titanium</b> [€300 - €1,000]: as previous, and choice of the new language to support;</li>
+					<li><b>Diamond</b> [€1,000 - €10,000]: as previous, and your logo.</li>
+				</ol>
+			</article>
 		</details>
 	</div>
 {%- endblock -%}

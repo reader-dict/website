@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from functools import cached_property
@@ -15,6 +16,32 @@ Dictionary = dict[str, bool | float | int | str]
 Dictionaries = dict[str, dict[str, Dictionary]]
 Link = tuple[str, str, str, str, str]
 Reviews = list[dict[str, str]]
+
+
+@dataclass
+class Sponsor:
+    amount: float
+    date: str
+    kind: str
+    source: str
+    end: str = ""
+    message: str = ""
+    repeat: str = ""
+    public_name: str = ""
+    url: str = ""
+
+    def current_amount(self) -> float:
+        if not (repeat := self.repeat):
+            return self.amount
+
+        assert repeat == "monthly", f"Invalid {repeat = }"  # noqa: S101
+
+        end = datetime.fromisoformat(end) if (end := self.end) else datetime.now(tz=UTC)
+        delta = end - datetime.fromisoformat(self.date)
+        return self.amount * math.ceil((delta.days or 1) / (365.25 / 12))
+
+
+Sponsors = dict[str, list[Sponsor]]
 
 
 def make_ulid() -> str:

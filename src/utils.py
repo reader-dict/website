@@ -13,7 +13,7 @@ from random import sample
 from typing import Any
 
 from src import cache, constants, languages
-from src.models import Dictionaries, Dictionary, Link, Order, Reviews
+from src.models import Dictionaries, Dictionary, Link, Order, Reviews, Sponsor, Sponsors
 
 log = logging.getLogger(__name__)
 
@@ -106,6 +106,13 @@ def get_last_modification_time(dictionary: Dictionary) -> str:
     return datetime.fromtimestamp(file.stat().st_mtime, tz=UTC).strftime("%Y-%m-%d %H:%M UTC")
 
 
+def get_sponsors() -> Sponsors:
+    return {
+        name: [Sponsor(**donation) for donation in donations]
+        for name, donations in json.loads(constants.SPONSORS.read_text(encoding=constants.ENCODING)).items()
+    }
+
+
 def is_checkpoint(checkpoint: str) -> bool:
     if not checkpoint or len(checkpoint) != 64:
         return False
@@ -169,6 +176,29 @@ def get_order(uid: str) -> Order | None:
 
 def get_order_from_invoice(invoice_id: str) -> Order | None:
     return next((order for order in load_orders().values() if order.invoice_id == invoice_id), None)
+
+
+def load_sponsors() -> dict[str, list[tuple[str, str, float]]]:
+    """Load sponsors."""
+    ret: dict[str, list[tuple[str, str, float]]] = {
+        "diamond": [],
+        "titanium": [],
+        "platinium": [],
+        "gold": [],
+    }
+    for name, donations in get_sponsors().items():
+        amount = 0.0
+        public_name = name
+        url = ""
+        for donation in donations:
+            amount += donation.current_amount()
+            url = donation.url or url
+            public_name = donation.public_name or public_name
+        tiers = (
+            "diamond" if amount >= 1000 else "titanium" if amount >= 300 else "platinium" if amount >= 100 else "gold"
+        )
+        ret[tiers].append((public_name, url, amount))
+    return ret
 
 
 def locker(kind: str) -> Callable:

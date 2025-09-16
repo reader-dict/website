@@ -21,6 +21,7 @@ def isolate(tmp_path: Path) -> None:
     constants.LOGS = constants.ROOT / constants.LOGS.name
     constants.METRICS = constants.DATA / constants.METRICS.name
     constants.ORDERS = constants.DATA / constants.ORDERS.name
+    constants.SPONSORS = constants.DATA / constants.SPONSORS.name
 
     constants.DATA.mkdir()
     constants.FILES.mkdir()
@@ -34,6 +35,8 @@ def isolate(tmp_path: Path) -> None:
                     "enabled": True,
                     "formats": "df,dictorg,kobo,mobi,stardict",
                     "plan_id": "P-7DD30896GS809593MM735GMI",
+                    "price": "4.49",
+                    "price_purchase": "9.49",
                     "progress": "templates:62/62",
                     "uid": "01JRG0YZ81APV0ZTCNTHXYSRK9",
                     "updated": "2025-04-01",
@@ -43,6 +46,8 @@ def isolate(tmp_path: Path) -> None:
                     "enabled": True,
                     "formats": "df,dictorg,kobo,mobi,stardict",
                     "plan_id": payloads.PLAN_ID,
+                    "price": "4.49",
+                    "price_purchase": "9.49",
                     "progress": "format:mobi;templates:2/42",
                     "uid": "01JR0WGRVP18RTFN6K57W42ZAX",
                     "updated": "2025-04-04",
@@ -79,6 +84,41 @@ def isolate(tmp_path: Path) -> None:
                     "dictionaries": ["EO-EO"],
                 },
             ]
+        )
+    )
+
+    constants.SPONSORS.write_text(
+        json.dumps(
+            {
+                "Alice": [
+                    {
+                        "amount": 20,
+                        "date": "2025-03-18T00:00:00.000Z",
+                        "kind": "individual",
+                        "message": "dico kindle, merci!",
+                        "public_name": "Alicia",
+                        "source": "PayPal",
+                    }
+                ],
+                "Bob": [
+                    {
+                        "amount": 300,
+                        "date": "2025-03-23T00:00:00.000Z",
+                        "kind": "individual",
+                        "repeat": "monthly",
+                        "source": "Patreon",
+                        "url": "https://www.example.org",
+                    },
+                    {
+                        "amount": 10,
+                        "date": "2025-05-01T00:00:00.000Z",
+                        "end": "2025-09-01T00:00:00.000Z",
+                        "kind": "individual",
+                        "repeat": "monthly",
+                        "source": "Patreon",
+                    },
+                ],
+            }
         )
     )
 
