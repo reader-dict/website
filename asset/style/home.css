@@ -159,6 +159,13 @@
     vertical-align: middle;
 }
 
+@media (max-width: 700px) {
+
+    .brands {
+        gap: 50px 50px;
+    }
+}
+
 
 /* Compatibility */
 
