@@ -7,8 +7,7 @@
 
 {%- block content -%}
 	<div class="center">
-		<div class="typo-4">Understand every word,<br>anywhere, anytime</div>
-		<div class="space-1"></div>
+		<h1 class="typo-4">Understand every word,<br>anywhere, anytime</h1>
 		<div class="typo-6">Massive word coverage. Flawless inflection support. High compatibility across devices.</div>
 		<div class="space-1"></div>
 		<div class="get-yours"><a class="button" href="/#buy">Get yours</a></div>
@@ -73,11 +72,10 @@
 		<div class="right color-flint"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
 	</div>
 
-	<div class="space-5"></div>
+	<div class="space-4"></div>
 
 	<div id="features" class="center">
-		<div class="typo-4">Expand your language<br>comprehension and learning</div>
-		<br>
+		<h2 class="typo-4">Expand your language<br>comprehension and learning</h2>
 		<div class="typo-6 color-flint">Whether you're reading literature, science, or poetry, our dictionaries unlock deep understanding through advanced features not found in standard built-ins.</div>
 	</div>
 
@@ -121,10 +119,10 @@
 		</div>
 	</div>
 
-	<div class="space-5"></div>
+	<div class="space-4"></div>
 
-	<div class="center typo-4">Do more with {{ constants.PROJECT }}</div>
-	<div class="space-2"></div>
+	<h2 class="center typo-4">Do more with {{ constants.PROJECT }}</h2>
+	<div class="space-1"></div>
 	<div class="more">
 		<div>
 			<div class="icon"><i class="ph ph-link-simple"></i></div>
@@ -156,11 +154,10 @@
 		</div>
 	</div>
 
-	<div class="space-5"></div>
+	<div class="space-4"></div>
 
 	<div id="buy" class="center">
-		<div class="typo-4">Simple pricing to suit your needs</div>
-		<br>
+		<h2 class="typo-4">Simple pricing to suit your needs</h2>
 		<div class="typo-6 color-flint">Choose your source language and select a destination, the price is unique and you'll have a lifetime access to updates.</div>
 	</div>
 	<div class="space-1"></div>
@@ -231,11 +228,10 @@
 		</div>
 	</div>
 
-	<div class="space-5"></div>
+	<div class="space-4"></div>
 
 	<div id="reviews" class="center">
-		<div class="typo-4">Trusted by curious readers everywhere</div>
-		<br>
+		<h2 class="typo-4">Trusted by curious readers everywhere</h2>
 		<div class="typo-6 color-flint">What savvy readers across platforms are saying about our dictionaries.</div>
 	</div>
 	<div class="space-1"></div>
@@ -269,10 +265,10 @@
         {% endfor %}
 	</div>
 
-	<div class="space-5"></div>
+	<div class="space-4"></div>
 
-	<div id="faq" class="center typo-4">Frequently asked questions</div>
-	<div class="space-2"></div>
+	<h2 id="faq" class="center typo-4">Frequently asked questions</h2>
+	<div class="space-1"></div>
 	<div class="faq">
 		<details name="exclusive" id="faq-supported-devices" open>
 			<summary class="typo-5">Which devices are supported?</summary>
@@ -315,7 +311,7 @@
 		</details>
 		<details name="exclusive" id="faq-sponsor">
 			<summary class="typo-5">Can you add this new language?</summary>
-			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Yes, it is <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">totally possible with your help</a>! You will be credited on the <a href="/sponsors" class="external">sponsors page</a> in the <b>Titanium</b> tiers.</article>
+			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Yes, it is <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">totally possible with your help</a>! You will be credited on the <a href="/sponsors" class="external">sponsors page</a> in the <b>Titanium</b>, or <b>Diamond</b>, tiers.</article>
 		</details>
 		<details name="exclusive" id="faq-donation">
 			<summary class="typo-5">Do you accept donations?</summary>

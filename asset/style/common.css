@@ -237,6 +237,10 @@ select {
     margin-top: calc(32px * 3);
 }
 
+.space-4 {
+    margin-top: calc(32px * 4);
+}
+
 .space-5 {
     margin-top: calc(32px * 5);
 }

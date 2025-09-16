@@ -44,7 +44,7 @@
 		<div class="get-yours"><a class="button" href="/#buy">Get yours</a></div>
 	</header>
 
-	<div class="space-2"></div>
+	<div class="space-1"></div>
 	{%- block content -%}{%- endblock -%}
 	<div class="space-5"></div>
 

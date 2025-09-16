@@ -1,9 +1,9 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-    <div class="center typo-4">Hall of Fame</div>
+    <h1 class="center typo-4">Hall of Fame</h1>
 
-	<div class="space-2"></div>
+	<div class="space-1"></div>
 
     <p>We would like to thank the following researchers:</p>
     <ul>
