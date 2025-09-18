@@ -6,7 +6,7 @@
 {% endblock %}
 
 {%- block content -%}
-	<h1 class="center typo-4">Sponsors</h1>
+	<h1 class="center typo-4">Our Awesome Sponsors</h1>
 
 	<div class="space-1"></div>
 

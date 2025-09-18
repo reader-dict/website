@@ -45,8 +45,12 @@ function adjustDictionaryInformation() {
 
 	words_count.innerHTML = words.toLocaleString(locale);
 	wiktionary_snapshot.innerHTML = updated;
-	missing_mobi.style.display = formats.includes("mobi") ? "none" : "block";
-	missing_pocket.style.display = formats.includes("pocket") ? "none" : "block";
+	missing_mobi.style.visibility = formats.includes("mobi")
+		? "hidden"
+		: "visible";
+	missing_pocket.style.visibility = formats.includes("pocket")
+		? "hidden"
+		: "visible";
 }
 
 function currentLangDst() {

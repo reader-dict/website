@@ -9,7 +9,7 @@
     {% set lang_src, lang_dst = dictionary["name"].split("-", 1) %}
     {% set name = language(lang_src) if lang_src == lang_dst else "%s - %s" % (language(lang_src), language(lang_dst)) %}
 
-    <h1 class="center typo-4">{{ name }} dictionary</h1>
+    <h1 class="center typo-4">{{ name }} Dictionary</h1>
 
 	<div class="space-1"></div>
 

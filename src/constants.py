@@ -47,8 +47,8 @@ DELAY_BEFORE_EXPIRATION_IN_SEC = 10 * 60
 HOST = "0.0.0.0"  # noqa: S104
 SERVER = "wsgiref"
 PORT = 1024
-HEADER_SLOGAN = "Best Dictionaries for your beloved e-Reader"
-HEADER_SLOGAN_SPLIT = "Best Dictionaries<br>for your beloved e-Reader"
+HEADER_SLOGAN = "Best Dictionaries for Your Beloved e-Reader"
+HEADER_SLOGAN_SPLIT = "Best Dictionaries<br>for Your Beloved e-Reader"
 HEADER_DESC = "The most comprehensive universal, multilingual and monolingual dictionaries powered by Wiktionary. Bimonthly updates, 180+ languages supported."  # noqa: E501
 
 HTTP_HEADERS = {"User-Agent": f"www.{WWW}"}

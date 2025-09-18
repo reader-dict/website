@@ -41,7 +41,7 @@
 				</picture>
 			</a>
 		</div>
-		<div class="get-yours"><a class="button" href="/#buy">Get yours</a></div>
+		<div class="get-yours"><a class="button" href="/#buy">Get Yours</a></div>
 	</header>
 
 	<div class="space-1"></div>

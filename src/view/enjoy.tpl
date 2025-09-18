@@ -1,7 +1,7 @@
 {%- extends "base.tpl" -%}
 
 {%- block content -%}
-	<h1 class="center typo-4">You are awesome!</h1>
+	<h1 class="center typo-4">You Are Awesome!</h1>
 
 	<div class="space-1"></div>
 

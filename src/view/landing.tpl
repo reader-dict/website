@@ -4,7 +4,7 @@
     {% set lang_src, lang_dst = dictionary["name"].split("-", 1) %}
     {% set name = language(lang_src) if lang_src == lang_dst else "%s - %s" % (language(lang_src), language(lang_dst)) %}
 
-    <h1 class="center typo-4">{{ name }} dictionary</h1>
+    <h1 class="center typo-4">{{ name }} Dictionary</h1>
 
 	<div class="space-1"></div>
 
@@ -19,7 +19,7 @@
         <br>
         Become <a href="/#reviews">part of <b>reader.dict</b> the community</a>, and go get your great <b>{{ name }}</b> dictionary.
     </p>
-    <p class="center"><a class="button" href="/#{{ dictionary['name'] }}">Get your <b>{{ name }}</b> dictionary</a></p>
+    <p class="center"><a class="button" href="/#{{ dictionary['name'] }}">Get Your <b>{{ name }}</b> Dictionary Now</a></p>
 
     <div class="space-1"></div>
 

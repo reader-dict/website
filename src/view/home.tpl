@@ -10,7 +10,7 @@
 		<h1 class="typo-4">{{ constants.HEADER_SLOGAN_SPLIT }}</h1>
 		<div class="typo-6">{{ constants.HEADER_DESC }}</div>
 		<div class="space-1"></div>
-		<div class="get-yours"><a class="button" href="/#buy">Get yours</a></div>
+		<div class="get-yours"><a class="button" href="/#buy">Get Yours</a></div>
     </div>
 
 	<div class="space-3"></div>
@@ -75,7 +75,7 @@
 	<div class="space-4"></div>
 
 	<div id="features" class="center">
-		<h2 class="typo-4">Expand your language<br>comprehension and learning</h2>
+		<h2 class="typo-4">Expand Your Language<br>Comprehension and Learning</h2>
 		<div class="typo-6 color-flint">Whether you're reading literature, science, or poetry, our dictionaries unlock deep understanding through advanced features not found in standard built-ins.</div>
 	</div>
 
@@ -121,7 +121,7 @@
 
 	<div class="space-4"></div>
 
-	<h2 class="center typo-4">Do more with {{ constants.PROJECT }}</h2>
+	<h2 class="center typo-4">Do More With {{ constants.PROJECT }}</h2>
 	<div class="space-1"></div>
 	<div class="more">
 		<div>
@@ -157,8 +157,8 @@
 	<div class="space-4"></div>
 
 	<div id="buy" class="center">
-		<h2 class="typo-4">Simple pricing to suit your needs</h2>
-		<div class="typo-6 color-flint">Choose your source language and select a destination, the price is unique and you'll have a lifetime access to updates.</div>
+		<h2 class="typo-4">One Price. Unlimited Dictionary Access.</h2>
+		<div class="typo-6 color-flint">Select your languages, pay a one-time fee, and get unlimited access to evolving dictionaries with bi-monthly updates.</div>
 	</div>
 	<div class="space-1"></div>
 	<div class="langs">
@@ -178,26 +178,26 @@
 		</div>
 	</div>
     <div class="support">
-        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> Kindle support via KOReader only.</div>
         <div id="missing-pocket"><i class="ph-fill ph-warning"></i> PocketBook/Vivlio support via KOReader only.</div>
+        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> Kindle support via KOReader only.</div>
     </div>
 	<div class="space-1"></div>
 	<div class="purchase-card">
-		<div class="title typo-4">One-time licence</div>
-		<div class="description typo-6">Pay one time, get <b>lifetime</b> access to the evolving dictionary.</div>
-		<div class="price typo-4">€&thinsp;{{ constants.PRICE_HTML }}</div>
+		<div class="title typo-4 center">Lifetime Access</div>
+		<div class="description typo-6"><b>Instant download</b> & <b>lifetime updates</b> with a single link!</div>
+		<div class="price typo-4">{{ constants.PRICE_HTML }}</div>
 		<div class="benefits">
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Unlimited access to latest version</div>
+				<div class="info typo-6">Pay once, get instant download link</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Bi-monthly updates and improvements</div>
+				<div class="info typo-6">Bi-monthly updates & improvements</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">High priority support response time</div>
+				<div class="info typo-6">Priority support</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-book-open-text"></i></div>
@@ -208,7 +208,7 @@
 				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
 			</div>
 		</div>
-		<a class="button" id="buy-link">Buy now</a>
+		<a class="button" id="buy-link">Get Your Dictionary Now</a>
 	</div>
 
 	<div class="space-1"></div>
@@ -231,7 +231,7 @@
 	<div class="space-4"></div>
 
 	<div id="reviews" class="center">
-		<h2 class="typo-4">Trusted by curious readers everywhere</h2>
+		<h2 class="typo-4">Trusted by Curious Readers Everywhere</h2>
 		<div class="typo-6 color-flint">What savvy readers across platforms are saying about our dictionaries.</div>
 	</div>
 	<div class="space-1"></div>
@@ -267,7 +267,7 @@
 
 	<div class="space-4"></div>
 
-	<h2 id="faq" class="center typo-4">Frequently asked questions</h2>
+	<h2 id="faq" class="center typo-4">Frequently Asked Questions</h2>
 	<div class="space-1"></div>
 	<div class="faq">
 		<details name="exclusive" id="faq-supported-devices" open>

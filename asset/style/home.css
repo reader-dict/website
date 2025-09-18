@@ -176,7 +176,6 @@
     opacity: 0.80;
     border-radius: 9999px;
     outline: 1px var(--stone-300) solid;
-    outline-offset: -1px;
     gap: 4px;
     display: inline-flex;
 }
@@ -401,8 +400,9 @@
     background-color: var(--color);
     color: var(--gravel);
     border-radius: 24px;
-    outline: 1px var(--stone-200) solid;
-    outline-offset: -1px;
+    outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
+    box-shadow: 1px 1px 10px light-dark(var(--color), var(--color));
+    text-shadow: 1px 1px 1px var(--graphite);
     flex-direction: column;
     gap: 16px;
     display: inline-flex;
@@ -416,6 +416,11 @@
 .purchase-card .description {
     font-size: 14px;
     line-height: 17.50px;
+}
+
+.purchase-card .price::before {
+    content: "€ ";
+    opacity: .8;
 }
 
 .purchase-card .price span {
@@ -449,9 +454,19 @@
     box-sizing: border-box;
     width: 100%;
     text-align: center;
-    outline: 1px solid var(--graphite);
+    outline: 1px solid var(--stone-800);
+    text-shadow: 1px 1px 1px var(--gravel);
     background-color: var(--gravel);
     color: var(--graphite);
+    transition: all .2s;
+}
+
+.purchase-card a.button:hover {
+    color: var(--gravel);
+    background-color: var(--stone-800);
+    text-shadow: none;
+    outline-color: var(--stone-300);
+    transition: all .2s;
 }
 
 .monolingual {
@@ -494,7 +509,7 @@
 }
 
 .reviews>div:nth-child(2) {
-    border-left: 1px solid var(--stone-300);
+    border-left: 1px solid light-dark(var(--stone-300), var(--stone-500));
 }
 
 .reviews .stars {
@@ -528,6 +543,7 @@
     padding: 2px 6px;
     background-color: var(--color);
     color: var(--gravel);
+    outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
     border-radius: 4px;
 }
 
@@ -582,7 +598,7 @@
 .faq a i {
     color: var(--gravel);
     background-color: var(--color);
-    outline: 1px solid var(--stone-800);
+    outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
     padding: 1px;
     margin-right: 4px;
     border-radius: 2px;
@@ -601,7 +617,7 @@ details {
 }
 
 details:not(:first-child) {
-    border-top: 1px solid var(--stone-300);
+    border-top: 1px solid light-dark(var(--stone-300), var(--stone-500));
 }
 
 details[open]>summary::after {
