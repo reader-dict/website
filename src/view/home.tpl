@@ -7,8 +7,8 @@
 
 {%- block content -%}
 	<div class="center">
-		<h1 class="typo-4">Understand every word,<br>anywhere, anytime</h1>
-		<div class="typo-6">Massive word coverage. Flawless inflection support. High compatibility across devices.</div>
+		<h1 class="typo-4">{{ constants.HEADER_SLOGAN_SPLIT }}</h1>
+		<div class="typo-6">{{ constants.HEADER_DESC }}</div>
 		<div class="space-1"></div>
 		<div class="get-yours"><a class="button" href="/#buy">Get yours</a></div>
     </div>
@@ -185,7 +185,7 @@
 	<div class="purchase-card">
 		<div class="title typo-4">One-time licence</div>
 		<div class="description typo-6">Pay one time, get <b>lifetime</b> access to the evolving dictionary.</div>
-		<div class="price typo-4">€&thinsp;{{ constants.PRICE_UNIQUE }}</div>
+		<div class="price typo-4">€&thinsp;{{ constants.PRICE_HTML }}</div>
 		<div class="benefits">
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>

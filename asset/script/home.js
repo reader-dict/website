@@ -163,7 +163,7 @@ function setupTabs() {
 	tabs_content.forEach((item, idx_item) => {
 		item.id = `tab${idx_item}`;
 	});
-	openTab(0);
+	openTab(2);
 }
 
 function toTitle(str) {

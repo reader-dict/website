@@ -236,7 +236,9 @@
 }
 
 .tab .icons .icon.active {
-    background-color: var(--butter);
+    background-color: var(--color);
+    outline: 1px solid var(--graphite);
+    color: var(--gravel);
     text-decoration: none;
 }
 
@@ -303,8 +305,8 @@
     padding: 8px;
     border-radius: 8px;
     font-size: larger;
-    background-color: var(--butter);
-    color: var(--graphite);
+    background-color: var(--color);
+    color: var(--gravel);
 }
 
 .more .right {
@@ -392,12 +394,12 @@
 
 /* Purchase card */
 
-
 .purchase-card {
     width: 350px;
     max-width: 100%;
     padding: 40px;
-    background-color: light-dark(var(--graphite), var(--gravel));
+    background-color: var(--color);
+    color: var(--gravel);
     border-radius: 24px;
     outline: 1px var(--stone-200) solid;
     outline-offset: -1px;
@@ -407,20 +409,17 @@
 }
 
 .purchase-card .title {
-    color: light-dark(var(--gravel), var(--graphite));
     font-size: 20px;
     line-height: 20px;
 }
 
 .purchase-card .description {
-    color: light-dark(var(--stone-400), var(--flint));
     font-size: 14px;
     line-height: 17.50px;
 }
 
-.purchase-card .price {
-    color: light-dark(var(--gravel), var(--graphite));
-    line-height: 50px;
+.purchase-card .price span {
+    font-size: 22px;
 }
 
 .purchase-card .benefits {
@@ -439,12 +438,10 @@
     width: 24px;
     height: 24px;
     font-size: larger;
-    color: light-dark(var(--gravel), var(--graphite));
 }
 
 .purchase-card .benefits .item .info {
     justify-content: center;
-    color: light-dark(var(--stone-400), var(--flint));
     line-height: 24px;
 }
 
@@ -452,6 +449,9 @@
     box-sizing: border-box;
     width: 100%;
     text-align: center;
+    outline: 1px solid var(--graphite);
+    background-color: var(--gravel);
+    color: var(--graphite);
 }
 
 .monolingual {
@@ -526,8 +526,8 @@
 .reviews .review-original i {
     font-weight: larger;
     padding: 2px 6px;
-    background-color: var(--butter);
-    color: var(--graphite);
+    background-color: var(--color);
+    color: var(--gravel);
     border-radius: 4px;
 }
 
@@ -580,8 +580,8 @@
 }
 
 .faq a i {
-    color: var(--graphite);
-    background-color: var(--butter);
+    color: var(--gravel);
+    background-color: var(--color);
     outline: 1px solid var(--stone-800);
     padding: 1px;
     margin-right: 4px;

@@ -47,8 +47,9 @@ DELAY_BEFORE_EXPIRATION_IN_SEC = 10 * 60
 HOST = "0.0.0.0"  # noqa: S104
 SERVER = "wsgiref"
 PORT = 1024
-HEADER_SLOGAN = "The greatest dictionary | 180+ Languages"
-HEADER_DESC = "Discover the most comprehensive universal, multilingual and monolingual dictionaries powered by Wiktionary. Bimonthly updates, 180+ languages supported."  # noqa: E501
+HEADER_SLOGAN = "Best Dictionaries for your beloved e-Reader"
+HEADER_SLOGAN_SPLIT = "Best Dictionaries<br>for your beloved e-Reader"
+HEADER_DESC = "The most comprehensive universal, multilingual and monolingual dictionaries powered by Wiktionary. Bimonthly updates, 180+ languages supported."  # noqa: E501
 
 HTTP_HEADERS = {"User-Agent": f"www.{WWW}"}
 GITHUB_API_TRACKER = "https://api.github.com/repos/reader-dict/report-a-word/issues"
@@ -78,7 +79,8 @@ PEPPER = b64decode(os.environ["PEPPER"]).decode()
 ONE_MONTH = timedelta(days=365.25 / 12)
 EXPIRED = timedelta()
 
-PRICE_UNIQUE = 9.49  # Sync with STRIPE_PRICE_ID
+PRICE = 9.49  # Sync with STRIPE_PRICE_ID
+PRICE_HTML = "9<span>.49</span>"
 STRIPE_PRICE_ID = os.environ["STRIPE_PRICE_ID"]
 
 # Routes

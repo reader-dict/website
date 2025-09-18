@@ -13,7 +13,7 @@
 h2::before {
     content: "――――――";
     padding-right: 20px;
-    background: linear-gradient(to left, var(--butter), transparent);
+    background: linear-gradient(to left, var(--color), transparent);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -22,7 +22,7 @@ h2::before {
 h2::after {
     content: "――――――";
     padding-left: 20px;
-    background: linear-gradient(to right, var(--butter), transparent);
+    background: linear-gradient(to right, var(--color), transparent);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
