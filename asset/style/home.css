@@ -157,6 +157,13 @@
     height: 24px;
     width: auto;
     vertical-align: middle;
+    opacity: .6;
+    transition: all .2s;
+}
+
+.brands img:hover {
+    opacity: 1;
+    transition: all .2s;
 }
 
 @media (max-width: 700px) {

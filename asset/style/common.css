@@ -179,6 +179,11 @@ a.button {
     color: var(--gravel);
 }
 
+a.button:hover {
+    background-color: var(--gravel);
+    color: var(--color);
+}
+
 code {
     color: light-dark(var(--stone-800), var(--stone-300));
 }
@@ -210,6 +215,11 @@ a.button {
     font-size: 14px;
     vertical-align: middle;
     text-decoration: none;
+    transition: all .2s;
+}
+
+a.button:hover {
+    transition: all .2s;
 }
 
 code {
