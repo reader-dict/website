@@ -64,7 +64,7 @@
 		<div class="space-1"></div>
 		<div class="separator"></div>
 		<div class="space-1"></div>
-		<div>&copy; 2020-{{ year }} <span>{{ constants.PROJECT }}</span>. All Rigths Reserved.</div>
+		<div>&copy;&nbsp;2020-{{ year }} <span>{{ constants.PROJECT }}</span>. All Rigths Reserved.</div>
 	</footer>
 	{%- block scripts -%}{%- endblock -%}
 	{%- if not debug -%}

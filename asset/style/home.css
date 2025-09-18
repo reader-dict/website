@@ -607,7 +607,7 @@
     background-color: var(--color);
     outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
     padding: 1px;
-    margin-right: 4px;
+    margin-right: 8px;
     border-radius: 2px;
     opacity: .5;
     transition: .2s;

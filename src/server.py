@@ -317,6 +317,7 @@ def home() -> str:
     return render(
         "home",
         dictionaries=utils.load_dictionaries(keys=constants.DICTIONARY_KEYS_MINIMAL),
+        faq_json=utils.get_faq(),
         reviews=utils.create_dictionary_links(utils.random_reviews(2)),
     )
 

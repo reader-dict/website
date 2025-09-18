@@ -98,6 +98,10 @@ def get_dictionary_metadata(lang_src: str, lang_dst: str) -> Dictionary:
         return {}
 
 
+def get_faq() -> dict[str, str]:
+    return json.loads(constants.FAQ.read_text(encoding=constants.ENCODING))
+
+
 def get_last_modification_time(dictionary: Dictionary) -> str:
     """Return the last modified time of the given `dictionary` StarDict file."""
     lang_src, lang_dst = str(dictionary["name"]).split("-", 1)

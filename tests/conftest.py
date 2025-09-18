@@ -15,6 +15,7 @@ def isolate(tmp_path: Path) -> None:
     constants.DATA = constants.ROOT / constants.DATA.name
     constants.DICTIONARIES = constants.DATA / constants.DICTIONARIES.name
     constants.REVIEWS = constants.DATA / constants.REVIEWS.name
+    constants.FAQ = constants.ROOT / constants.FAQ.name
     constants.FILES = constants.ROOT / constants.FILES.name
     constants.FILES_CACHE = constants.ROOT / constants.FILES_CACHE.name
     constants.CERTS = constants.FILES / constants.CERTS.name
@@ -63,6 +64,26 @@ def isolate(tmp_path: Path) -> None:
         (folder / f"dict-eo-{lang_dst}.zip").write_bytes(b"AwEsOmE DiCt!")
         (folder / f"dicthtml-eo-{lang_dst}.zip").write_bytes(b"AwEsOmE DiCt!")
         (folder / f"dicthtml-eo-{lang_dst}.zip.sha256").write_bytes(b"ok")
+
+    constants.FAQ.write_text(
+        json.dumps(
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Who am I?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Neo.",
+                        },
+                        "anchor": "faq-whomai",
+                    },
+                ],
+            }
+        )
+    )
 
     constants.REVIEWS.write_text(
         json.dumps(

@@ -270,62 +270,25 @@
 	<h2 id="faq" class="center typo-4">Frequently Asked Questions</h2>
 	<div class="space-1"></div>
 	<div class="faq">
-		<details name="exclusive" id="faq-supported-devices" open>
-			<summary class="typo-5">Which devices are supported?</summary>
-			<article class="typo-6"><sup><a href="#faq-supported-devices" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Kobo, Kindle, Pocketbook, Vivlio, Onyx Boox, Bookeen Cybook Odissey, and many more … A wide range of applications are also supported like KOReader, GoldenDict, Plato, ColorDict, FlowDict; you name it.</article>
-		</details>
-		<details name="exclusive" id="faq-support-pocketbook-vivlio">
-			<summary class="typo-5">What about native support for Pocketbook/Vivlio devices?</summary>
-			<article class="typo-6"><sup><a href="#faq-support-pocketbook-vivlio" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Creating dictionaries for these devices is not feasible with the current knowledge/tools shared on the Internet. So far, we haven't had a chance to get any answers at all from PocketBook nor Vivlio. You can repost <a href="https://x.com/__tiger222__/status/1921036630648934492" target="_blank" class="external">this tweet</a> to ping them, or better, open a support ticket asking for knowledge sharing (point them to this website).</article>
-		</details>
-		<details name="exclusive" id="faq-available-files">
-			<summary class="typo-5">Which file formats are provided?</summary>
-			<article class="typo-6"><sup><a href="#faq-available-files" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> DICT.org, DictFile, DictHTML (for Kobo), MobiPocket (for Kindle), and StarDict (for KOReader, and a wide range of applications).</article>
-		</details>
-		<details name="exclusive" id="faq-howto-install-kobo">
-			<summary class="typo-5">How to install on Kobo?</summary>
-			<article class="typo-6"><sup><a href="#faq-howto-install-kobo" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Copy the compressed dictionary file (<code>dicthtml-XX-YY.zip</code>) inside the <code>.kobo/custom-dict/</code> folder on your Kobo. Do not decompress it.</article>
-		</details>
-		<details name="exclusive" id="faq-howto-install-mobi">
-			<summary class="typo-5">How to install on Kindle?</summary>
-			<article class="typo-6"><sup><a href="#faq-howto-install-mobi" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Decompress the dictionary file (<code>dict-XX-YY.mobi.zip</code>), and copy the resulting <code>dict-XX-YY.mobi</code> file inside the <code>documents/dictionaries/</code> folder on your Kindle.</article>
-		</details>
-		<details name="exclusive" id="faq-howto-install-koreader">
-			<summary class="typo-5">How to install on KOReader?</summary>
-			<article class="typo-6">
-				<sup><a href="#faq-howto-install-koreader" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Download a dictionary in the <code>StarDict</code> format (<code>dict-XX-YY.zip</code>), decompress it, and copy resulting files (<code>dict-data.dict.dz</code>, <code>dict-data.idx</code>, <code>dict-data.ifo</code>, and <code>dict-data.syn</code> when present) inside a <code>dict-XX-YY</code> sub-folder at the appropriate location on your device:
-				<ul>
-					<li>Android: <code>/sdcard/koreader/data/dict</code></li>
-					<li>Cervantes: <code>/mnt/private/koreader/data/dict/</code></li>
-					<li>Kindle: <code>koreader/data/dict/</code></li>
-					<li>Kobo: <code>.adds/koreader/data/dict/</code></li>
-					<li>PocketBook & Vivlio: <code>applications/koreader/data/dict/</code></li>
-					<li>Linux: <code>$HOME/.config/koreader/data/dict/</code></li>
-					<li>macOS: <code>$HOME/Library/Application Support/koreader/data/dict/</code></li>
-				</ul>
-            </article>
-		</details>
-		<details name="exclusive" id="faq-refund">
-			<summary class="typo-5">What's the refund politic?</summary>
-			<article class="typo-6"><sup><a href="#faq-refund" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> A refund is possible on the sole condition that no file was downloaded. Logs are kept on the server side, and will be used to resolve any disputes.</article>
-		</details>
-		<details name="exclusive" id="faq-sponsor">
-			<summary class="typo-5">Can you add this new language?</summary>
-			<article class="typo-6"><sup><a href="#faq-sponsor" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> Yes, it is <a class="external" href="https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02" target="_blank">totally possible with your help</a>! You will be credited on the <a href="/sponsors" class="external">sponsors page</a> in the <b>Titanium</b>, or <b>Diamond</b>, tiers.</article>
-		</details>
-		<details name="exclusive" id="faq-donation">
-			<summary class="typo-5">Do you accept donations?</summary>
-			<article class="typo-6"><sup><a href="#faq-donation" title="Link to this FAQ entry">
-				<i class="ph ph-anchor-simple"></i></a></sup> Yes, <a href="https://donate.stripe.com/9B600j2cheU905LdaE2cg01" target="_blank" class="external">we do</a>. You will be credited on the <a href="/sponsors" class="external">sponsors page</a> as well. Levels:
-				<ol>
-					<li><b>Gold</b> [€1 - €100]: your name on the sponsors page;</li>
-					<li><b>Platinium</b> [€100 - €300]: as previous, and link to your website;</li>
-					<li><b>Titanium</b> [€300 - €1,000]: as previous, and choice of the new language to support;</li>
-					<li><b>Diamond</b> [€1,000 - €10,000]: as previous, and your logo.</li>
-				</ol>
-			</article>
-		</details>
+		{% for entry in faq_json["mainEntity"] %}
+			<details name="exclusive" id="{{ entry['anchor'] }}"{% if loop.index0 == 0 %} open{% endif %}>
+				<summary class="typo-5">{{ entry['name'] }}</summary>
+				<article class="typo-6">
+					<sup><a href="#{{ entry['anchor'] }}" title="Link to this FAQ entry"><i class="ph ph-anchor-simple"></i></a></sup> {{ entry['acceptedAnswer']['text'] }}
+				</article>
+			</details>
+		{% endfor %}
+		<div class="space-1"></div>
+		<div class="center">
+			<b>Still have questions?</b>
+			<br>
+			<br>
+			<a class="button" href="mailto:contact@reader-dict.com">Contact our team</a>
+		</div>
 	</div>
+
+	{# Google enriched result #}
+	<script type="application/ld+json">{{ faq_json }}</script>
 {%- endblock -%}
 
 {%- block scripts -%}

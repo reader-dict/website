@@ -1,0 +1,87 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which devices and apps are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Kindle, Kobo, PocketBook, Vivlio, Onyx Boox, Bookeen Cybook, KOReader, GoldenDict, Plato, ColorDict, FlowDict, and more.</b><br>Our dictionaries work with virtually every major e-reader and dictionary app."
+      },
+      "anchor": "faq-supported-devices"
+    },
+    {
+      "@type": "Question",
+      "name": "Is native PocketBook/Vivlio dictionary support available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Native dictionary installation on PocketBook and Vivlio devices is <b>not available yet</b> due to technical limitations. However, you can use our dictionaries on these devices by installing <b>KOReader</b>, which provides full support.<br><b>We are actively working on a solution for native support</b> and will update our users when it becomes available. For guidance or updates, contact us!"
+      },
+      "anchor": "faq-support-pocketbook-vivlio"
+    },
+    {
+      "@type": "Question",
+      "name": "How do I install my dictionary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Easy, step-by-step instructions for each device:</b><ul><li><b>Kobo:</b> Copy <code>dicthtml-XX-YY.zip</code> to <code>.kobo/custom-dict/</code> (no need to unzip).</li><li><b>Kindle:</b> Unzip <code>dict-XX-YY.mobi.zip</code>, then move <code>dict-XX-YY.mobi</code> to <code>documents/dictionaries/</code>.</li><li><b>KOReader:</b> Unzip <code>dict-XX-YY.zip</code>, copy files to <code>koreader/data/dict/</code> (see device-specific paths in <a href=\"https://github.com/koreader/koreader/wiki/Dictionary-support#how-to-install-a-dictionary\" target=\"_blank\" class=\"external\">full instructions</a>).</li></ul>"
+      },
+      "anchor": "faq-howto-install"
+    },
+    {
+      "@type": "Question",
+      "name": "What file formats do you provide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>DICT.org, DictFile, DictHTML, MobiPocket, and StarDict.</b><br/>Choose the format that works best for your device or app."
+      },
+      "anchor": "faq-available-files"
+    },
+    {
+      "@type": "Question",
+      "name": "What if my device isn’t listed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Contact us!</b> We’re always expanding compatibility and can offer advice for new or niche devices: <a href=\"mailto:contact@reader-dict.com\">contact@reader-dict.com</a>"
+      },
+      "anchor": "faq-new-device"
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get a refund?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Risk-free: Full refund if you haven’t downloaded any files.</b><br>Just reach out and we’ll assist you quickly."
+      },
+      "anchor": "faq-refund"
+    },
+    {
+      "@type": "Question",
+      "name": "How often are dictionaries updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>All dictionaries are updated bi-monthly—and even faster if you need it!</b><br>If you find a dictionary isn’t working perfectly for your device or language pair, let us know. We’ll investigate, fix, and update the files quickly—often within days—so you always have the best possible experience.<br><i>Your feedback helps us improve for everyone!</i><br><b>All purchases include lifetime updates.</b>"
+      },
+      "anchor": "faq-update-frequency"
+    },
+    {
+      "@type": "Question",
+      "name": "Can I request a new language?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Yes! <a href=\"https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02\" target=\"_blank\" class=\"external\">Sponsor a new language</a> and get credited as <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">a supporter</a>.</b>"
+      },
+      "anchor": "faq-sponsor"
+    },
+    {
+      "@type": "Question",
+      "name": "Do you accept donations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<b>Absolutely! <a href=\"https://donate.stripe.com/9B600j2cheU905LdaE2cg01\" target=\"_blank\" class=\"external\">Support our project</a> and get <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">public recognition</a>.</b>"
+      },
+      "anchor": "faq-donation"
+    }
+  ]
+}
