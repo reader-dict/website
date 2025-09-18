@@ -20,11 +20,7 @@ from .payloads import (
 ORDER = Order(
     id=STRIPE_PURCHASE_ID,
     dictionary="eo-fr",
-    dictionary_override="",
     email="alice@example.org",
-    invoice_id="",
-    locale="en",
-    plan_id="",
     source="stripe",
     status="completed",
     status_update_time="2025-09-05T14:01:28+00:00",

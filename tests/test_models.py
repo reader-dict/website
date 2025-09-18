@@ -4,14 +4,17 @@ from freezegun import freeze_time
 from src.models import Order
 
 
+@freeze_time("2025-09-18T11:19:16+02:00")
 def test_as_dict() -> None:
     order = Order("some-id", dictionary="eo-fr", source="paypal", status="completed")
     assert order.checkpoint
     assert order.as_dict() == {
         "dictionary": "eo-fr",
         "id": "some-id",
+        "locale": "en",
         "source": "paypal",
         "status": "completed",
+        "status_update_time": "2025-09-18T09:19:16+00:00",
         "ulid": order.ulid,
     }
 

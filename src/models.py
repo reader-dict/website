@@ -48,6 +48,10 @@ def make_ulid() -> str:
     return str(ulid.ULID())
 
 
+def now() -> str:
+    return datetime.now(tz=UTC).isoformat()
+
+
 @dataclass()
 class Order:
     id: str
@@ -55,11 +59,11 @@ class Order:
     dictionary_override: str = ""
     email: str = ""
     invoice_id: str = ""  # [purchase] PayPal capture ID, used to handle refunded purchase webhooks
-    locale: str = ""
+    locale: str = "en"
     plan_id: str = ""  # [subscription]
     source: str = ""
     status: str = ""
-    status_update_time: str = ""
+    status_update_time: str = field(default_factory=now, compare=False)
     ulid: str = field(default_factory=make_ulid, compare=False)
     user: str = ""
 

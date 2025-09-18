@@ -119,7 +119,6 @@ class Handler(base.Handler):
             data["payment_intent"],
             dictionary=dictionary,
             email=data["customer_email"] or data.get("customer_details", {}).get("email", ""),
-            locale="en",
             source=self.source,
             status=purchase_status(data),
             status_update_time=datetime.fromtimestamp(data["created"], UTC).isoformat(),
