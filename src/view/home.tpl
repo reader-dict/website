@@ -15,61 +15,111 @@
 
 	<div class="space-3"></div>
 
-	<div id="showcase">
-		<div class="large color-1">
-			<div class="top-bar color-2">
-				<div class="buttons">
-					<div class="button color-3"></div>
-					<div class="button color-3"></div>
-					<div class="button color-3"></div>
-				</div>
-			</div>
-			<div class="screen">
-                <picture>
-                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
-                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
-                </picture>
-			</div>
-		</div>
-		<div class="medium color-1">
-			<div class="screen">
-                <picture>
-                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
-                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
-                </picture>
-				<div class="bottom-bar color-3"></div>
-			</div>
-		</div>
-		<div class="small color-1">
-			<div class="top-bar color-2">
-                <div class="button color-3"></div>
+	<div id="reviews" class="center">
+		<h2 class="typo-4">Trusted by Curious Readers Everywhere</h2>
+		<div class="typo-6 color-flint">What savvy readers across platforms are saying about our dictionaries.</div>
+	</div>
+	<div class="space-1"></div>
+	<div class="reviews">
+		{% for review in reviews %}
+            <div>
+                <div class="stars" title="Note: {{ review["stars"] }}/5">
+                    {{ '<i class="ph-fill ph-star"></i>' * 4 }}
+					{%- if review["stars"] >= 5 -%}
+                    <i class="ph-fill ph-star"></i>
+					{%- else -%}
+                    <i class="ph-fill ph-star-half"></i>
+					{%- endif -%}
+                </div>
+                {%- if "review_original" in review -%}
+                    <div class="review typo-6">{{ review["review_original"] }}</div>
+                    <div class="review-original typo-6"><i class="ph ph-translate" title="English translation of the original review"></i> “{{ review["review"] }}”</div>
+                {%- else -%}
+                    <div class="review typo-6">{{ review["review"] }}</div>
+                {%- endif -%}
+                <div class="details">
+                    <div class="reader typo-5">{{ review["reader"] }}</div>
+                    {%- if review["device"] -%}
+					<div class="device typo-6 color-flint">{{ review["device"] }}</div>
+                    {%- endif -%}
+                    {%- if review["dictionaries"] -%}
+                    <div class="dictionary typo-6 color-flint"><i class="ph ph-books"></i> {{ review["dictionaries"] | join(", ") }}</div>
+                    {%- endif -%}
+                </div>
             </div>
-			<div class="screen">
-                <picture>
-                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
-                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
-                </picture>
-			</div>
-			<div class="bottom-bar color-2"></div>
+        {% endfor %}
+	</div>
+
+	<div class="space-4"></div>
+
+	<div id="buy" class="center">
+		<h2 class="typo-4">One Price. Unlimited Dictionary Access.</h2>
+		<div class="typo-6 color-flint">Select your languages, pay a one-time fee, and get unlimited access to evolving dictionaries with bi-monthly updates.</div>
+	</div>
+	<div class="space-1"></div>
+	<div class="langs">
+		<div class="left">
+			<label for="lang-src" class="typo-4">Source language</label>
+			<select id="lang-src" name="lang-src">
+				<option value="all" title="Universal dictionary">All - Universal</option>
+                {%- for lang_src in dictionaries if lang_src != "all" -%}
+                    {%- set lang = language(lang_src) -%}
+                    <option value="{{ lang_src }}" title="{{ "%s dictionary" % lang }}">{{ lang_src|upper }} - {{ lang }}</option>
+                {%- endfor -%}
+			</select>
+		</div>
+		<div class="right">
+			<label for="lang-dst" class="typo-4">Destination language</label>
+			<select id="lang-dst" name="lang-dst"></select>
 		</div>
 	</div>
-
-	<div class="space-3"></div>
-
-	<div class="brands">
-		<a href="https://read.amazon.com" target="_blank"><img width="134" height="29" loading="lazy" src="/asset/img/amazon-kindle.svg?v={{ version }}" alt="Amazon Kindle" title="Dictionaries for Amazon Kindle" /></a>
-		<a href="https://www.kobo.com" target="_blank"><img width="82" height="23" loading="lazy" src="/asset/img/rakuten-kobo.svg?v={{ version }}" alt="Rakuten Kobo" title="Dictionaries for Rakuten Kobo" /></a>
-		<a href="https://pocketbook.ch" target="_blank"><img width="136" height="21" loading="lazy" src="/asset/img/pocketbook.svg?v={{ version }}" alt="PocketBook" title="Dictionaries for PocketBook" /></a>
-		<a href="https://www.vivlio.com" target="_blank"><img width="135" height="31" loading="lazy" src="/asset/img/vivlio.svg?v={{ version }}" alt="Vivlio" title="Dictionaries for Vivlio" /></a>
-		<a href="https://www.boox.com" target="_blank"><img width="135" height="13" loading="lazy" src="/asset/img/onyx-boox.svg?v={{ version }}" alt="Onyx Boox" title="Dictionaries for Onyx Boox" /></a>
-		<a href="https://koreader.rocks" target="_blank"><img width="90" height="29" loading="lazy" src="/asset/img/koreader.svg?v={{ version }}" alt="KOReader" title="Dictionaries for KOReader" /></a>
+    <div class="support">
+        <div id="missing-pocket"><i class="ph-fill ph-warning"></i> PocketBook/Vivlio support via KOReader only.</div>
+        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> Kindle support via KOReader only.</div>
+    </div>
+	<div class="space-1"></div>
+	<div class="purchase-card">
+		<div class="title typo-4 center">Lifetime Access</div>
+		<div class="description typo-6"><b>Instant download</b> & <b>lifetime updates</b> with a single link!</div>
+		<div class="price typo-4">{{ constants.PRICE_HTML }}</div>
+		<div class="benefits">
+			<div class="item">
+				<div class="icon"><i class="ph ph-check"></i></div>
+				<div class="info typo-6">Pay once, get instant download link</div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-check"></i></div>
+				<div class="info typo-6">Bi-monthly updates & improvements</div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-check"></i></div>
+				<div class="info typo-6">Priority support</div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-book-open-text"></i></div>
+				<div class="info typo-6">Words count: <span id="words-count"></span></div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-download-simple"></i></div>
+				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
+			</div>
+		</div>
+		<a class="button" id="buy-link">Get Your Dictionary Now</a>
 	</div>
-
-	<div class="space-2"></div>
-
-	<div class="compat typo-6">
-		<div class="left color-flint">Compatible with Kindle, Kobo, KOReader, GoldenDict, and more.</div>
-		<div class="right color-flint"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
+	<div class="space-1"></div>
+	<div class="monolingual">
+		<div class="left">
+			<div class="title typo-5"><label for="lang-mono">Or get a monolingual version for free</label></div>
+		</div>
+		<div class="right">
+			<select id="lang-mono" name="lang-mono">
+				<option disabled selected value>Choose language</option>
+                {%- for lang_src in dictionaries if lang_src in dictionaries[lang_src] -%}
+                    {%- set lang = language(lang_src) -%}
+                    <option value="{{ lang_src }}" title="{{ "%s dictionary" % lang }}">{{ lang }}</option>
+                {%- endfor -%}
+			</select>
+		</div>
 	</div>
 
 	<div class="space-4"></div>
@@ -154,115 +204,63 @@
 		</div>
 	</div>
 
-	<div class="space-4"></div>
+	<div class="space-3"></div>
 
-	<div id="buy" class="center">
-		<h2 class="typo-4">One Price. Unlimited Dictionary Access.</h2>
-		<div class="typo-6 color-flint">Select your languages, pay a one-time fee, and get unlimited access to evolving dictionaries with bi-monthly updates.</div>
-	</div>
-	<div class="space-1"></div>
-	<div class="langs">
-		<div class="left">
-			<label for="lang-src" class="typo-4">Source language</label>
-			<select id="lang-src" name="lang-src">
-				<option value="all" title="Universal dictionary">All - Universal</option>
-                {%- for lang_src in dictionaries if lang_src != "all" -%}
-                    {%- set lang = language(lang_src) -%}
-                    <option value="{{ lang_src }}" title="{{ "%s dictionary" % lang }}">{{ lang_src|upper }} - {{ lang }}</option>
-                {%- endfor -%}
-			</select>
-		</div>
-		<div class="right">
-			<label for="lang-dst" class="typo-4">Destination language</label>
-			<select id="lang-dst" name="lang-dst"></select>
-		</div>
-	</div>
-    <div class="support">
-        <div id="missing-pocket"><i class="ph-fill ph-warning"></i> PocketBook/Vivlio support via KOReader only.</div>
-        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> Kindle support via KOReader only.</div>
-    </div>
-	<div class="space-1"></div>
-	<div class="purchase-card">
-		<div class="title typo-4 center">Lifetime Access</div>
-		<div class="description typo-6"><b>Instant download</b> & <b>lifetime updates</b> with a single link!</div>
-		<div class="price typo-4">{{ constants.PRICE_HTML }}</div>
-		<div class="benefits">
-			<div class="item">
-				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Pay once, get instant download link</div>
-			</div>
-			<div class="item">
-				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Bi-monthly updates & improvements</div>
-			</div>
-			<div class="item">
-				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Priority support</div>
-			</div>
-			<div class="item">
-				<div class="icon"><i class="ph ph-book-open-text"></i></div>
-				<div class="info typo-6">Words count: <span id="words-count"></span></div>
-			</div>
-			<div class="item">
-				<div class="icon"><i class="ph ph-download-simple"></i></div>
-				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
-			</div>
-		</div>
-		<a class="button" id="buy-link">Get Your Dictionary Now</a>
+	<div class="brands">
+		<a href="https://read.amazon.com" target="_blank"><img width="134" height="29" loading="lazy" src="/asset/img/amazon-kindle.svg?v={{ version }}" alt="Amazon Kindle" title="Dictionaries for Amazon Kindle" /></a>
+		<a href="https://www.kobo.com" target="_blank"><img width="82" height="23" loading="lazy" src="/asset/img/rakuten-kobo.svg?v={{ version }}" alt="Rakuten Kobo" title="Dictionaries for Rakuten Kobo" /></a>
+		<a href="https://pocketbook.ch" target="_blank"><img width="136" height="21" loading="lazy" src="/asset/img/pocketbook.svg?v={{ version }}" alt="PocketBook" title="Dictionaries for PocketBook" /></a>
+		<a href="https://www.vivlio.com" target="_blank"><img width="135" height="31" loading="lazy" src="/asset/img/vivlio.svg?v={{ version }}" alt="Vivlio" title="Dictionaries for Vivlio" /></a>
+		<a href="https://www.boox.com" target="_blank"><img width="135" height="13" loading="lazy" src="/asset/img/onyx-boox.svg?v={{ version }}" alt="Onyx Boox" title="Dictionaries for Onyx Boox" /></a>
+		<a href="https://koreader.rocks" target="_blank"><img width="90" height="29" loading="lazy" src="/asset/img/koreader.svg?v={{ version }}" alt="KOReader" title="Dictionaries for KOReader" /></a>
 	</div>
 
-	<div class="space-1"></div>
+	<div class="space-2"></div>
 
-	<div class="monolingual">
-		<div class="left">
-			<div class="title typo-5"><label for="lang-mono">Or get a monolingual version for free</label></div>
-		</div>
-		<div class="right">
-			<select id="lang-mono" name="lang-mono">
-				<option disabled selected value>Choose language</option>
-                {%- for lang_src in dictionaries if lang_src in dictionaries[lang_src] -%}
-                    {%- set lang = language(lang_src) -%}
-                    <option value="{{ lang_src }}" title="{{ "%s dictionary" % lang }}">{{ lang }}</option>
-                {%- endfor -%}
-			</select>
-		</div>
+	<div class="compat typo-6">
+		<div class="left color-flint">Compatible with Kindle, Kobo, KOReader, GoldenDict, and more.</div>
+		<div class="right color-flint"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
 	</div>
 
 	<div class="space-4"></div>
 
-	<div id="reviews" class="center">
-		<h2 class="typo-4">Trusted by Curious Readers Everywhere</h2>
-		<div class="typo-6 color-flint">What savvy readers across platforms are saying about our dictionaries.</div>
-	</div>
-	<div class="space-1"></div>
-	<div class="reviews">
-		{% for review in reviews %}
-            <div>
-                <div class="stars" title="Note: {{ review["stars"] }}/5">
-                    {{ '<i class="ph-fill ph-star"></i>' * 4 }}
-					{%- if review["stars"] >= 5 -%}
-                    <i class="ph-fill ph-star"></i>
-					{%- else -%}
-                    <i class="ph-fill ph-star-half"></i>
-					{%- endif -%}
-                </div>
-                {%- if "review_original" in review -%}
-                    <div class="review typo-6">{{ review["review_original"] }}</div>
-                    <div class="review-original typo-6"><i class="ph ph-translate" title="English translation of the original review"></i> “{{ review["review"] }}”</div>
-                {%- else -%}
-                    <div class="review typo-6">{{ review["review"] }}</div>
-                {%- endif -%}
-                <div class="details">
-                    <div class="reader typo-5">{{ review["reader"] }}</div>
-                    {%- if review["device"] -%}
-					<div class="device typo-6 color-flint">{{ review["device"] }}</div>
-                    {%- endif -%}
-                    {%- if review["dictionaries"] -%}
-                    <div class="dictionary typo-6 color-flint"><i class="ph ph-books"></i> {{ review["dictionaries"] | join(", ") }}</div>
-                    {%- endif -%}
-                </div>
+	<div id="showcase">
+		<div class="large color-1">
+			<div class="top-bar color-2">
+				<div class="buttons">
+					<div class="button color-3"></div>
+					<div class="button color-3"></div>
+					<div class="button color-3"></div>
+				</div>
+			</div>
+			<div class="screen">
+                <picture>
+                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
+                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
+                </picture>
+			</div>
+		</div>
+		<div class="medium color-1">
+			<div class="screen">
+                <picture>
+                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
+                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
+                </picture>
+				<div class="bottom-bar color-3"></div>
+			</div>
+		</div>
+		<div class="small color-1">
+			<div class="top-bar color-2">
+                <div class="button color-3"></div>
             </div>
-        {% endfor %}
+			<div class="screen">
+                <picture>
+                    <source srcset="/asset/img/showcase-dark.png?v={{ version }}" media="(prefers-color-scheme: dark)">
+                    <img src="/asset/img/showcase.png?v={{ version }}" loading="lazy" alt="Loading preview …"/>
+                </picture>
+			</div>
+			<div class="bottom-bar color-2"></div>
+		</div>
 	</div>
 
 	<div class="space-4"></div>
