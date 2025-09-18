@@ -25,7 +25,7 @@
       "name": "How do I install my dictionary?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<b>Easy, step-by-step instructions for each device:</b><ul><li><b>Kobo:</b> Copy <code>dicthtml-XX-YY.zip</code> to <code>.kobo/custom-dict/</code> (no need to unzip).</li><li><b>Kindle:</b> Unzip <code>dict-XX-YY.mobi.zip</code>, then move <code>dict-XX-YY.mobi</code> to <code>documents/dictionaries/</code>.</li><li><b>KOReader:</b> Unzip <code>dict-XX-YY.zip</code>, copy files to <code>koreader/data/dict/</code> (see device-specific paths in <a href=\"https://github.com/koreader/koreader/wiki/Dictionary-support#how-to-install-a-dictionary\" target=\"_blank\" class=\"external\">full instructions</a>).</li></ul>"
+        "text": "<b>Easy, step-by-step instructions for each device:</b><ul><li><b>Kobo:</b> Copy <code>dicthtml-XX-YY.zip</code> to <code>.kobo/custom-dict/</code> (no need to unzip).</li><li><b>Kindle:</b> Unzip <code>dict-XX-YY.mobi.zip</code>, then move <code>dict-XX-YY.mobi</code> to <code>documents/dictionaries/</code>.</li><li><b>KOReader:</b> Unzip <code>dict-XX-YY.zip</code>, copy files to <code>koreader/data/dict/</code> (see device-specific paths in <a href=\"https://github.com/koreader/koreader/wiki/Dictionary-support#how-to-install-a-dictionary\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"external\">full instructions</a>).</li></ul>"
       },
       "anchor": "faq-howto-install"
     },
@@ -70,7 +70,7 @@
       "name": "Can I request a new language?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<b>Yes! <a href=\"https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02\" target=\"_blank\" class=\"external\">Sponsor a new language</a> and get credited as <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">a supporter</a>.</b>"
+        "text": "<b>Yes! <a href=\"https://buy.stripe.com/9B64gz18dfYd05LeeI2cg02\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"external\">Sponsor a new language</a> and get credited as <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">a supporter</a>.</b>"
       },
       "anchor": "faq-sponsor"
     },
@@ -79,7 +79,7 @@
       "name": "Do you accept donations?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<b>Absolutely! <a href=\"https://donate.stripe.com/9B600j2cheU905LdaE2cg01\" target=\"_blank\" class=\"external\">Support our project</a> and get <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">public recognition</a>.</b>"
+        "text": "<b>Absolutely! <a href=\"https://donate.stripe.com/9B600j2cheU905LdaE2cg01\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"external\">Support our project</a> and get <a href=\"https://www.reader-dict.com/sponsors\" class=\"external\">public recognition</a>.</b>"
       },
       "anchor": "faq-donation"
     }

@@ -17,7 +17,11 @@
 
 	<div id="reviews" class="center">
 		<h2 class="typo-4">Trusted by Curious Readers Everywhere</h2>
-		<div class="typo-6 color-flint">What savvy readers across platforms are saying about our dictionaries.</div>
+		<div class="typo-6 color-flint">
+			What savvy readers across platforms are saying about our dictionaries.
+			<br>
+			<a class="unstyled" href="{{ constants.GOOGLE_REVIEWS }}" target="_blank" rel="noopener noreferrer" class="external">Share your experience →</a>
+		</div>
 	</div>
 	<div class="space-1"></div>
 	<div class="reviews">
@@ -207,12 +211,12 @@
 	<div class="space-3"></div>
 
 	<div class="brands">
-		<a href="https://read.amazon.com" target="_blank"><img width="134" height="29" loading="lazy" src="/asset/img/amazon-kindle.svg?v={{ version }}" alt="Amazon Kindle" title="Dictionaries for Amazon Kindle" /></a>
-		<a href="https://www.kobo.com" target="_blank"><img width="82" height="23" loading="lazy" src="/asset/img/rakuten-kobo.svg?v={{ version }}" alt="Rakuten Kobo" title="Dictionaries for Rakuten Kobo" /></a>
-		<a href="https://pocketbook.ch" target="_blank"><img width="136" height="21" loading="lazy" src="/asset/img/pocketbook.svg?v={{ version }}" alt="PocketBook" title="Dictionaries for PocketBook" /></a>
-		<a href="https://www.vivlio.com" target="_blank"><img width="135" height="31" loading="lazy" src="/asset/img/vivlio.svg?v={{ version }}" alt="Vivlio" title="Dictionaries for Vivlio" /></a>
-		<a href="https://www.boox.com" target="_blank"><img width="135" height="13" loading="lazy" src="/asset/img/onyx-boox.svg?v={{ version }}" alt="Onyx Boox" title="Dictionaries for Onyx Boox" /></a>
-		<a href="https://koreader.rocks" target="_blank"><img width="90" height="29" loading="lazy" src="/asset/img/koreader.svg?v={{ version }}" alt="KOReader" title="Dictionaries for KOReader" /></a>
+		<a href="https://read.amazon.com" target="_blank" rel="noopener noreferrer"><img width="134" height="29" loading="lazy" src="/asset/img/amazon-kindle.svg?v={{ version }}" alt="Amazon Kindle" title="Dictionaries for Amazon Kindle" /></a>
+		<a href="https://www.kobo.com" target="_blank" rel="noopener noreferrer"><img width="82" height="23" loading="lazy" src="/asset/img/rakuten-kobo.svg?v={{ version }}" alt="Rakuten Kobo" title="Dictionaries for Rakuten Kobo" /></a>
+		<a href="https://pocketbook.ch" target="_blank" rel="noopener noreferrer"><img width="136" height="21" loading="lazy" src="/asset/img/pocketbook.svg?v={{ version }}" alt="PocketBook" title="Dictionaries for PocketBook" /></a>
+		<a href="https://www.vivlio.com" target="_blank" rel="noopener noreferrer"><img width="135" height="31" loading="lazy" src="/asset/img/vivlio.svg?v={{ version }}" alt="Vivlio" title="Dictionaries for Vivlio" /></a>
+		<a href="https://www.boox.com" target="_blank" rel="noopener noreferrer"><img width="135" height="13" loading="lazy" src="/asset/img/onyx-boox.svg?v={{ version }}" alt="Onyx Boox" title="Dictionaries for Onyx Boox" /></a>
+		<a href="https://koreader.rocks" target="_blank" rel="noopener noreferrer"><img width="90" height="29" loading="lazy" src="/asset/img/koreader.svg?v={{ version }}" alt="KOReader" title="Dictionaries for KOReader" /></a>
 	</div>
 
 	<div class="space-2"></div>

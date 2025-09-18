@@ -17,7 +17,7 @@
 			{%- for name, url, amount in data -%}
 				<span{% if debug %} title="€{{ amount | int }}"{% endif %}>
 				{%- if tiers != "gold" and url -%}
-				<a href="{{ url }}" target="_blank" class="external">{{ name }}</a></span>
+				<a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="external">{{ name }}</a></span>
 				{%- else -%}
 				{{ name }}
 				{%- endif -%}

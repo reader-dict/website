@@ -14,7 +14,7 @@
 	<div class="space-1"></div>
 
     {%- if lang_src == lang_dst -%}
-    <p class="typo-6">We know you're enjoying this wonderful dictionary. Show your support with a <a href="https://donate.stripe.com/9B600j2cheU905LdaE2cg01" target="_blank">donation</a>.</p>
+    <p class="typo-6">We know you're enjoying this wonderful dictionary. Show your support with a <a href="https://donate.stripe.com/9B600j2cheU905LdaE2cg01" target="_blank" rel="noopener noreferrer">donation</a>.</p>
     <div class="space-1"></div>
     {%- endif -%}
 
