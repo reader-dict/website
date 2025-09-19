@@ -444,6 +444,11 @@ def test_home(app: TestApp) -> None:
             assert bottle_file_cache.CONFIG.header_name not in response.headers
 
 
+def test_legal_mentions(app: TestApp) -> None:
+    response = app.get("/legal-mentions")
+    assert "Legal Mentions" in response
+
+
 def test_list_all(app: TestApp) -> None:
     response = app.get("/list")
     assert "The Dictionaries List" in response

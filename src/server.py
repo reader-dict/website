@@ -322,6 +322,12 @@ def home() -> str:
     )
 
 
+@app.get("/legal-mentions")
+@bottle_file_cache.cache()
+def legal_mentions() -> str:
+    return render("legal-mentions")
+
+
 @app.get("/list")
 @bottle_file_cache.cache()
 def list_all() -> str:
