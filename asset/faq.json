@@ -67,6 +67,15 @@
     },
     {
       "@type": "Question",
+      "name": "Why is the price the same for all dictionaries, regardless of size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer a simple, one-time price for each dictionary, no matter its current size. When you purchase, you receive lifetime access to all future updates and improvements for that dictionary. This means your dictionary may start small or large, but as we add new words, definitions, and features, you'll always have the latest version at no extra cost."
+      },
+      "anchor": "faq-dictionary-pricing"
+    },
+    {
+      "@type": "Question",
       "name": "Can I request a new language?",
       "acceptedAnswer": {
         "@type": "Answer",

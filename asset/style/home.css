@@ -417,13 +417,11 @@
 }
 
 .purchase-card .title {
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 28px;
 }
 
 .purchase-card .description {
-    font-size: 14px;
-    line-height: 17.50px;
+    line-height: 20px;
 }
 
 .purchase-card .price::before {

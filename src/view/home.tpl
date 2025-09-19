@@ -84,7 +84,7 @@
 	<div class="space-1"></div>
 	<div class="purchase-card">
 		<div class="title typo-4 center">Lifetime Access</div>
-		<div class="description typo-6"><b>Instant download</b> & <b>lifetime updates</b> with a single link!</div>
+		<div class="description typo-6 center"><b>Instant download</b> & <b>lifetime updates</b>—your dictionary will always improve, at no extra cost!</div>
 		<div class="price center typo-4">{{ constants.PRICE_HTML }}</div>
 		<div class="benefits">
 			<div class="item">
