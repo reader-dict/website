@@ -50,7 +50,8 @@ SERVER = "wsgiref"
 PORT = 1024
 HEADER_SLOGAN = "Best Dictionaries for Your Beloved e-Reader"
 HEADER_SLOGAN_SPLIT = "Best Dictionaries<br>for Your Beloved e-Reader"
-HEADER_DESC = "The most comprehensive universal, multilingual and monolingual dictionaries powered by Wiktionary. Bimonthly updates, 180+ languages supported."  # noqa: E501
+HEADER_DESC = "The most comprehensive universal, multilingual, and monolingual dictionaries—perfect for e-readers, phones, tablets, and desktop apps. Powered by Wiktionary. Updates at least twice a month and support for over 180 languages. Compatible with Kindle, Kobo, Onyx Boox, PocketBook, and more."  # noqa: E501
+HEADER_DESC_HTML = 'The most comprehensive universal, multilingual, and monolingual dictionaries—perfect for e-readers, phones, tablets, and desktop apps. Powered by <a href="https://www.wiktionary.org/" target="_blank" rel="noopener noreferrer" class="external underline">Wiktionary</a>.<br>Updates at least twice a month and support for over 180 languages.'  # noqa: E501
 
 HTTP_HEADERS = {"User-Agent": f"www.{WWW}"}
 GITHUB_API_TRACKER = "https://api.github.com/repos/reader-dict/report-a-word/issues"

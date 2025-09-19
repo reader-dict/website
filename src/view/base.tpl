@@ -4,8 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="author" content="Mickaël Schoentgen — {{ constants.PROJECT }}">
 	<meta name="description" content="{{ constants.HEADER_DESC }}">
-	<meta name="keywords" content="bilingual dictionary,universal dictionary,monolingual dictionary,e-reader dictionary,ebook dictionary,
-	dictionary,dictionaries,wiktionary,kobo,kindle,onyx boox,pocketbook,dict.org,dictorg,dictfile,dicthtml,mobi,stardict,koreader,goldendict,plato,colordict,flowdict,bookeen,cybook,odissey">
+	<meta name="keywords" content="bilingual dictionary,universal dictionary,monolingual dictionary,e-reader dictionary,ebook dictionary,dictionary,dictionaries,wiktionary,kobo,kindle,onyx boox,pocketbook,dict.org,dictorg,dictfile,dicthtml,mobi,stardict,koreader,goldendict,plato,colordict,flowdict,bookeen,cybook,odissey">
 	<meta name="viewport" content="width=device-width">
 
 	<meta property="og:description" content="{{ constants.HEADER_DESC }}">

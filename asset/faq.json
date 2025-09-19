@@ -43,7 +43,7 @@
       "name": "What if my device isn’t listed?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<b>Contact us!</b> We’re always expanding compatibility and can offer advice for new or niche devices: <a href=\"mailto:contact@reader-dict.com\">contact@reader-dict.com</a>"
+        "text": "<b>Contact us!</b> We’re always expanding compatibility and can offer advice for new or niche devices."
       },
       "anchor": "faq-new-device"
     },
@@ -52,7 +52,7 @@
       "name": "Can I get a refund?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "<b>Risk-free: Full refund if you haven’t downloaded any files.</b><br>Just reach out and we’ll assist you quickly."
+        "text": "<b>Risk-free: full refund if you haven’t downloaded any files.</b><br>Just reach out and we’ll assist you quickly."
       },
       "anchor": "faq-refund"
     },

@@ -410,7 +410,7 @@
     border-radius: 24px;
     outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
     box-shadow: 1px 1px 10px light-dark(var(--color), var(--color));
-    text-shadow: 1px 1px 1px var(--graphite);
+    text-shadow: 0 0 1px var(--graphite);
     flex-direction: column;
     gap: 16px;
     display: inline-flex;
