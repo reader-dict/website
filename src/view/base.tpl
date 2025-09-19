@@ -51,14 +51,14 @@
 	<footer>
 		<div class="line-top">
 			<div class="left">
-				<a class="unstyled" href="{{ constants.GOOGLE_REVIEWS }}" target="_blank" rel="noopener noreferrer">Post a review</a>
+				<a href="/sponsors">Our Sponsors</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="unstyled" href="/list">Full list</a>
+				<a href="/list">Full list</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="unstyled" href="mailto:contact@reader-dict.com">Contact</a>
+				<a href="mailto:contact@reader-dict.com">Contact</a>
 			</div>
 			<div class="right">
-				<a class="unstyled" href="{{ constants.GITHUB_URL }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<a href="{{ constants.GITHUB_URL }}" target="_blank" rel="noopener noreferrer">GitHub</a>
 			</div>
 		</div>
 		<div class="space-1"></div>

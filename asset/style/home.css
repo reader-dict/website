@@ -312,6 +312,7 @@
     border-radius: 8px;
     font-size: larger;
     background-color: var(--color);
+    outline: 1px solid light-dark(var(--stone-800), var(--stone-500));
     color: var(--gravel);
 }
 
@@ -507,7 +508,6 @@
 
 /* Reviews */
 
-
 .reviews {
     width: 100%;
     display: flex;
@@ -553,7 +553,6 @@
 }
 
 .reviews .review-original i {
-    font-weight: larger;
     padding: 2px 6px;
     background-color: var(--color);
     color: var(--gravel);
@@ -578,7 +577,11 @@
 }
 
 .reviews .dictionary a {
-    color: inherit
+    opacity: .8;
+}
+
+.reviews .dictionary a:hover {
+    opacity: 1;
 }
 
 @media (max-width: 700px) {
@@ -599,10 +602,6 @@
 
 .faq {
     width: 90%;
-}
-
-.faq a:not(.external) {
-    text-decoration: none;
 }
 
 .faq a.external {

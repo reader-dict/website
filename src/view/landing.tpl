@@ -12,12 +12,12 @@
         {{ "Updated on <span class='color-flint'>{0}</span>, the <b>{1}</b> dictionary contains {2:,}&nbsp;words.".format(last_updated, name, dictionary["words"]) }}
         <br>
         <br>
-        Curious about what <a href="/#features">awesome features</a> this dictionary has, and maybe do you want to see <a href="/#showcase">screenshots</a>?
+        Curious about what <a class="underline" href="/#features">awesome features</a> this dictionary has, and maybe do you want to see <a class="underline" href="/#showcase">screenshots</a>?
         <br>
-        There is also a comprehensive <a href="/#faq">Frequently Asked Questions</a> section where you will discover supported devices & apps.
+        There is also a comprehensive <a class="underline" href="/#faq">Frequently Asked Questions</a> section where you will discover supported devices & apps.
         <br>
         <br>
-        Become <a href="/#reviews">part of <b>reader.dict</b> the community</a>, and go get your great <b>{{ name }}</b> dictionary.
+        Become <a class="underline" href="/#reviews">part of <b>reader.dict</b> the community</a>, and go get your great <b>{{ name }}</b> dictionary.
     </p>
     <p class="center"><a class="button" href="/#{{ dictionary['name'] }}">Get Your <b>{{ name }}</b> Dictionary Now</a></p>
 

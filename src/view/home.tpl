@@ -20,7 +20,7 @@
 		<div class="typo-6 color-flint">
 			What savvy readers across platforms are saying about our dictionaries.
 			<br>
-			<a class="unstyled" href="{{ constants.GOOGLE_REVIEWS }}" target="_blank" rel="noopener noreferrer" class="external">Share your experience →</a>
+			<a href="{{ constants.GOOGLE_REVIEWS }}" target="_blank" rel="noopener noreferrer" class="external underline">Share your experience →</a>
 		</div>
 	</div>
 	<div class="space-1"></div>
@@ -231,7 +231,7 @@
 
 	<div class="compat typo-6">
 		<div class="left color-flint">Compatible with Kindle, Kobo, KOReader, GoldenDict, and more.</div>
-		<div class="right color-flint"><a href="#faq-supported-devices" class="unstyled">View all compatibility →</a></div>
+		<div class="right color-flint"><a href="#faq-supported-devices">View all compatibility →</a></div>
 	</div>
 
 	<div class="space-4"></div>

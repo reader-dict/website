@@ -48,9 +48,9 @@ def create_dictionary_links(reviews: list[dict]) -> list[dict]:
             lang_src, lang_dst = dictionary.split("-", 1)
             if lang_src == lang_dst:
                 lang = lang_src.lower()
-                link = f'<a class="unstyled" href="/download/{lang}" title="Acquire the awesome {language(lang)} dictionary for free">{dictionary}</a>'  # noqa: E501
+                link = f'<a href="/download/{lang}" title="Acquire the awesome {language(lang)} dictionary for free">{dictionary}</a>'  # noqa: E501
             else:
-                link = f'<a class="unstyled" href="/#{dictionary.lower()}" title="Acquire the awesome {language(lang_src.lower())} - {language(lang_dst.lower())} dictionary">{dictionary}</a>'  # noqa: E501
+                link = f'<a href="/#{dictionary.lower()}" title="Acquire the awesome {language(lang_src.lower())} - {language(lang_dst.lower())} dictionary">{dictionary}</a>'  # noqa: E501
             dictionaries.append(link)
         review["dictionaries"] = dictionaries
     return reviews

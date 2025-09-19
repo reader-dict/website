@@ -195,6 +195,7 @@ a.button {
 a.button:hover {
     background-color: var(--gravel);
     color: var(--color);
+    outline: 1px solid light-dark(var(--stone-400), var(--graphite));
 }
 
 code {
@@ -217,8 +218,19 @@ a.unstyled {
     text-decoration: none;
 }
 
-a.unstyled:hover {
+a:not(.unstyled) {
+    text-decoration: none;
+    transition: all .5s;
+}
+
+a:not(.unstyled):hover {
     text-decoration: underline;
+    color: var(--color);
+    transition: all .1s;
+}
+
+a.underline {
+    text-decoration: underline !important;
 }
 
 a.button {
@@ -232,6 +244,7 @@ a.button {
 }
 
 a.button:hover {
+    text-decoration: none;
     transition: all .2s;
 }
 

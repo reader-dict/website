@@ -26,10 +26,10 @@
     {% for fmt, (pretty_fmt, file_name_full, file_name_noetym, link_full, link_noetym) in links.items() %}
         <dt class="typo-5">{{ pretty_fmt }}</dt>
         <dd>
-            <div class="color-flint">Full version: <a class="unstyled" href="/file/{{ link_full }}" title="Download">{{ file_name_full }} <i class="ph ph-download-simple"></i></a></div>
-            <div class="color-flint">Etymology-free version: <a class="unstyled" href="/file/{{ link_noetym }}" title="Download">{{ file_name_noetym }} <i class="ph ph-download-simple"></i></a></div>
+            <div class="color-flint">Full version: <a href="/file/{{ link_full }}" title="Download">{{ file_name_full }} <i class="ph ph-download-simple"></i></a></div>
+            <div class="color-flint">Etymology-free version: <a href="/file/{{ link_noetym }}" title="Download">{{ file_name_noetym }} <i class="ph ph-download-simple"></i></a></div>
             {%- if fmt in ("kobo", "mobi") -%}
-            <div><i class="ph ph-book-open-text"></i> <a class="unstyled" href="/#faq-howto-install-{{ fmt }}" target="_blank">How to install?</a></div>
+            <div><i class="ph ph-book-open-text"></i> <a href="/#faq-howto-install">How to install?</a></div>
             {% endif %}
         </dd>
         <div class="space-1"></div>
