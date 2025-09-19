@@ -4,7 +4,7 @@ You can always get the latest version at:
     https://github.com/reader-dict/website
 """
 
-__version__ = "62"
+__version__ = "63"
 __author__ = "Mickaël Schoentgen"
 __copyright__ = f"""
 Copyright (c) 2020-2025, {__author__}

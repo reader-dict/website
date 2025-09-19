@@ -85,7 +85,7 @@
 	<div class="purchase-card">
 		<div class="title typo-4 center">Lifetime Access</div>
 		<div class="description typo-6"><b>Instant download</b> & <b>lifetime updates</b> with a single link!</div>
-		<div class="price typo-4">{{ constants.PRICE_HTML }}</div>
+		<div class="price center typo-4">{{ constants.PRICE_HTML }}</div>
 		<div class="benefits">
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
@@ -100,6 +100,14 @@
 				<div class="info typo-6">Priority support</div>
 			</div>
 			<div class="item">
+				<div class="icon"><i class="ph ph-credit-card"></i></div>
+				<div class="info typo-6">International cards accepted</div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-lock"></i></div>
+				<div class="info typo-6">Secure payment via Stripe</div>
+			</div>
+			<div class="item">
 				<div class="icon"><i class="ph ph-book-open-text"></i></div>
 				<div class="info typo-6">Words count: <span id="words-count"></span></div>
 			</div>
@@ -108,7 +116,7 @@
 				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
 			</div>
 		</div>
-		<a class="button" id="buy-link">Get Your Dictionary Now</a>
+		<a class="button" id="buy-link"><i class="ph-fill ph-stripe-logo"></i> Get Your Dictionary Now</a>
 	</div>
 	<div class="space-1"></div>
 	<div class="monolingual">

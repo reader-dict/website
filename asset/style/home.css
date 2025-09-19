@@ -428,6 +428,7 @@
 .purchase-card .price::before {
     content: "€ ";
     opacity: .8;
+    font-size: 40px;
 }
 
 .purchase-card .price span {
@@ -457,23 +458,32 @@
     line-height: 24px;
 }
 
-.purchase-card a.button {
+.purchase-card a {
     box-sizing: border-box;
     width: 100%;
-    text-align: center;
     outline: 1px solid var(--stone-800);
     text-shadow: 1px 1px 1px var(--gravel);
     background-color: var(--gravel);
     color: var(--graphite);
     transition: all .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 
-.purchase-card a.button:hover {
+.purchase-card a:hover {
     color: var(--gravel);
     background-color: var(--stone-800);
     text-shadow: none;
     outline-color: var(--stone-300);
     transition: all .2s;
+}
+
+.purchase-card a i {
+    height: 100%;
+    width: auto;
+    font-size: 150%;
 }
 
 .monolingual {
@@ -490,10 +500,7 @@
 
     .purchase-card {
         box-sizing: border-box;
-    }
-
-    .purchase-card .price-full {
-        font-size: 24px;
+        padding: 20px;
     }
 }
 
