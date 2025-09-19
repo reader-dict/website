@@ -101,7 +101,7 @@
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph-fill ph-credit-card"></i></div>
-				<div class="info typo-6">International cards accepted</div>
+				<div class="info typo-6">Local and international payments accepted</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph-fill ph-lock"></i></div>
@@ -109,11 +109,11 @@
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-book-open-text"></i></div>
-				<div class="info typo-6">Words count: <span id="words-count"></span></div>
+				<div class="info typo-6">Contains <span id="words-count"></span> words</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-download-simple"></i></div>
-				<div class="info typo-6">Wiktionary export: <span id="wiktionary-snapshot"></span></div>
+				<div class="info typo-6">Wiktionary data as of <span id="wiktionary-snapshot"></span></div>
 			</div>
 		</div>
 		<a class="button" id="buy-link"><i class="ph-fill ph-stripe-logo"></i> Get Your Dictionary Now</a>
