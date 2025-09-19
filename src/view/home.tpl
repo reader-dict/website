@@ -78,8 +78,8 @@
 		</div>
 	</div>
     <div class="support">
-        <div id="missing-pocket"><i class="ph-fill ph-warning"></i> PocketBook/Vivlio support via KOReader only.</div>
-        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> Kindle support via KOReader only.</div>
+        <div id="missing-pocket"><i class="ph-fill ph-warning"></i> On <b>PocketBook/Vivlio</b> devices, this dictionary can only be used via the <a href="https://koreader.rocks/" target="_blank" rel="noopener noreferrer" class="external underline">KOReader app</a> due to technical limitations.</div>
+        <div id="missing-mobi"><i class="ph-fill ph-warning"></i> On <b>Kindle</b> devices, this dictionary can only be used via the <a href="https://koreader.rocks/" target="_blank" rel="noopener noreferrer" class="external underline">KOReader app</a> due to technical limitations.</div>
     </div>
 	<div class="space-1"></div>
 	<div class="purchase-card">
