@@ -114,7 +114,7 @@
 
 	<div class="space-4"></div>
 
-	<h2 class="center typo-4">See It in Action</h2>
+	<h2 class="center typo-4" id="see-it-in-action">See It in Action</h2>
 	<div class="typo-6 color-flint center">Our dictionaries work with a wide range of e-readers, tablets, and phones. The look and features depend on your device and app.</div>
 	<div class="space-1"></div>
 	<div id="showcase">
