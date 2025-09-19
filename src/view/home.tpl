@@ -100,11 +100,11 @@
 				<div class="info typo-6">Priority support</div>
 			</div>
 			<div class="item">
-				<div class="icon"><i class="ph ph-credit-card"></i></div>
+				<div class="icon"><i class="ph-fill ph-credit-card"></i></div>
 				<div class="info typo-6">International cards accepted</div>
 			</div>
 			<div class="item">
-				<div class="icon"><i class="ph ph-lock"></i></div>
+				<div class="icon"><i class="ph-fill ph-lock"></i></div>
 				<div class="info typo-6">Secure payment via Stripe</div>
 			</div>
 			<div class="item">
