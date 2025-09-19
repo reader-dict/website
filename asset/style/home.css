@@ -33,6 +33,14 @@
     background-color: var(--flint);
 }
 
+#showcase .screen {
+    text-align: center;
+}
+
+#showcase img {
+    max-width: 100%;
+}
+
 #showcase .large {
     width: var(--width-l);
     border-top-left-radius: 6px;
@@ -63,11 +71,7 @@
 #showcase .large .screen {
     align-self: stretch;
     height: var(--height-l);
-}
-
-#showcase .large .screen img {
-    max-width: calc(100% - 100px);
-    margin-left: 50px;
+    padding: 0 50px;
 }
 
 #showcase .medium {
@@ -84,13 +88,9 @@
 }
 
 #showcase .medium .screen {
-    height: var(--height-m);
-    padding-top: 28px;
-}
-
-#showcase .medium .screen img {
-    max-width: calc(100% - 82px);
-    margin-left: 41px;
+    height: calc(var(--height-m) - 30px);
+    padding: 20px 40px 0 40px;
+    overflow: hidden;
 }
 
 #showcase .medium .bottom-bar {
@@ -105,7 +105,6 @@
     box-sizing: border-box;
     position: relative;
     width: var(--width-s);
-    height: var(--height-s);
     height: calc(var(--height-s) + 7px);
     margin-left: calc(var(--width-l) + (var(--width-m) - (var(--width-m) / var(--shift-factor))) - (var(--width-s) / var(--shift-factor)));
     margin-top: calc((var(--height-s) + 7px) * -1);
@@ -122,14 +121,8 @@
 }
 
 #showcase .small .screen {
-    width: var(--width-s);
     height: calc(var(--height-s) - 45px);
     padding-top: 12px;
-}
-
-#showcase .small .screen img {
-    max-width: calc(100% - 10px);
-    margin-left: 5px;
 }
 
 #showcase .small .bottom-bar {
