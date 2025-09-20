@@ -195,15 +195,11 @@
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Bi-monthly updates & improvements</div>
-			</div>
-			<div class="item">
-				<div class="icon"><i class="ph ph-check"></i></div>
-				<div class="info typo-6">Priority support</div>
+				<div class="info typo-6">Frequent updates & improvements</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph-fill ph-credit-card"></i></div>
-				<div class="info typo-6">Local and international payments accepted</div>
+				<div class="info typo-6">Local & international payments accepted</div>
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph-fill ph-lock"></i></div>

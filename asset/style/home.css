@@ -418,7 +418,7 @@
 }
 
 .purchase-card .price::before {
-    content: "€ ";
+    content: "$ ";
     opacity: .8;
     font-size: 40px;
 }
@@ -448,6 +448,10 @@
 .purchase-card .benefits .item .info {
     justify-content: center;
     line-height: 24px;
+}
+
+.purchase-card #words-count {
+    font-weight: bolder;
 }
 
 .purchase-card a {
