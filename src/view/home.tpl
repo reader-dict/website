@@ -195,6 +195,10 @@
 			</div>
 			<div class="item">
 				<div class="icon"><i class="ph ph-check"></i></div>
+				<div class="info typo-6">No account required</div>
+			</div>
+			<div class="item">
+				<div class="icon"><i class="ph ph-check"></i></div>
 				<div class="info typo-6">Frequent updates & improvements</div>
 			</div>
 			<div class="item">
